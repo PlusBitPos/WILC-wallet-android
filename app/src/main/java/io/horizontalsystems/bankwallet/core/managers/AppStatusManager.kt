@@ -17,7 +17,6 @@ class AppStatusManager(
         private val adapterManager: IAdapterManager,
         private val coinManager: ICoinManager,
         private val ethereumKitManager: IEthereumKitManager,
-        private val eosKitManager: IEosKitManager,
         private val binanceKitManager: IBinanceKitManager
 ) : IAppStatusManager {
 
@@ -27,7 +26,7 @@ class AppStatusManager(
 
             status["App Info"] = getAppInfo()
             status["App Log"] = AppLog.getLog()
-            status["Version History"] = getVersionHistory()
+//            status["Version History"] = getVersionHistory()
             status["Wallets Status"] = getWalletsStatus()
             status["Blockchain Status"] = getBlockchainStatus()
 
@@ -72,9 +71,6 @@ class AppStatusManager(
             is AccountType.Mnemonic -> {
                 accountDetails["Mnemonic"] = accountType.words.count()
             }
-            is AccountType.Eos -> {
-                accountDetails["Account Name"] = accountType.account
-            }
         }
         return accountDetails
     }
@@ -82,10 +78,9 @@ class AppStatusManager(
     private fun getBlockchainStatus(): Map<String, Any> {
         val blockchainStatus = LinkedHashMap<String, Any>()
 
-        blockchainStatus.putAll(getBitcoinForkStatuses())
+//        blockchainStatus.putAll(getBitcoinForkStatuses())
         ethereumKitManager.statusInfo?.let { blockchainStatus["Ethereum"] = it }
-        eosKitManager.statusInfo?.let { blockchainStatus["EOS"] = it }
-        binanceKitManager.statusInfo?.let { blockchainStatus["Binance DEX"] = it }
+//        binanceKitManager.statusInfo?.let { blockchainStatus["Binance DEX"] = it }
 
         return blockchainStatus
     }

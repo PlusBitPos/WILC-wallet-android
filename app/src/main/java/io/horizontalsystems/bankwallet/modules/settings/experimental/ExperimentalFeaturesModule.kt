@@ -1,7 +1,5 @@
 package io.horizontalsystems.bankwallet.modules.settings.experimental
 
-import android.app.Activity
-import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
@@ -24,10 +22,4 @@ object ExperimentalFeaturesModule {
             return presenter as T
         }
     }
-
-    fun start(context: Activity) {
-        val intent = Intent(context, ExperimentalFeaturesActivity::class.java)
-        context.startActivity(intent)
-    }
-
 }

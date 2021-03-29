@@ -10,11 +10,12 @@ class Account(val id: String,
               val name: String,
               val type: AccountType,
               val origin: AccountOrigin,
-              var isBackedUp: Boolean = false) : Parcelable {
+              var isBackedUp: Boolean = false
+) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (other is Account) {
-            return id == other.id && type == other.type
+            return id == other.id
         }
 
         return false
@@ -28,16 +29,20 @@ class Account(val id: String,
 @Parcelize
 open class AccountType : Parcelable {
     @Parcelize
-    data class Mnemonic(val words: List<String>, val salt: String?) : AccountType()
+    data class Mnemonic(val words: List<String>, val salt: String? = null) : AccountType() {
+        override fun equals(other: Any?): Boolean {
+            return other is Mnemonic && words.toTypedArray().contentEquals(other.words.toTypedArray()) && salt == other.salt
+        }
+
+        override fun hashCode(): Int {
+            return words.toTypedArray().contentHashCode() + salt.hashCode()
+        }
+    }
 
     @Parcelize
     data class PrivateKey(val key: ByteArray) : AccountType() {
         override fun equals(other: Any?): Boolean {
-            if (other is PrivateKey) {
-                return key.contentEquals(other.key)
-            }
-
-            return false
+            return other is PrivateKey && key.contentEquals(other.key)
         }
 
         override fun hashCode(): Int {
@@ -46,7 +51,15 @@ open class AccountType : Parcelable {
     }
 
     @Parcelize
-    data class Eos(val account: String, val activePrivateKey: String) : AccountType()
+    data class Zcash(val words: List<String>, val birthdayHeight: Long? = null) : AccountType() {
+        override fun equals(other: Any?): Boolean {
+            return other is Zcash && words.toTypedArray().contentEquals(other.words.toTypedArray())
+        }
+
+        override fun hashCode(): Int {
+            return words.toTypedArray().contentHashCode()
+        }
+    }
 
     @Parcelize
     enum class Derivation(val value: String) : Parcelable {
@@ -78,7 +91,7 @@ fun AccountType.Derivation.description(): Int = when (this) {
 }
 
 fun AccountType.Derivation.addressPrefix(coinType: CoinType): String? {
-    return when(coinType){
+    return when (coinType) {
         CoinType.Bitcoin -> {
             when (this) {
                 AccountType.Derivation.bip44 -> "1"

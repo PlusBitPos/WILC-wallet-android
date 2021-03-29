@@ -1,8 +1,5 @@
 package io.horizontalsystems.bankwallet.modules.welcome
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import io.horizontalsystems.bankwallet.core.App
 
 object WelcomeModule {
@@ -28,12 +25,6 @@ object WelcomeModule {
         fun openTorPage()
     }
 
-    fun start(context: Context, options: Bundle?) {
-        val intent = Intent(context, WelcomeActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        context.startActivity(intent, options)
-    }
-
     fun init(view: WelcomeViewModel, router: IRouter) {
         val interactor = WelcomeInteractor(App.systemInfoManager)
         val presenter = WelcomePresenter(interactor, router)
@@ -41,5 +32,4 @@ object WelcomeModule {
         view.delegate = presenter
         presenter.view = view
     }
-
 }

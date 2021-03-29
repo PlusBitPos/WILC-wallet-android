@@ -2,6 +2,7 @@ package io.horizontalsystems.bankwallet.modules.settings.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.trustwallet.walletconnect.models.WCPeerMeta
 import io.horizontalsystems.bankwallet.core.App
 import io.horizontalsystems.core.entities.Currency
 
@@ -15,6 +16,7 @@ object MainSettingsModule {
         fun setAppVersion(appVersion: String)
         fun setTermsAccepted(termsAccepted: Boolean)
         fun setPinIsSet(pinSet: Boolean)
+        fun setCurrentWalletConnectPeer(peer: String?)
     }
 
     interface IMainSettingsViewDelegate {
@@ -23,20 +25,27 @@ object MainSettingsModule {
         fun didTapBaseCurrency()
         fun didTapLanguage()
         fun didSwitchLightMode(lightMode: Boolean)
-        fun didTapAbout()
+        fun didTapAboutApp()
         fun didTapCompanyLogo()
-        fun didTapReportProblem()
-        fun didTapTellFriends()
         fun didTapNotifications()
         fun didTapExperimentalFeatures()
         fun didTapManageKeys()
-        fun didTapAppStatus()
+        fun didTapWalletConnect()
+        fun didTapFaq()
+        fun didTapAcademy()
+        fun didTapTwitter()
+        fun didTapTelegram()
+        fun didTapReddit()
     }
 
     interface IMainSettingsInteractor {
         val companyWebPageLink: String
         val appWebPageLink: String
+        val companyTwitterLink: String
+        val companyTelegramLink: String
+        val companyRedditLink: String
         val allBackedUp: Boolean
+        val walletConnectPeerMeta: WCPeerMeta?
         val currentLanguageDisplayName: String
         val baseCurrency: Currency
         val appVersion: String
@@ -52,21 +61,22 @@ object MainSettingsModule {
         fun didUpdateBaseCurrency()
         fun didUpdateTermsAccepted(allAccepted: Boolean)
         fun didUpdatePinSet()
+        fun didUpdateWalletConnect(peerMeta: WCPeerMeta?)
     }
 
     interface IMainSettingsRouter {
         fun showSecuritySettings()
         fun showBaseCurrencySettings()
         fun showLanguageSettings()
-        fun showAbout()
+        fun showAboutApp()
         fun openLink(url: String)
         fun reloadAppInterface()
-        fun showReportProblem()
-        fun showShareApp(appWebPageLink: String)
         fun showNotifications()
         fun showExperimentalFeatures()
         fun showManageKeys()
-        fun openAppStatus()
+        fun openWalletConnect()
+        fun openFaq()
+        fun openAcademy()
     }
 
     class Factory : ViewModelProvider.Factory {
@@ -82,7 +92,8 @@ object MainSettingsModule {
                     currencyManager = App.currencyManager,
                     appConfigProvider = App.appConfigProvider,
                     termsManager = App.termsManager,
-                    pinComponent = App.pinComponent
+                    pinComponent = App.pinComponent,
+                    walletConnectSessionStore = App.walletConnectSessionStore
             )
             val presenter = MainSettingsPresenter(view, router, interactor)
             interactor.delegate = presenter

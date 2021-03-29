@@ -1,7 +1,5 @@
 package io.horizontalsystems.bankwallet.modules.settings.appstatus
 
-import android.app.Activity
-import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.horizontalsystems.bankwallet.core.App
@@ -35,10 +33,4 @@ object AppStatusModule {
             return presenter as T
         }
     }
-
-    fun start(context: Activity) {
-        val intent = Intent(context, AppStatusActivity::class.java)
-        context.startActivity(intent)
-    }
-
 }

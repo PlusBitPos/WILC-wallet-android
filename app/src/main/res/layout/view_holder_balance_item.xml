@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:indeterminateTint="@color/grey"
             android:indeterminateTintMode="src_atop"
-            android:src="@drawable/ic_attention"
+            android:src="@drawable/ic_attention_24"
             app:layout_constraintBottom_toBottomOf="@+id/coinBackgroundSquare"
             app:layout_constraintEnd_toEndOf="@+id/coinBackgroundSquare"
             app:layout_constraintStart_toStartOf="@+id/coinBackgroundSquare"
@@ -119,14 +119,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="4dp"
-                android:src="@drawable/ic_up_positive" />
+                android:layout_marginStart="1dp"
+                android:src="@drawable/ic_up_green_20" />
 
             <View
                 android:layout_width="0.5dp"
                 android:layout_height="26dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="21dp"
                 android:background="@color/steel_20" />
 
             <TextView
@@ -164,7 +164,7 @@
             android:id="@+id/balanceWrapper"
             android:layout_width="0dp"
             android:layout_height="34dp"
-            android:gravity="top"
+            android:paddingBottom="3dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/border">
@@ -174,8 +174,9 @@
                 style="@style/Subhead2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="10dp"
                 android:includeFontPadding="false"
                 android:textColor="?BallanceCoinAmountColor"
                 tools:text="0.000078 BTC" />
@@ -185,8 +186,8 @@
                 style="@style/Headline2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="8dp"
+                android:layout_gravity="end|bottom"
+                android:layout_marginTop="11dp"
                 android:layout_marginEnd="12dp"
                 android:includeFontPadding="false"
                 android:textColor="?ColorJacob"
@@ -197,8 +198,9 @@
                 style="@style/Subhead2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="10dp"
                 android:includeFontPadding="false"
                 android:textColor="@color/grey"
                 android:visibility="gone"
@@ -209,7 +211,7 @@
                 style="@style/Subhead2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="end|bottom"
                 android:layout_marginTop="11dp"
                 android:layout_marginEnd="12dp"
                 android:includeFontPadding="false"
@@ -234,15 +236,17 @@
             android:paddingStart="8dp"
             android:paddingTop="4dp"
             android:paddingEnd="8dp"
-            android:paddingBottom="4dp"
+            android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/collapsedBottom">
 
             <FrameLayout
                 android:id="@+id/lockedBalanceWrapper"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -253,7 +257,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="8dp"
-                    android:drawableStart="@drawable/ic_lock"
+                    android:drawableStart="@drawable/ic_lock_16"
                     android:drawablePadding="4dp"
                     android:textColor="@color/grey"
                     tools:text="0.000078 BTC" />
@@ -288,24 +292,28 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
                 android:text="@string/Balance_Send"
-                app:layout_constraintEnd_toStartOf="@+id/buttonSwap"
+                app:layout_constraintEnd_toStartOf="@+id/swapButtonWrapper"
                 app:layout_constraintStart_toEndOf="@id/buttonReceive"
                 app:layout_constraintTop_toTopOf="@+id/buttonReceive" />
 
-            <Button
-                android:id="@+id/buttonSwap"
-                style="@style/ButtonPrimarySteel"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="4dp"
-                android:drawableTop="@drawable/ic_swap"
-                android:drawableTint="@color/black"
-                android:visibility="gone"
+            <FrameLayout
+                android:id="@+id/swapButtonWrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/buttonSend"
-                app:layout_constraintTop_toTopOf="@+id/buttonSend" />
+                app:layout_constraintTop_toTopOf="@+id/buttonSend">
+                <Button
+                    android:id="@+id/buttonSwap"
+                    style="@style/ButtonPrimarySteel"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:visibility="gone"
+                    android:drawableTop="@drawable/ic_swap"
+                    android:drawableTint="@color/button_text_color_selector" />
+            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

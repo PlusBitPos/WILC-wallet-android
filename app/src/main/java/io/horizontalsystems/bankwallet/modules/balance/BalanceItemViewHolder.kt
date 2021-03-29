@@ -6,8 +6,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import io.horizontalsystems.bankwallet.R
+import io.horizontalsystems.bankwallet.core.setCoinImage
 import io.horizontalsystems.bankwallet.core.setOnSingleClickListener
-import io.horizontalsystems.bankwallet.ui.extensions.setCoinImage
 import io.horizontalsystems.views.helpers.LayoutHelper
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_holder_balance_item.*
@@ -64,7 +64,7 @@ class BalanceItemViewHolder(override val containerView: View, private val listen
             iconCoin.setCoinImage(coinCode, coinType)
 
             coinName.text = coinTitle
-            coinLabel.text = coinType?.typeLabel()
+            coinLabel.text = coinType?.label
 
             balanceCoin.text = coinValue.text
             balanceFiat.text = fiatValue.text
@@ -189,7 +189,7 @@ class BalanceItemViewHolder(override val containerView: View, private val listen
     private fun setRateDiff(rDiff: RateDiff) {
         rateDiff.text = rDiff.deemedValue.text ?: containerView.context.getString(R.string.NotAvailable)
         rateDiff.setTextColor(getRateDiffTextColor(rDiff.deemedValue.dimmed))
-        rateDiffIcon.setImageResource(if (rDiff.positive) R.drawable.ic_up_positive else R.drawable.ic_down_negative)
+        rateDiffIcon.setImageResource(if (rDiff.positive) R.drawable.ic_up_green_20 else R.drawable.ic_down_red_20)
         rateDiffIcon.imageTintList = getRateDiffTintList(rDiff.deemedValue.dimmed)
     }
 

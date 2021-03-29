@@ -1,6 +1,5 @@
 package io.horizontalsystems.bankwallet.core.managers
 
-import io.horizontalsystems.bankwallet.core.EosUnsupportedException
 import io.horizontalsystems.bankwallet.core.IAccountCreator
 import io.horizontalsystems.bankwallet.core.IAccountFactory
 import io.horizontalsystems.bankwallet.core.IWordsManager
@@ -11,8 +10,9 @@ import io.horizontalsystems.bankwallet.entities.PredefinedAccountType
 
 class AccountCreator(
         private val accountFactory: IAccountFactory,
-        private val wordsManager: IWordsManager)
-    : IAccountCreator {
+        private val wordsManager: IWordsManager,
+        private val zcashBirthdayProvider: ZcashBirthdayProvider
+) : IAccountCreator {
 
     override fun newAccount(predefinedAccountType: PredefinedAccountType): Account {
         val accountType = accountType(predefinedAccountType)
@@ -25,14 +25,10 @@ class AccountCreator(
 
     private fun accountType(predefinedAccountType: PredefinedAccountType): AccountType {
         return when (predefinedAccountType) {
-            is PredefinedAccountType.Standard -> createMnemonicAccountType(12)
-            is PredefinedAccountType.Binance -> createMnemonicAccountType(24)
-            is PredefinedAccountType.Eos -> throw EosUnsupportedException()
+            is PredefinedAccountType.Standard -> AccountType.Mnemonic(wordsManager.generateWords(12))
+//            is PredefinedAccountType.Binance -> AccountType.Mnemonic(wordsManager.generateWords(24))
+//            is PredefinedAccountType.Zcash -> AccountType.Zcash(wordsManager.generateWords(24), zcashBirthdayProvider.getNearestBirthdayHeight())
         }
     }
 
-    private fun createMnemonicAccountType(wordsCount: Int): AccountType {
-        val words = wordsManager.generateWords(wordsCount)
-        return AccountType.Mnemonic(words, salt = null)
-    }
 }

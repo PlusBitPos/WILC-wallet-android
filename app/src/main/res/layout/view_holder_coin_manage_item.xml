@@ -2,33 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/clickable_background_color_lawrence"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="wrap_content">
 
     <View
-        android:id="@+id/topShade"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/steel_20"
+        android:id="@+id/backgroundView"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_lawrence_background_single"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:src="@drawable/coin_btc"
         android:id="@+id/coinIcon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginBottom="18dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:src="@drawable/coin_btc"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/backgroundView"
         app:layout_constraintEnd_toStartOf="@id/coinTitle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/backgroundView"
+        app:layout_constraintTop_toTopOf="@+id/backgroundView" />
 
     <TextView
         android:id="@+id/coinTitle"
@@ -42,7 +41,7 @@
         app:layout_constraintBottom_toTopOf="@+id/coinSubtitle"
         app:layout_constraintEnd_toStartOf="@+id/toggleSwitch"
         app:layout_constraintStart_toEndOf="@+id/coinIcon"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/backgroundView"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="BTC" />
 
@@ -52,11 +51,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        android:maxWidth="200dp"
-        android:textColor="@color/grey"
-        android:maxLines="1"
         android:ellipsize="end"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:maxWidth="200dp"
+        android:maxLines="1"
+        android:textColor="@color/grey"
+        app:layout_constraintBottom_toBottomOf="@+id/backgroundView"
         app:layout_constraintStart_toStartOf="@+id/coinTitle"
         app:layout_constraintTop_toBottomOf="@+id/coinTitle"
         tools:text="Bitcoin name which very long name" />
@@ -72,20 +71,20 @@
         app:layout_constraintStart_toEndOf="@+id/coinSubtitle"
         app:layout_constraintTop_toTopOf="@+id/coinSubtitle"
         tools:text="ERC20"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <Switch
         android:id="@+id/toggleSwitch"
         android:layout_width="wrap_content"
         android:layout_height="34dp"
         android:layout_marginEnd="8dp"
+        android:clickable="true"
         android:theme="@style/SwitchTheme"
         android:visibility="gone"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible"/>
+        app:layout_constraintBottom_toBottomOf="@+id/backgroundView"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundView"
+        app:layout_constraintTop_toTopOf="@+id/backgroundView"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/rightArrow"
@@ -94,17 +93,28 @@
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_add"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="@+id/backgroundView"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundView"
+        app:layout_constraintTop_toTopOf="@+id/backgroundView" />
 
     <View
-        android:id="@+id/bottomShade"
-        android:layout_width="match_parent"
+        android:id="@+id/bottomBorder"
+        android:layout_width="0dp"
         android:layout_height="0.5dp"
-        android:background="@color/steel_20"
+        android:background="@color/steel_10"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundView"
+        app:layout_constraintStart_toStartOf="@+id/backgroundView"
+        app:layout_constraintBottom_toBottomOf="@+id/backgroundView" />
+
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backgroundView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

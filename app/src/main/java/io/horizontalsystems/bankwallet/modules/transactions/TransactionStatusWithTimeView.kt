@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import io.horizontalsystems.bankwallet.R
+import io.horizontalsystems.bankwallet.entities.TransactionType
 import kotlinx.android.synthetic.main.view_transaction_status.view.*
 
 
@@ -26,31 +27,35 @@ class TransactionStatusWithTimeView : ConstraintLayout {
         inflate(context, R.layout.view_transaction_status, this)
     }
 
-    fun bind(transactionStatus: TransactionStatus, incoming: Boolean, time: String?) {
+    fun bind(transactionStatus: TransactionStatus, type: TransactionType, time: String?) {
         txTime.isVisible = false
-        completedIcon.isVisible = false
-        transactionProgressView.isVisible = false
-        failedText.isVisible = false
+        statusText.isVisible = false
 
         when (transactionStatus) {
             is TransactionStatus.Failed -> {
-                failedText.isVisible = true
+                statusText.isVisible = true
+                statusText.setText(R.string.Transactions_Failed)
+            }
+            is TransactionStatus.Pending -> {
+                statusText.isVisible = true
+                statusText.setText(R.string.Transactions_Pending)
+            }
+            is TransactionStatus.Processing -> {
+                statusText.isVisible = true
+                statusText.setText(getText(type))
             }
             is TransactionStatus.Completed -> {
                 txTime.text = time
                 txTime.isVisible = true
-                completedIcon.isVisible = true
-            }
-            is TransactionStatus.Processing -> {
-                transactionProgressView.bind(transactionStatus.progress, incoming)
-                transactionProgressView.isVisible = true
-            }
-            else -> {
-                transactionProgressView.bind(incoming = incoming)
-                transactionProgressView.isVisible = true
             }
         }
         invalidate()
+    }
+
+    private fun getText(type: TransactionType) = when (type) {
+        TransactionType.Outgoing, TransactionType.SentToSelf -> R.string.Transactions_Sending
+        TransactionType.Incoming -> R.string.Transactions_Receiving
+        TransactionType.Approve -> R.string.Transactions_Approving
     }
 
 }

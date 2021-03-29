@@ -31,11 +31,12 @@ class TermsManager(private val localStorage: ILocalStorage) : ITermsManager {
     }
 
     private fun term(id: String): Term {
-        return Term(id, localStorage.checkedTerms.firstOrNull { it.id == id }?.checked ?: false)
+//        return Term(id, localStorage.checkedTerms.firstOrNull { it.id == id }?.checked ?: true)
+        return Term(id, true)
     }
 
     companion object{
-        val termIds = listOf("academy", "backup", "owner", "recover", "phone", "root", "bugs")
+        val termIds = listOf("academy", "backup", "owner", "recover", "phone", "root", "bugs", "pin")
     }
 }
 

@@ -1,7 +1,7 @@
 package io.horizontalsystems.pin
 
+import android.os.Bundle
 import android.os.Parcelable
-import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import kotlinx.android.parcel.Parcelize
 import java.util.*
@@ -14,9 +14,12 @@ object PinModule {
 
     const val keyInteractionType = "interaction_type"
     const val keyShowCancel = "show_cancel"
+    const val requestKey = "pin_request_key"
+    const val requestType = "pin_request_type"
+    const val requestResult = "pin_request_result"
 
     interface IView {
-        fun setToolbar(title: Int, showBackButton: Boolean)
+        fun setToolbar(title: Int)
         fun addPages(pages: List<PinPage>)
         fun showPage(index: Int)
         fun updateTopTextForPage(text: TopText, pageIndex: Int)
@@ -52,29 +55,33 @@ object PinModule {
         fun didFailToSavePin()
     }
 
-    fun startForSetPin(context: AppCompatActivity, requestCode: Int) {
-        PinActivity.startForResult(context, PinInteractionType.SET_PIN, requestCode)
+    fun forSetPin(): Bundle {
+        return arguments(PinInteractionType.SET_PIN, true)
     }
 
-    fun startForEditPin(context: AppCompatActivity) {
-        PinActivity.startForResult(context, PinInteractionType.EDIT_PIN)
+    fun forEditPin(): Bundle {
+        return arguments(PinInteractionType.EDIT_PIN, false)
     }
 
-    fun startForUnlock(context: AppCompatActivity, requestCode: Int) {
-        PinActivity.startForResult(context, PinInteractionType.UNLOCK, requestCode, true)
+    fun forUnlock(): Bundle {
+        return arguments(PinInteractionType.UNLOCK, true)
     }
 
+    private fun arguments(interactionType: PinInteractionType, showCancel: Boolean) = Bundle(2).apply {
+        putParcelable(keyInteractionType, interactionType)
+        putBoolean(keyShowCancel, showCancel)
+    }
 }
 
-sealed class TopText(open val text: Int){
-    class Title(override val text: Int): TopText(text)
-    class BigError(override val text: Int): TopText(text)
-    class Description(override val text: Int): TopText(text)
-    class SmallError(override val text: Int): TopText(text)
+sealed class TopText(open val text: Int) {
+    class Title(override val text: Int) : TopText(text)
+    class BigError(override val text: Int) : TopText(text)
+    class Description(override val text: Int) : TopText(text)
+    class SmallError(override val text: Int) : TopText(text)
 }
 
 @Parcelize
-enum class PinInteractionType: Parcelable {
+enum class PinInteractionType : Parcelable {
     SET_PIN,
     UNLOCK,
     EDIT_PIN

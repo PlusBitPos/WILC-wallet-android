@@ -11,10 +11,12 @@ data class TransactionRecord(
         val transactionIndex: Int,
         val interTransactionIndex: Int,
         val blockHeight: Long?,
+        val confirmationsThreshold: Int,
         val amount: BigDecimal,
         val fee: BigDecimal? = null,
         val timestamp: Long,
         val from: String?,
+        val memo: String?,
         val to: String?,
         val type: TransactionType,
         val lockInfo: TransactionLockInfo? = null,
@@ -44,7 +46,7 @@ data class TransactionRecord(
         return uid.hashCode()
     }
 
-    fun status(lastBlockHeight: Int?, threshold: Int): TransactionStatus {
+    fun status(lastBlockHeight: Int?): TransactionStatus {
         var status: TransactionStatus = TransactionStatus.Pending
 
         if (failed) {
@@ -53,8 +55,8 @@ data class TransactionRecord(
             val confirmations = lastBlockHeight - blockHeight.toInt() + 1
             if (confirmations >= 0) {
                 status = when {
-                    confirmations >= threshold -> TransactionStatus.Completed
-                    else -> TransactionStatus.Processing(confirmations.toDouble() / threshold.toDouble())
+                    confirmations >= confirmationsThreshold -> TransactionStatus.Completed
+                    else -> TransactionStatus.Processing(confirmations.toDouble() / confirmationsThreshold.toDouble())
                 }
             }
         }
@@ -74,6 +76,6 @@ data class TransactionRecord(
 }
 
 enum class TransactionType {
-     Outgoing, SentToSelf, Incoming
+     Outgoing, SentToSelf, Incoming, Approve
 }
 

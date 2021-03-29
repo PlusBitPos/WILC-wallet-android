@@ -1,11 +1,10 @@
 package io.horizontalsystems.currencyswitcher
 
-import android.content.Context
-import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.horizontalsystems.core.CoreApp
 import io.horizontalsystems.core.entities.Currency
+import io.horizontalsystems.views.ListPosition
 
 object CurrencySwitcherModule {
 
@@ -27,11 +26,6 @@ object CurrencySwitcherModule {
         var baseCurrency: Currency
     }
 
-    fun start(context: Context) {
-        val intent = Intent(context, CurrencySwitcherActivity::class.java)
-        context.startActivity(intent)
-    }
-
     class Factory : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -45,7 +39,7 @@ object CurrencySwitcherModule {
     }
 }
 
-data class CurrencyViewItem(val code: String, val symbol: String, val selected: Boolean) {
+data class CurrencyViewItem(val code: String, val symbol: String, val selected: Boolean, val listPosition: ListPosition) {
 
     override fun equals(other: Any?): Boolean {
         if (other is CurrencyViewItem) {

@@ -1,6 +1,8 @@
 package io.horizontalsystems.bankwallet.modules.balance
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -9,39 +11,40 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.app.ShareCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.SimpleItemAnimator
 import io.horizontalsystems.bankwallet.R
+import io.horizontalsystems.bankwallet.core.BaseFragment
 import io.horizontalsystems.bankwallet.core.utils.ModuleField
-import io.horizontalsystems.bankwallet.modules.backup.BackupModule
 import io.horizontalsystems.bankwallet.modules.balance.views.SyncErrorDialog
-import io.horizontalsystems.bankwallet.modules.settings.contact.ContactModule
 import io.horizontalsystems.bankwallet.modules.main.MainActivity
-import io.horizontalsystems.bankwallet.modules.managecoins.ManageWalletsModule
-import io.horizontalsystems.bankwallet.modules.ratechart.RateChartActivity
+import io.horizontalsystems.bankwallet.modules.ratechart.RateChartFragment
 import io.horizontalsystems.bankwallet.modules.receive.ReceiveFragment
 import io.horizontalsystems.bankwallet.modules.settings.managekeys.views.ManageKeysDialog
-import io.horizontalsystems.bankwallet.modules.settings.security.privacy.PrivacySettingsModule
-import io.horizontalsystems.bankwallet.modules.swap.SwapModule
+import io.horizontalsystems.bankwallet.modules.swap.SwapFragment
 import io.horizontalsystems.bankwallet.ui.extensions.NpaLinearLayoutManager
 import io.horizontalsystems.bankwallet.ui.extensions.SelectorDialog
 import io.horizontalsystems.bankwallet.ui.extensions.SelectorItem
+import io.horizontalsystems.bankwallet.ui.helpers.TextHelper
+import io.horizontalsystems.core.findNavController
 import io.horizontalsystems.core.getValueAnimator
 import io.horizontalsystems.core.helpers.HudHelper
 import io.horizontalsystems.core.measureHeight
 import io.horizontalsystems.views.helpers.LayoutHelper
 import kotlinx.android.synthetic.main.fragment_balance.*
 
-class BalanceFragment : Fragment(), BalanceItemsAdapter.Listener, ReceiveFragment.Listener, ManageKeysDialog.Listener {
+class BalanceFragment : BaseFragment(), BalanceItemsAdapter.Listener, ReceiveFragment.Listener, ManageKeysDialog.Listener {
 
     private val viewModel by viewModels<BalanceViewModel> { BalanceModule.Factory() }
     private val balanceItemsAdapter = BalanceItemsAdapter(this)
     private var totalBalanceTabHeight: Int = 0
     private val animationPlaybackSpeed: Double = 1.3
     private val expandDuration: Long get() = (300L / animationPlaybackSpeed).toLong()
+    private var showBalanceMenuItem: MenuItem? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_balance, container, false)
@@ -49,6 +52,16 @@ class BalanceFragment : Fragment(), BalanceItemsAdapter.Listener, ReceiveFragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menuShowBalance -> {
+                    viewModel.delegate.onShowBalanceClick()
+                    true
+                }
+                else -> false
+            }
+        }
+        showBalanceMenuItem = toolbar.menu.findItem(R.id.menuShowBalance)
 
         totalBalanceTabHeight = balanceTabWrapper.measureHeight()
 
@@ -70,25 +83,11 @@ class BalanceFragment : Fragment(), BalanceItemsAdapter.Listener, ReceiveFragmen
         setSwipeBackground()
     }
 
-    private fun setOptionsMenuVisible(visible: Boolean) {
-        if (visible) {
-            toolbar.menu.clear()
-            toolbar.inflateMenu(R.menu.balance_menu)
-            toolbar.setOnMenuItemClickListener { item: MenuItem? ->
-                if (item?.itemId == R.id.menuShowBalance) {
-                    viewModel.delegate.onShowBalanceClick()
-                    return@setOnMenuItemClickListener true
-                }
-                return@setOnMenuItemClickListener false
-            }
-        } else {
-            toolbar.menu.clear()
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
+
         recyclerCoins.adapter = null
+        recyclerCoins.layoutManager = null
     }
 
     private fun setSwipeBackground() {
@@ -178,15 +177,19 @@ class BalanceFragment : Fragment(), BalanceItemsAdapter.Listener, ReceiveFragmen
         })
 
         viewModel.openSwap.observe(viewLifecycleOwner, Observer { wallet ->
-            context?.let { context -> SwapModule.start(context, wallet.coin) }
+            findNavController().navigate(R.id.mainFragment_to_swapFragment, bundleOf(SwapFragment.fromCoinKey to wallet.coin))
         })
 
         viewModel.didRefreshLiveEvent.observe(viewLifecycleOwner, Observer {
-            Handler().postDelayed({ pullToRefresh.isRefreshing = false }, 1000)
+            Handler().postDelayed({
+                if (view != null) {
+                    pullToRefresh.isRefreshing = false
+                }
+            }, 1000)
         })
 
         viewModel.openManageCoinsLiveEvent.observe(viewLifecycleOwner, Observer {
-            context?.let { ManageWalletsModule.start(it) }
+            findNavController().navigate(R.id.mainFragment_to_manageWalletsFragment, null, navOptions())
         })
 
         viewModel.setViewItems.observe(viewLifecycleOwner, Observer {
@@ -226,29 +229,31 @@ class BalanceFragment : Fragment(), BalanceItemsAdapter.Listener, ReceiveFragmen
         })
 
         viewModel.openBackup.observe(viewLifecycleOwner, Observer { (account, coinCodesStringRes) ->
-            context?.let { BackupModule.start(it, account, getString(coinCodesStringRes)) }
+            val arguments = Bundle(2).apply {
+                putParcelable(ModuleField.ACCOUNT, account)
+                putString(ModuleField.ACCOUNT_COINS, getString(coinCodesStringRes))
+            }
+
+            findNavController().navigate(R.id.mainFragment_to_backupFragment, arguments, navOptions())
         })
 
         viewModel.openChartModule.observe(viewLifecycleOwner, Observer { coin ->
-            startActivity(Intent(activity, RateChartActivity::class.java).apply {
-                putExtra(ModuleField.COIN_ID, coin.coinId)
-                putExtra(ModuleField.COIN_CODE, coin.code)
-                putExtra(ModuleField.COIN_TITLE, coin.title)
-            })
+            val arguments = RateChartFragment.prepareParams(coin.code, coin.title, coin.coinId)
+
+            findNavController().navigate(R.id.mainFragment_to_rateChartFragment, arguments, navOptions())
         })
 
-        viewModel.openContactPage.observe(viewLifecycleOwner, Observer {
-            activity?.let {
-                ContactModule.start(it)
-            }
+        viewModel.openEmail.observe(viewLifecycleOwner, Observer { (email, report) ->
+            sendEmail(email, report)
         })
 
         viewModel.setBalanceHidden.observe(viewLifecycleOwner, Observer { (hideBalance, animate) ->
-            setOptionsMenuVisible(hideBalance)
+            showBalanceMenuItem?.isVisible = hideBalance
 
             if (animate) {
-                val animator = getValueAnimator(!hideBalance, expandDuration, AccelerateDecelerateInterpolator()
-                ) { progress -> setExpandProgress(balanceTabWrapper, 0, totalBalanceTabHeight, progress) }
+                val animator = getValueAnimator(!hideBalance, expandDuration, AccelerateDecelerateInterpolator()) { progress ->
+                    setExpandProgress(balanceTabWrapper, 0, totalBalanceTabHeight, progress)
+                }
                 animator.start()
             } else {
                 setExpandProgress(balanceTabWrapper, 0, totalBalanceTabHeight, if (hideBalance) 0f else 1f)
@@ -263,13 +268,12 @@ class BalanceFragment : Fragment(), BalanceItemsAdapter.Listener, ReceiveFragmen
                     }
 
                     override fun onClickChangeSource() {
-                        PrivacySettingsModule.start(fragmentActivity)
+                        findNavController().navigate(R.id.mainFragment_to_privacySettingsFragment, null, navOptions())
                     }
 
                     override fun onClickReport() {
                         viewModel.delegate.onReportClick(errorMessage)
                     }
-
                 })
             }
         })
@@ -278,9 +282,21 @@ class BalanceFragment : Fragment(), BalanceItemsAdapter.Listener, ReceiveFragmen
             HudHelper.showErrorMessage(this.requireView(), R.string.Hud_Text_NoInternet)
         })
 
-        viewModel.showErrorMessageCopied.observe(viewLifecycleOwner, Observer {
-            HudHelper.showSuccessMessage(this.requireView(), R.string.Hud_Text_Copied)
-        })
+    }
+
+    private fun sendEmail(email: String, report: String) {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+            putExtra(Intent.EXTRA_TEXT, report)
+        }
+
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            TextHelper.copyText(email)
+            HudHelper.showSuccessMessage(this.requireView(), R.string.Hud_Text_EmailAddressCopied)
+        }
     }
 
     private fun setExpandProgress(view: View, smallHeight: Int, bigHeight: Int, progress: Float) {

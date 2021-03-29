@@ -93,12 +93,12 @@ object TransactionsModule {
 
     interface IViewDelegate {
         fun viewDidLoad()
-        fun onTransactionItemClick(transaction: TransactionViewItem)
         fun onFilterSelect(wallet: Wallet?)
         fun onClear()
 
         fun onBottomReached()
         fun willShow(transactionViewItem: TransactionViewItem)
+        fun showDetails(item: TransactionViewItem)
     }
 
     interface IInteractor {
@@ -111,7 +111,7 @@ object TransactionsModule {
     }
 
     interface IInteractorDelegate {
-        fun onUpdateWalletsData(allWalletsData: List<Triple<Wallet, Int, LastBlockInfo?>>)
+        fun onUpdateWalletsData(allWalletsData: List<Pair<Wallet, LastBlockInfo?>>)
         fun onUpdateSelectedWallets(selectedWallets: List<Wallet>)
         fun didFetchRecords(records: Map<Wallet, List<TransactionRecord>>, initial: Boolean)
         fun onUpdateLastBlock(wallet: Wallet, lastBlockInfo: LastBlockInfo)
@@ -124,11 +124,10 @@ object TransactionsModule {
     }
 
     interface IRouter {
-        fun openTransactionInfo(transactionViewItem: TransactionViewItem)
     }
 
     fun initModule(view: TransactionsViewModel, router: IRouter) {
-        val dataSource = TransactionRecordDataSource(PoolRepo(), TransactionItemDataSource(), 10, TransactionViewItemFactory(App.feeCoinProvider), TransactionMetadataDataSource())
+        val dataSource = TransactionRecordDataSource(PoolRepo(), TransactionItemDataSource(), 10, TransactionViewItemFactory(), TransactionMetadataDataSource())
         val interactor = TransactionsInteractor(App.walletManager, App.adapterManager, App.currencyManager, App.xRateManager, App.connectivityManager)
         val presenter = TransactionsPresenter(interactor, router, dataSource)
 
@@ -142,7 +141,7 @@ object TransactionsModule {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             val viewAndRouter = TransactionsViewModel()
 
-            val dataSource = TransactionRecordDataSource(PoolRepo(), TransactionItemDataSource(), 10, TransactionViewItemFactory(App.feeCoinProvider), TransactionMetadataDataSource())
+            val dataSource = TransactionRecordDataSource(PoolRepo(), TransactionItemDataSource(), 10, TransactionViewItemFactory(), TransactionMetadataDataSource())
             val interactor = TransactionsInteractor(App.walletManager, App.adapterManager, App.currencyManager, App.xRateManager, App.connectivityManager)
             val presenter = TransactionsPresenter(interactor, viewAndRouter, dataSource)
 

@@ -2,7 +2,6 @@ package io.horizontalsystems.bankwallet.modules.ratelist
 
 import androidx.lifecycle.ViewModel
 import io.horizontalsystems.xrateskit.entities.MarketInfo
-import io.horizontalsystems.xrateskit.entities.TopMarket
 
 class RateListPresenter(
         val view: RateListView,
@@ -39,13 +38,11 @@ class RateListPresenter(
             view.setDate(it)
         }
 
-        val coinCodes = coins.map { it.code }
-        interactor.setupXRateManager(coinCodes)
+        interactor.setupXRateManager(coins)
         interactor.subscribeToMarketInfo(currency.code)
-        loadTopList()
     }
 
-    private fun loadTopList() {
+    fun loadTopList() {
         if (!loading) {
             loading = true
             interactor.getTopList()
@@ -74,16 +71,13 @@ class RateListPresenter(
         portfolioMarketInfos.putAll(marketInfos)
 
         syncListsAndShow()
-        loadTopList()
     }
 
-    override fun didFetchedTopMarketList(items: List<TopMarket>) {
+    override fun didFetchedTopMarketList(items: List<TopMarketRanked>) {
         loading = false
 
         topMarketInfos.clear()
-        topMarketInfos.addAll(items.mapIndexed { index, topMarket ->
-            TopMarketRanked(topMarket.coinCode, topMarket.coinName, topMarket.marketInfo,index + 1)
-        })
+        topMarketInfos.addAll(items)
 
         sortTopList()
 
@@ -93,8 +87,8 @@ class RateListPresenter(
     private fun sortTopList() {
         when (sortType) {
             TopListSortType.Rank -> topMarketInfos.sortBy { it.rank }
-            TopListSortType.Winners -> topMarketInfos.sortByDescending { it.marketInfo.diff }
-            TopListSortType.Losers -> topMarketInfos.sortByDescending { -it.marketInfo.diff }
+            TopListSortType.Winners -> topMarketInfos.sortByDescending { it.marketInfo.rateDiff }
+            TopListSortType.Losers -> topMarketInfos.sortByDescending { -it.marketInfo.rateDiff }
         }
     }
 

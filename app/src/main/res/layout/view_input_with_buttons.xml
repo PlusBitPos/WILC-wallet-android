@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/Subhead1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Slippage Tolerance" />
+
+    <io.horizontalsystems.views.ViewState
+        android:id="@+id/inputBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/input_background_stateful"
+        app:layout_constraintBottom_toBottomOf="@id/input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <EditText
+        android:id="@+id/input"
+        style="@style/Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:includeFontPadding="false"
+        android:inputType="numberDecimal"
+        android:padding="12dp"
+        android:textColor="?attr/TextColorBarsToDark"
+        android:textColorHint="@color/grey_50"
+        app:layout_constraintEnd_toStartOf="@+id/inputButtonLeft"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/inputBackground" />
+
+    <Button
+        android:id="@+id/inputButtonLeft"
+        style="@style/ButtonSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/input"
+        app:layout_constraintEnd_toStartOf="@+id/inputButtonRight"
+        app:layout_constraintTop_toTopOf="@id/input"
+        tools:text="0.1%" />
+
+    <Button
+        android:id="@+id/inputButtonRight"
+        style="@style/ButtonSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/input"
+        app:layout_constraintEnd_toStartOf="@id/deleteButton"
+        app:layout_constraintTop_toTopOf="@id/input"
+        tools:text="1.0%" />
+
+    <ImageButton
+        android:id="@+id/deleteButton"
+        style="@style/ImageButtonSecondary"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_delete_20"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/input" />
+
+    <TextView
+        android:id="@+id/error"
+        style="@style/Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:includeFontPadding="false"
+        android:textColor="?ColorLucian"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputBackground"
+        tools:text="Invalid address or unstoppable domain" />
+
+    <TextView
+        android:id="@+id/description"
+        style="@style/Subhead2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/error"
+        tools:text="Your Transaction will revert if the price change unfavorably by more than this percentage" />
+
+</merge>

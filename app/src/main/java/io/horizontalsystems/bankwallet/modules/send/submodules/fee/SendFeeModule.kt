@@ -7,11 +7,13 @@ import io.horizontalsystems.bankwallet.core.FeeRatePriority
 import io.horizontalsystems.bankwallet.core.factories.FeeRateProviderFactory
 import io.horizontalsystems.bankwallet.entities.Coin
 import io.horizontalsystems.bankwallet.entities.CoinValue
-import io.horizontalsystems.bankwallet.entities.FeeRateInfo
-import io.horizontalsystems.bankwallet.entities.FeeState
+import io.horizontalsystems.bankwallet.entities.FeeRateState
 import io.horizontalsystems.bankwallet.modules.send.SendModule
 import io.horizontalsystems.bankwallet.modules.send.SendModule.AmountInfo
+import io.horizontalsystems.bankwallet.modules.send.submodules.amount.SendAmountInfo
+import io.horizontalsystems.core.entities.Currency
 import java.math.BigDecimal
+import java.math.BigInteger
 
 
 object SendFeeModule {
@@ -20,14 +22,14 @@ object SendFeeModule {
             Exception()
 
     interface IView {
+        fun setAdjustableFeeVisible(visible: Boolean)
         fun setPrimaryFee(feeAmount: String?)
         fun setSecondaryFee(feeAmount: String?)
         fun setInsufficientFeeBalanceError(insufficientFeeBalance: InsufficientFeeBalance?)
-        fun setDuration(duration: Long)
         fun setFeePriority(priority: FeeRatePriority)
         fun showFeeRatePrioritySelector(feeRates: List<FeeRateInfoViewItem>)
         fun showCustomFeePriority(show: Boolean)
-        fun setCustomFeeParams(value: Int, range: IntRange)
+        fun setCustomFeeParams(value: Int, range: IntRange, label: String?)
 
         fun setLoading(loading: Boolean)
         fun setFee(fee: AmountInfo, convertedFee: AmountInfo?)
@@ -37,30 +39,31 @@ object SendFeeModule {
 
     interface IViewDelegate {
         fun onViewDidLoad()
-        fun onChangeFeeRate(feeRateInfo: FeeRateInfo)
-        fun onChangeFeeRateValue(value: Long)
+        fun onChangeFeeRate(feeRatePriority: FeeRatePriority)
+        fun onChangeFeeRateValue(value: Int)
         fun onClickFeeRatePriority()
     }
 
     interface IInteractor {
+        val feeRatePriorityList: List<FeeRatePriority>
+        val defaultFeeRatePriority: FeeRatePriority?
         fun getRate(coinCode: String): BigDecimal?
-        fun syncFeeRate()
+        fun syncFeeRate(feeRatePriority: FeeRatePriority)
         fun onClear()
     }
 
     interface IInteractorDelegate {
-        fun didUpdate(feeRates: List<FeeRateInfo>)
+        fun didUpdate(feeRate: BigInteger)
         fun didReceiveError(error: Exception)
         fun didUpdateExchangeRate(rate: BigDecimal)
     }
 
     interface IFeeModule {
         val isValid: Boolean
-        val feeRateState: FeeState
-        val feeRate: Long
+        val feeRateState: FeeRateState
+        val feeRate: Long?
         val primaryAmountInfo: AmountInfo
         val secondaryAmountInfo: AmountInfo?
-        val duration: Long?
 
         fun setLoading(loading: Boolean)
         fun setFee(fee: BigDecimal)
@@ -68,19 +71,23 @@ object SendFeeModule {
         fun setAvailableFeeBalance(availableFeeBalance: BigDecimal)
         fun setInputType(inputType: SendModule.InputType)
         fun fetchFeeRate()
+        fun setBalance(balance: BigDecimal)
+        fun setRate(rate: BigDecimal?)
+        fun setAmountInfo(sendAmountInfo: SendAmountInfo)
     }
 
     interface IFeeModuleDelegate {
         fun onUpdateFeeRate()
     }
 
-    data class FeeRateInfoViewItem(val feeRateInfo: FeeRateInfo, val selected: Boolean)
+    data class FeeRateInfoViewItem(val feeRatePriority: FeeRatePriority, val selected: Boolean)
 
 
     class Factory(
             private val coin: Coin,
             private val sendHandler: SendModule.ISendHandler,
-            private val feeModuleDelegate: IFeeModuleDelegate
+            private val feeModuleDelegate: IFeeModuleDelegate,
+            private val customPriorityUnit: CustomPriorityUnit?
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -94,7 +101,7 @@ object SendFeeModule {
             val helper = SendFeePresenterHelper(App.numberFormatter, feeCoin, baseCurrency)
             val interactor = SendFeeInteractor(baseCurrency, App.xRateManager, feeRateProvider, feeCoin)
 
-            val presenter = SendFeePresenter(view, interactor, helper, coin, baseCurrency, feeCoinData)
+            val presenter = SendFeePresenter(view, interactor, helper, coin, baseCurrency, feeCoinData, customPriorityUnit, FeeRateAdjustmentHelper(App.appConfigProvider))
 
             presenter.moduleDelegate = feeModuleDelegate
             interactor.delegate = presenter
@@ -105,3 +112,10 @@ object SendFeeModule {
     }
 
 }
+
+class FeeRateAdjustmentInfo(
+        var amountInfo: SendAmountInfo,
+        var xRate: BigDecimal?,
+        val currency: Currency,
+        var balance: BigDecimal?
+)

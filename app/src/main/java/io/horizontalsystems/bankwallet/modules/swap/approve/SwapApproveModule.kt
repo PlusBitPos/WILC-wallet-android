@@ -3,37 +3,45 @@ package io.horizontalsystems.bankwallet.modules.swap.approve
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.horizontalsystems.bankwallet.core.App
-import io.horizontalsystems.bankwallet.core.FeeRatePriority
 import io.horizontalsystems.bankwallet.core.adapters.Erc20Adapter
+import io.horizontalsystems.bankwallet.core.ethereum.CoinService
+import io.horizontalsystems.bankwallet.core.ethereum.EthereumFeeViewModel
+import io.horizontalsystems.bankwallet.core.ethereum.EthereumTransactionService
 import io.horizontalsystems.bankwallet.core.factories.FeeRateProviderFactory
-import io.horizontalsystems.bankwallet.entities.Coin
+import io.horizontalsystems.bankwallet.core.providers.EthereumFeeRateProvider
 import io.horizontalsystems.bankwallet.entities.CoinValue
-import io.horizontalsystems.bankwallet.entities.CurrencyValue
-import io.horizontalsystems.bankwallet.modules.guides.DataState
+import io.horizontalsystems.bankwallet.modules.swap.allowance.SwapAllowanceService
+import io.horizontalsystems.ethereumkit.models.Address
 import io.reactivex.Observable
-import java.math.BigDecimal
+import java.math.BigInteger
 
 object SwapApproveModule {
 
+    class Factory(private val approveData: SwapAllowanceService.ApproveData) : ViewModelProvider.Factory {
+        private val ethereumKit by lazy { App.ethereumKitManager.ethereumKit!! }
+        private val transactionService by lazy {
+            val feeRateProvider = FeeRateProviderFactory.provider(App.appConfigProvider.ethereumCoin) as EthereumFeeRateProvider
+            EthereumTransactionService(ethereumKit, feeRateProvider, 0)
+        }
+        private val coinService by lazy { CoinService(approveData.coin, App.currencyManager, App.xRateManager) }
+        private val ethCoinService by lazy { CoinService(App.appConfigProvider.ethereumCoin, App.currencyManager, App.xRateManager) }
 
-    class Factory(private val coin: Coin, private val amount: BigDecimal, private val spenderAddress: String) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-
-            val wallet = App.walletManager.wallet(coin)
-            val erc20Adapter = wallet?.let { App.adapterManager.getAdapterForWallet(it) as? Erc20Adapter}
-
-            val feeRateProvider = FeeRateProviderFactory.provider(coin)
-            val feeCoinData = App.feeCoinProvider.feeCoinData(coin)
-            val feeCoin = feeCoinData?.first ?: coin
-
-            val baseCurrency = App.currencyManager.baseCurrency
-
-            val feeService = FeeService(amount, spenderAddress, feeCoin, baseCurrency, erc20Adapter!!, feeRateProvider!!, App.xRateManager)
-            val feePresenter = FeePresenter(feeService)
-            val swapApproveService = SwapApproveService(coin, amount, spenderAddress, feeService, erc20Adapter)
-
-            return SwapApproveViewModel(feePresenter, swapApproveService, listOf(feeService, feePresenter, swapApproveService)) as T
+            return when (modelClass) {
+                SwapApproveViewModel::class.java -> {
+                    val wallet = checkNotNull(App.walletManager.wallet(approveData.coin))
+                    val erc20Adapter = App.adapterManager.getAdapterForWallet(wallet) as Erc20Adapter
+                    val approveAmountBigInteger = approveData.amount.movePointRight(approveData.coin.decimal).toBigInteger()
+                    val allowanceAmountBigInteger = approveData.allowance.movePointRight(approveData.coin.decimal).toBigInteger()
+                    val swapApproveService = SwapApproveService(transactionService, erc20Adapter.erc20Kit, ethereumKit, approveAmountBigInteger, Address(approveData.spenderAddress), allowanceAmountBigInteger)
+                    SwapApproveViewModel(swapApproveService, coinService, ethCoinService) as T
+                }
+                EthereumFeeViewModel::class.java -> {
+                    EthereumFeeViewModel(transactionService, ethCoinService) as T
+                }
+                else -> throw IllegalArgumentException()
+            }
         }
     }
 
@@ -42,25 +50,9 @@ object SwapApproveModule {
 }
 
 interface ISwapApproveService {
-    val coin: Coin
-    val amount: BigDecimal
-    val approveState: Observable<SwapApproveState>
+    var amount: BigInteger?
+    val stateObservable: Observable<SwapApproveService.State>
 
+    fun onCleared()
     fun approve()
-}
-
-interface IFeeService {
-    var gasPrice: Long
-    var gasLimit: Long
-    val feeRatePriority: FeeRatePriority
-
-    val feeValues: Observable<DataState<Pair<CoinValue, CurrencyValue?>>>
-}
-
-sealed class SwapApproveState {
-    object ApproveAllowed : SwapApproveState()
-    object ApproveNotAllowed : SwapApproveState()
-    object Loading : SwapApproveState()
-    object Success : SwapApproveState()
-    class Error(val e: Throwable) : SwapApproveState()
 }

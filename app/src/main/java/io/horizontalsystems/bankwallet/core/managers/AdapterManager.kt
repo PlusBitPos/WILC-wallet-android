@@ -3,8 +3,11 @@ package io.horizontalsystems.bankwallet.core.managers
 import android.os.Handler
 import android.os.HandlerThread
 import io.horizontalsystems.bankwallet.core.*
-import io.horizontalsystems.bankwallet.core.adapters.*
+import io.horizontalsystems.bankwallet.core.adapters.BinanceAdapter
+import io.horizontalsystems.bankwallet.core.adapters.Erc20Adapter
+import io.horizontalsystems.bankwallet.core.adapters.EthereumAdapter
 import io.horizontalsystems.bankwallet.core.factories.AdapterFactory
+import io.horizontalsystems.bankwallet.entities.Coin
 import io.horizontalsystems.bankwallet.entities.Wallet
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
@@ -17,7 +20,6 @@ class AdapterManager(
         private val walletManager: IWalletManager,
         private val adapterFactory: AdapterFactory,
         private val ethereumKitManager: IEthereumKitManager,
-        private val eosKitManager: IEosKitManager,
         private val binanceKitManager: BinanceKitManager)
     : IAdapterManager, HandlerThread("A") {
 
@@ -53,7 +55,6 @@ class AdapterManager(
         }
 
         ethereumKitManager.ethereumKit?.refresh()
-        eosKitManager.eosKit?.refresh()
         binanceKitManager.binanceKit?.refresh()
     }
 
@@ -120,7 +121,6 @@ class AdapterManager(
         when (adapter) {
             is BinanceAdapter -> binanceKitManager.binanceKit?.refresh()
             is EthereumAdapter, is Erc20Adapter -> ethereumKitManager.ethereumKit?.refresh()
-            is EosAdapter -> eosKitManager.eosKit?.refresh()
             else -> adapter.refresh()
         }
 
@@ -138,6 +138,12 @@ class AdapterManager(
 
     override fun getAdapterForWallet(wallet: Wallet): IAdapter? {
         return adaptersMap[wallet]
+    }
+
+    override fun getAdapterForCoin(coin: Coin): IAdapter? {
+        return walletManager.wallets.firstOrNull { it.coin == coin }?.let { wallet ->
+            adaptersMap[wallet]
+        }
     }
 
     override fun getTransactionsAdapterForWallet(wallet: Wallet): ITransactionsAdapter? {

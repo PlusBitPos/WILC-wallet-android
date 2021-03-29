@@ -1,7 +1,5 @@
 package io.horizontalsystems.bankwallet.modules.settings.experimental.bitcoinhodling
 
-import android.app.Activity
-import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.horizontalsystems.bankwallet.core.App
@@ -31,10 +29,4 @@ object BitcoinHodlingModule {
             return presenter as T
         }
     }
-
-    fun start(context: Activity) {
-        val intent = Intent(context, BitcoinHodlingActivity::class.java)
-        context.startActivity(intent)
-    }
-
 }

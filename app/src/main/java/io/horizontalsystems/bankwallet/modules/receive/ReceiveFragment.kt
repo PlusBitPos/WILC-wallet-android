@@ -10,6 +10,7 @@ import io.horizontalsystems.bankwallet.ui.extensions.BaseBottomSheetDialogFragme
 import io.horizontalsystems.bankwallet.ui.helpers.AppLayoutHelper
 import io.horizontalsystems.bankwallet.ui.helpers.TextHelper
 import io.horizontalsystems.core.helpers.HudHelper
+import io.horizontalsystems.snackbar.SnackbarGravity
 import kotlinx.android.synthetic.main.view_bottom_sheet_receive.*
 
 class ReceiveFragment: BaseBottomSheetDialogFragment() {
@@ -30,7 +31,7 @@ class ReceiveFragment: BaseBottomSheetDialogFragment() {
 
         setContentView(R.layout.view_bottom_sheet_receive)
 
-        val wallet = arguments?.getParcelable<Wallet>(keyWallet) ?: run { dismiss(); return }
+        val wallet = arguments?.getParcelable<Wallet>(WALLET_KEY) ?: run { dismiss(); return }
 
         setTitle(activity?.getString(R.string.Deposit_Title, wallet.coin.code))
         setSubtitle(wallet.coin.title)
@@ -71,21 +72,22 @@ class ReceiveFragment: BaseBottomSheetDialogFragment() {
 
         view.showError.observe(viewLifecycleOwner, Observer { error ->
             error?.let {
-                HudHelper.showErrorMessage(this.requireView(), it, gravity = HudHelper.SnackbarGravity.TOP_OF_VIEW)
+                HudHelper.showErrorMessage(this.requireView(), it, gravity = SnackbarGravity.TOP_OF_VIEW)
             }
             dismiss()
         })
 
         view.showCopied.observe(viewLifecycleOwner, Observer {
-            HudHelper.showSuccessMessage(this.requireView(), R.string.Hud_Text_Copied, gravity = HudHelper.SnackbarGravity.TOP_OF_VIEW)
+            HudHelper.showSuccessMessage(this.requireView(), R.string.Hud_Text_Copied, gravity = SnackbarGravity.TOP_OF_VIEW)
         })
     }
 
     companion object {
-        private const val keyWallet = "wallet_key"
+        private const val WALLET_KEY = "wallet_key"
+
         fun newInstance(wallet: Wallet) = ReceiveFragment().apply {
             arguments = Bundle(1).apply {
-                putParcelable(keyWallet, wallet)
+                putParcelable(WALLET_KEY, wallet)
             }
         }
     }

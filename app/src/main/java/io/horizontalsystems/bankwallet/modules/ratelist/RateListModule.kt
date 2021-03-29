@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.horizontalsystems.bankwallet.core.App
 import io.horizontalsystems.bankwallet.entities.Coin
+import io.horizontalsystems.bankwallet.entities.CoinType
 import io.horizontalsystems.core.entities.Currency
 import io.horizontalsystems.xrateskit.entities.MarketInfo
-import io.horizontalsystems.xrateskit.entities.TopMarket
 import java.math.BigDecimal
 
 object RateListModule {
@@ -36,13 +36,13 @@ object RateListModule {
         fun clear()
         fun getMarketInfo(coinCode: String, currencyCode: String): MarketInfo?
         fun subscribeToMarketInfo(currencyCode: String)
-        fun setupXRateManager(coinCodes: List<String>)
+        fun setupXRateManager(coins: List<Coin>)
         fun getTopList()
     }
 
     interface IInteractorDelegate {
         fun didUpdateMarketInfo(marketInfos: Map<String, MarketInfo>)
-        fun didFetchedTopMarketList(items: List<TopMarket>)
+        fun didFetchedTopMarketList(items: List<TopMarketRanked>)
         fun didFailToFetchTopList()
     }
 
@@ -89,4 +89,9 @@ class RateListSorter {
 
 data class CoinItem(val coinCode: String, val coinName: String, var rate: String?, var diff: BigDecimal?, val coin: Coin? = null, var timestamp: Long, var rateDimmed: Boolean, val rank: Int? = null)
 
-data class TopMarketRanked(val coinCode: String, val coinName: String, val marketInfo: MarketInfo, val rank: Int)
+data class TopMarketRanked(
+        val coinCode: String,
+        val coinName: String,
+        val marketInfo: MarketInfo,
+        val rank: Int
+)

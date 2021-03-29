@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import io.horizontalsystems.bankwallet.R
 import io.horizontalsystems.bankwallet.core.AppLogger
+import io.horizontalsystems.bankwallet.core.BaseFragment
 import io.horizontalsystems.bankwallet.core.LocalizedException
 import io.horizontalsystems.bankwallet.core.setOnSingleClickListener
 import io.horizontalsystems.bankwallet.modules.send.SendPresenter
@@ -17,14 +17,13 @@ import io.horizontalsystems.bankwallet.modules.send.submodules.confirmation.subv
 import io.horizontalsystems.bankwallet.modules.send.submodules.confirmation.subviews.ConfirmationSecondaryView
 import io.horizontalsystems.bankwallet.modules.send.submodules.confirmation.subviews.ConfirmationSendButtonView
 import io.horizontalsystems.core.helpers.HudHelper
-import io.horizontalsystems.views.TopMenuItem
 import kotlinx.android.synthetic.main.fragment_confirmation.*
 import java.net.UnknownHostException
 
-class ConfirmationFragment(private var sendPresenter: SendPresenter?) : Fragment() {
+class ConfirmationFragment(private var sendPresenter: SendPresenter?) : BaseFragment() {
 
     private var sendButtonView: ConfirmationSendButtonView? = null
-    private var presenter: SendConfirmationPresenter? = null
+    private val presenter by activityViewModels<SendConfirmationPresenter> { SendConfirmationModule.Factory() }
     private var sendView: SendView? = null
     private var presenterView: SendConfirmationView? = null
     private val logger = AppLogger("send")
@@ -34,29 +33,33 @@ class ConfirmationFragment(private var sendPresenter: SendPresenter?) : Fragment
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
-
-        shadowlessToolbar.bind(
-                title = getString(R.string.Send_Confirmation_Title),
-                leftBtnItem = TopMenuItem(R.drawable.ic_back, onClick = { activity?.onBackPressed() }
-                ))
+        toolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menuClose -> {
+                    requireActivity().finish()
+                    true
+                }
+                else -> false
+            }
+        }
 
         sendView = sendPresenter?.view as SendView
-        presenter = ViewModelProvider(this, SendConfirmationModule.Factory())
-                .get(SendConfirmationPresenter::class.java)
 
         sendView?.confirmationViewItems?.observe(viewLifecycleOwner, Observer {
-            presenter?.confirmationViewItems = it
-            presenter?.onViewDidLoad()
+            presenter.confirmationViewItems = it
+            presenter.onViewDidLoad()
         })
 
-        presenterView = presenter?.view as SendConfirmationView
+        presenterView = presenter.view as SendConfirmationView
 
         presenterView?.addPrimaryDataViewItem?.observe(viewLifecycleOwner, Observer { primaryViewItem ->
             context?.let {
                 val primaryItemView = ConfirmationPrimaryView(it)
-                primaryItemView.bind(primaryViewItem) { presenter?.onReceiverClick() }
+                primaryItemView.bind(primaryViewItem) { presenter.onReceiverClick() }
                 confirmationLinearLayout.addView(primaryItemView)
             }
         })
@@ -94,15 +97,13 @@ class ConfirmationFragment(private var sendPresenter: SendPresenter?) : Fragment
             errorMsgTextRes?.let {
                 HudHelper.showErrorMessage(this.requireView(), getErrorText(it))
             }
-            presenter?.onSendError()
+            presenter.onSendError()
         })
 
         presenterView?.sendButtonState?.observe(viewLifecycleOwner, Observer { state ->
             sendButtonView?.bind(state)
             sendButtonView?.isEnabled = state == SendConfirmationModule.SendButtonState.ACTIVE
         })
-
-
     }
 
     private fun getErrorText(error: Throwable): String {

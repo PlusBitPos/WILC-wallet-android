@@ -156,13 +156,13 @@ class TransactionsInteractor(
         transactionUpdatesDisposables.clear()
         adapterStateUpdatesDisposables.clear()
 
-        val walletsData = mutableListOf<Triple<Wallet, Int, LastBlockInfo?>>()
+        val walletsData = mutableListOf<Pair<Wallet, LastBlockInfo?>>()
         val adapterStates = mutableMapOf<Wallet, AdapterState>()
 
         walletManager.wallets.forEach { wallet ->
             adapterManager.getTransactionsAdapterForWallet(wallet)?.let { adapter ->
-                walletsData.add(Triple(wallet, adapter.confirmationsThreshold, adapter.lastBlockInfo))
-                adapterStates[wallet] = adapter.state
+                walletsData.add(Pair(wallet, adapter.lastBlockInfo))
+                adapterStates[wallet] = adapter.transactionsState
 
                 adapter.transactionRecordsFlowable
                         .subscribeOn(Schedulers.io())
@@ -172,11 +172,11 @@ class TransactionsInteractor(
                         }
                         .let { transactionUpdatesDisposables.add(it) }
 
-                adapter.stateUpdatedFlowable
+                adapter.transactionsStateUpdatedFlowable
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
                         .subscribe {
-                            delegate?.onUpdateAdapterState(adapter.state, wallet)
+                            delegate?.onUpdateAdapterState(adapter.transactionsState, wallet)
                         }
                         .let { adapterStateUpdatesDisposables.add(it) }
             }

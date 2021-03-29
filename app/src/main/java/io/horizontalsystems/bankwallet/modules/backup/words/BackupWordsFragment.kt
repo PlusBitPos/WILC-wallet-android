@@ -1,24 +1,18 @@
 package io.horizontalsystems.bankwallet.modules.backup.words
 
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import io.horizontalsystems.bankwallet.R
-import io.horizontalsystems.bankwallet.core.setOnSingleClickListener
-import io.horizontalsystems.views.helpers.LayoutHelper
-import kotlinx.android.synthetic.main.fragment_backup_words.*
+import io.horizontalsystems.bankwallet.core.BaseFragment
+import io.horizontalsystems.core.findNavController
+import io.horizontalsystems.core.setNavigationResult
 
-class BackupWordsFragment : Fragment() {
+class BackupWordsFragment : BaseFragment() {
 
     val viewModel by activityViewModels<BackupWordsViewModel>()
 
@@ -29,69 +23,57 @@ class BackupWordsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.wordsLiveData.observe(viewLifecycleOwner, Observer {
-            populateWords(it)
-        })
+        val backedUp = arguments?.getBoolean(ACCOUNT_BACKEDUP, false) ?: false
+        val backupWords = arguments?.getStringArray(WORDS_KEY) ?: arrayOf()
+        val typeTitle = arguments?.getInt(ACCOUNT_TYPE_TITLE, R.string.AccountType_Unstoppable) ?: 0
+        val additionalInfo = arguments?.getString(ACCOUNT_ADDITIONAL_INFO)
 
-        viewModel.backedUpLiveData.observe(viewLifecycleOwner, Observer { backedUp ->
-            buttonClose.isVisible = backedUp
-            buttonNext.isVisible = !backedUp
-        })
+        viewModel.accountTypeTitle = typeTitle
+        viewModel.init(backupWords, backedUp, additionalInfo)
 
-        buttonNext.setOnSingleClickListener {
-            viewModel.delegate.onNextClick()
+        if (savedInstanceState == null) {
+            viewModel.delegate.viewDidLoad()
         }
 
-        buttonClose.setOnSingleClickListener {
-            viewModel.delegate.onCloseClick()
-        }
-
+        observeEvents()
     }
 
-    private fun populateWords(words: Array<String>) {
-        context?.let { ctx ->
-            val numberColor = ContextCompat.getColor(ctx, R.color.grey)
-            val wordColor = LayoutHelper.getAttr(R.attr.ColorOz, ctx.theme)
-                    ?: ContextCompat.getColor(ctx, R.color.grey)
-            val sb = SpannableStringBuilder()
-
-            words.forEachIndexed { index, word ->
-                val normalizedIndex = index + 1
-                val wordString = "$word\n"
-                var numberString = "$normalizedIndex. "
-                if (normalizedIndex < 10) {
-                    numberString += "  " //add two spaces to to make equal alignment for all words
-                }
-
-                val numberSpan = SpannableString(numberString)
-                numberSpan.setSpan(ForegroundColorSpan(numberColor), 0, numberString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-                val wordSpan = SpannableString(wordString)
-                wordSpan.setSpan(ForegroundColorSpan(wordColor), 0, wordString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-                sb.append(numberSpan)
-                sb.append(wordSpan)
-
-                when (normalizedIndex) {
-                    6 -> {
-                        topLeft.text = sb
-                        sb.clear()
-                    }
-                    12 -> {
-                        topRight.text = sb
-                        sb.clear()
-                    }
-                    18 -> {
-                        bottomLeft.text = sb
-                        sb.clear()
-                    }
-                    24 -> {
-                        bottomRight.text = sb
-                        sb.clear()
-                    }
-                }
+    private fun observeEvents() {
+        viewModel.loadPageLiveEvent.observe(viewLifecycleOwner, Observer { page ->
+            val fragment = when (page) {
+                1 -> BackupWordsListFragment()
+                else -> BackupWordsConfirmFragment()
             }
-        }
+
+            childFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, fragment)
+                commit()
+            }
+        })
+
+        viewModel.notifyBackedUpEvent.observe(viewLifecycleOwner, Observer {
+            setNavigationResult(BackupWordsModule.requestKey, bundleOf(
+                    BackupWordsModule.requestResult to BackupWordsModule.RESULT_BACKUP
+            ))
+            findNavController().popBackStack()
+        })
+
+        viewModel.notifyClosedEvent.observe(viewLifecycleOwner, Observer {
+            setNavigationResult(BackupWordsModule.requestKey, bundleOf(
+                    BackupWordsModule.requestResult to BackupWordsModule.RESULT_SHOW
+            ))
+            findNavController().popBackStack()
+        })
+
+        viewModel.closeLiveEvent.observe(viewLifecycleOwner, Observer {
+            findNavController().popBackStack()
+        })
     }
 
+    companion object {
+        const val ACCOUNT_BACKEDUP = "account_backedup"
+        const val WORDS_KEY = "words"
+        const val ACCOUNT_TYPE_TITLE = "account_type_title"
+        const val ACCOUNT_ADDITIONAL_INFO = "account_additional_info"
+    }
 }

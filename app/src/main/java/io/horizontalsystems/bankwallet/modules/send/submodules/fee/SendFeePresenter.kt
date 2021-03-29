@@ -7,8 +7,10 @@ import io.horizontalsystems.bankwallet.modules.send.SendModule
 import io.horizontalsystems.bankwallet.modules.send.SendModule.AmountInfo
 import io.horizontalsystems.bankwallet.modules.send.SendModule.AmountInfo.CoinValueInfo
 import io.horizontalsystems.bankwallet.modules.send.SendModule.AmountInfo.CurrencyValueInfo
+import io.horizontalsystems.bankwallet.modules.send.submodules.amount.SendAmountInfo
 import io.horizontalsystems.core.entities.Currency
 import java.math.BigDecimal
+import java.math.BigInteger
 
 class SendFeePresenter(
         val view: SendFeeModule.IView,
@@ -16,7 +18,9 @@ class SendFeePresenter(
         private val helper: SendFeePresenterHelper,
         private val baseCoin: Coin,
         private val baseCurrency: Currency,
-        private val feeCoinData: Pair<Coin, String>?)
+        private val feeCoinData: Pair<Coin, String>?,
+        private val customPriorityUnit: CustomPriorityUnit?,
+        private val feeRateAdjustmentHelper: FeeRateAdjustmentHelper)
     : ViewModel(), SendFeeModule.IViewDelegate, SendFeeModule.IFeeModule, SendFeeModule.IInteractorDelegate {
 
     var moduleDelegate: SendFeeModule.IFeeModuleDelegate? = null
@@ -26,19 +30,13 @@ class SendFeePresenter(
 
     private var fee: BigDecimal = BigDecimal.ZERO
     private var availableFeeBalance: BigDecimal? = null
-    private var feeRateInfo = FeeRateInfo(FeeRatePriority.MEDIUM, 1, 2 * 60 * 60)
+
     private var error: Exception? = null
 
-    private var feeRates: List<FeeRateInfo>? = null
-        set(value) {
-            field = value
-            value?.let {
-                getFeeRateInfoByPriority(it, FeeRatePriority.MEDIUM)?.let { feeInfo ->
-                    feeRateInfo = feeInfo
-                    syncFeeRateLabels()
-                }
-            }
-        }
+    private var customFeeRate: BigInteger? = null
+    private var fetchedFeeRate: BigInteger? = null
+    private var feeRatePriority: FeeRatePriority? = interactor.defaultFeeRatePriority
+    private var feeRateAdjustmentInfo: FeeRateAdjustmentInfo = FeeRateAdjustmentInfo(SendAmountInfo.NotEntered, null, baseCurrency, null)
 
     private val coin: Coin
         get() = feeCoinData?.first ?: baseCoin
@@ -58,25 +56,17 @@ class SendFeePresenter(
         }
     }
 
-    private fun syncFeeLabels() {
-        view.setPrimaryFee(helper.feeAmount(fee, SendModule.InputType.COIN, xRate))
-        view.setSecondaryFee(helper.feeAmount(fee, SendModule.InputType.CURRENCY, xRate))
+    private fun syncFees() {
+        view.setPrimaryFee(helper.feeAmount(fee, inputType, xRate))
+        view.setSecondaryFee(helper.feeAmount(fee, inputType.reversed(), xRate))
     }
 
     private fun syncFeeRateLabels() {
-        if (feeRateInfo.priority is FeeRatePriority.Custom) {
-            view.showCustomFeePriority(true)
-        } else {
-            view.showCustomFeePriority(false)
-            feeRateInfo.duration?.let { view.setDuration(it) }
+        view.showCustomFeePriority(feeRatePriority is FeeRatePriority.Custom)
+
+        feeRatePriority?.let {
+            view.setFeePriority(it)
         }
-
-        view.setFeePriority(feeRateInfo.priority)
-    }
-
-    private fun updateCustomFeeParams(priority: FeeRatePriority.Custom) {
-        val value = Math.min(feeRateInfo.feeRate.toInt(), priority.range.last)
-        view.setCustomFeeParams(value, priority.range)
     }
 
     private fun validate() {
@@ -85,6 +75,23 @@ class SendFeePresenter(
 
         if (availableFeeBalance < fee) {
             throw SendFeeModule.InsufficientFeeBalance(baseCoin, coinProtocol, feeCoin, CoinValue(feeCoin, fee))
+        }
+    }
+
+    private fun updateCustomFeeParams(priority: FeeRatePriority.Custom) {
+        customPriorityUnit ?: return
+
+        val units = feeRate?.let { customPriorityUnit.getUnits(it).toInt() } ?: priority.value
+        val minValue = units.coerceAtMost(priority.range.last)   // value can't be more than slider upper range
+        val converted = customPriorityUnit.getConvertedValue(minValue.toLong())
+        this.customFeeRate = converted.toBigInteger()
+
+        view.setCustomFeeParams(units, priority.range, customPriorityUnit.getLabel())
+    }
+
+    private fun getSmartFee(): Long? {
+        return fetchedFeeRate?.let {
+            feeRateAdjustmentHelper.applyRule(coin.type, feeRateAdjustmentInfo, it.toLong())
         }
     }
 
@@ -98,16 +105,16 @@ class SendFeePresenter(
             false
         }
 
-    override val feeRateState: FeeState
+    override val feeRateState: FeeRateState
         get() {
             if (error != null) {
-                return FeeState.Error(error as Exception)
+                return FeeRateState.Error(error as Exception)
             }
-            if (feeRates != null) {
-                return FeeState.Value(feeRateInfo.feeRate)
+            feeRate?.let {
+                return FeeRateState.Value(it)
             }
 
-            return FeeState.Loading
+            return FeeRateState.Loading
         }
 
 
@@ -135,11 +142,8 @@ class SendFeePresenter(
             }
         }
 
-    override val feeRate: Long
-        get() = feeRateInfo.feeRate
-
-    override val duration: Long?
-        get() = feeRateInfo.duration
+    override val feeRate: Long?
+        get() = customFeeRate?.toLong() ?: getSmartFee()
 
     override fun setLoading(loading: Boolean) {
         view.setLoading(loading)
@@ -147,7 +151,7 @@ class SendFeePresenter(
 
     override fun setFee(fee: BigDecimal) {
         this.fee = fee
-        syncFeeLabels()
+        syncFees()
         syncError()
     }
 
@@ -157,10 +161,12 @@ class SendFeePresenter(
     }
 
     override fun fetchFeeRate() {
-        feeRates = null
+        fetchedFeeRate = null
         error = null
 
-        interactor.syncFeeRate()
+        feeRatePriority?.let {
+            interactor.syncFeeRate(it)
+        }
     }
 
     override fun setAvailableFeeBalance(availableFeeBalance: BigDecimal) {
@@ -170,6 +176,19 @@ class SendFeePresenter(
 
     override fun setInputType(inputType: SendModule.InputType) {
         this.inputType = inputType
+        syncFees()
+    }
+
+    override fun setBalance(balance: BigDecimal) {
+        feeRateAdjustmentInfo.balance = balance
+    }
+
+    override fun setRate(rate: BigDecimal?) {
+        feeRateAdjustmentInfo.xRate = rate
+    }
+
+    override fun setAmountInfo(sendAmountInfo: SendAmountInfo) {
+        feeRateAdjustmentInfo.amountInfo = sendAmountInfo
     }
 
     // SendFeeModule.IViewDelegate
@@ -178,51 +197,47 @@ class SendFeePresenter(
         xRate = interactor.getRate(coin.code)
 
         syncFeeRateLabels()
-        syncFeeLabels()
+        syncFees()
         syncError()
+
+        view.setAdjustableFeeVisible(interactor.feeRatePriorityList.isNotEmpty())
     }
 
     override fun onClickFeeRatePriority() {
-        feeRates?.let {
-            view.showFeeRatePrioritySelector(it.map { rateInfo ->
-                feeRateInfoViewItem(rateInfo)
-            })
+        val items = interactor.feeRatePriorityList.map { priority ->
+            SendFeeModule.FeeRateInfoViewItem(priority, priority == feeRatePriority)
         }
+        view.showFeeRatePrioritySelector(items)
     }
 
-    private fun getFeeRateInfoByPriority(searchList: List<FeeRateInfo>, priority: FeeRatePriority): FeeRateInfo? {
-        return searchList.find { it.priority == priority }
-    }
-
-    private fun feeRateInfoViewItem(rateInfo: FeeRateInfo): SendFeeModule.FeeRateInfoViewItem {
-        return SendFeeModule.FeeRateInfoViewItem(feeRateInfo = rateInfo,
-                selected = rateInfo.priority == feeRateInfo.priority)
-    }
-
-    override fun onChangeFeeRate(feeRateInfo: FeeRateInfo) {
-        if (feeRateInfo.priority is FeeRatePriority.Custom) {
-            updateCustomFeeParams(feeRateInfo.priority)
+    override fun onChangeFeeRate(feeRatePriority: FeeRatePriority) {
+        if (feeRatePriority is FeeRatePriority.Custom) {
+            updateCustomFeeParams(feeRatePriority)
+        } else {
+            customFeeRate = null
         }
 
-        this.feeRateInfo = feeRateInfo
+        this.feeRatePriority = feeRatePriority
 
         syncFeeRateLabels()
 
         moduleDelegate?.onUpdateFeeRate()
+
+        fetchFeeRate()
     }
 
-    override fun onChangeFeeRateValue(value: Long) {
-        if (feeRateInfo.priority is FeeRatePriority.Custom) {
-            feeRateInfo.feeRate = value
+    override fun onChangeFeeRateValue(value: Int) {
+        customPriorityUnit ?: return
 
-            moduleDelegate?.onUpdateFeeRate()
-        }
+        val converted = customPriorityUnit.getConvertedValue(value.toLong())
+        this.customFeeRate = converted.toBigInteger()
+        moduleDelegate?.onUpdateFeeRate()
     }
 
     // IInteractorDelegate
 
-    override fun didUpdate(feeRates: List<FeeRateInfo>) {
-        this.feeRates = feeRates
+    override fun didUpdate(feeRate: BigInteger) {
+        this.fetchedFeeRate = feeRate
         moduleDelegate?.onUpdateFeeRate()
     }
 
@@ -233,7 +248,7 @@ class SendFeePresenter(
 
     override fun didUpdateExchangeRate(rate: BigDecimal) {
         xRate = rate
-        syncFeeLabels()
+        syncFees()
     }
 
     // ViewModel

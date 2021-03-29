@@ -9,18 +9,23 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.biometric.BiometricConstants
 import androidx.biometric.BiometricPrompt
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import io.horizontalsystems.core.findNavController
 import io.horizontalsystems.core.helpers.DateHelper
 import io.horizontalsystems.core.helpers.HudHelper
+import io.horizontalsystems.core.setNavigationResult
 import io.horizontalsystems.pin.core.NumPadItem
 import io.horizontalsystems.pin.core.NumPadItemType
 import io.horizontalsystems.pin.core.NumPadItemsAdapter
@@ -34,11 +39,16 @@ import io.horizontalsystems.pin.set.SetPinRouter
 import io.horizontalsystems.pin.unlock.UnlockPinModule
 import io.horizontalsystems.pin.unlock.UnlockPinPresenter
 import io.horizontalsystems.pin.unlock.UnlockPinRouter
-import io.horizontalsystems.views.TopMenuItem
 import kotlinx.android.synthetic.main.fragment_pin.*
 import java.util.concurrent.Executor
 
 class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Listener {
+
+    companion object{
+        const val ATTACHED_TO_LOCKSCREEN = "attached_to_lock_screen"
+    }
+
+    private var attachedToLockScreen = false
 
     private val interactionType: PinInteractionType by lazy {
         arguments?.getParcelable(PinModule.keyInteractionType) ?: PinInteractionType.UNLOCK
@@ -61,11 +71,16 @@ class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Lis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        attachedToLockScreen = arguments?.getBoolean(ATTACHED_TO_LOCKSCREEN, false) ?: false
+
         pinPagesAdapter = PinPagesAdapter(this)
+
         context?.let {
             layoutManager = SmoothLinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
             pinPagesRecyclerView.layoutManager = layoutManager
         }
+
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(pinPagesRecyclerView)
         pinPagesRecyclerView.adapter = pinPagesAdapter
@@ -107,10 +122,25 @@ class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Lis
         numPadItemsRecyclerView.layoutManager = GridLayoutManager(context, 3)
 
         observeData()
+
+        activity?.onBackPressedDispatcher?.addCallback(this) {
+            onCancelClick()
+        }
     }
 
     override fun onCancelClick() {
-        activity?.onBackPressed()
+        val bundle = bundleOf(
+                PinModule.requestType to interactionType,
+                PinModule.requestResult to PinModule.RESULT_CANCELLED
+        )
+
+        if (attachedToLockScreen) {
+            setFragmentResult(PinModule.requestKey, bundle)
+            return
+        }
+
+        setNavigationResult(PinModule.requestKey, bundle)
+        findNavController().popBackStack()
     }
 
     override fun onItemClick(item: NumPadItem) {
@@ -122,22 +152,27 @@ class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Lis
     }
 
     private fun dismissWithSuccess() {
-        activity?.setResult(PinModule.RESULT_OK)
-        activity?.finish()
+        val bundle = bundleOf(
+                PinModule.requestType to interactionType,
+                PinModule.requestResult to PinModule.RESULT_OK
+        )
+
+        if (attachedToLockScreen) {
+            setFragmentResult(PinModule.requestKey, bundle)
+            return
+        }
+
+        setNavigationResult(PinModule.requestKey, bundle)
+        findNavController().popBackStack()
     }
 
     private fun observeData() {
-
         pinView.showCancelButton.observe(viewLifecycleOwner, Observer { showCancelButton ->
             pinPagesAdapter.showCancelButton = showCancelButton
         })
 
-        pinView.toolbar.observe(viewLifecycleOwner, Observer { (titleRes, showBackButton) ->
-            shadowlessToolbar.isVisible = true
-
-            val backButton = if (showBackButton) TopMenuItem(R.drawable.ic_back, onClick = { activity?.onBackPressed() }) else null
-
-            shadowlessToolbar.bind(getString(titleRes), leftBtnItem = backButton)
+        pinView.toolbar.observe(viewLifecycleOwner, Observer { titleRes ->
+            showToolbar(titleRes)
         })
 
         pinView.addPages.observe(viewLifecycleOwner, Observer {
@@ -195,6 +230,15 @@ class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Lis
         })
     }
 
+    private fun showToolbar(titleRes: Int) {
+        toolbar.isVisible = true
+        toolbar.title = getString(titleRes)
+
+        toolbar.setNavigationOnClickListener {
+            onCancelClick()
+        }
+    }
+
     private fun showBiometricAuthDialog(cryptoObject: BiometricPrompt.CryptoObject) {
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
                 .setTitle(getString(R.string.BiometricAuth_DialogTitle))
@@ -221,9 +265,7 @@ class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Lis
 
         biometricPrompt.authenticate(promptInfo)
     }
-
 }
-
 
 class PinPage(var topText: TopText, var enteredDigitsLength: Int = 0)
 
@@ -269,9 +311,7 @@ class PinPagesAdapter(private val listener: Listener) : RecyclerView.Adapter<Rec
             holder.bind(pinPages[position], shakePageIndex == position, pinLockedMessage, showCancelButton)
         }
     }
-
 }
-
 
 class PinPageViewHolder(itemView: View, onCancelClick: () -> (Unit)) : RecyclerView.ViewHolder(itemView) {
     private var txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
@@ -305,7 +345,7 @@ class PinPageViewHolder(itemView: View, onCancelClick: () -> (Unit)) : RecyclerV
         lockImage.isVisible = pinLockedMessage.isNotEmpty()
         pinCirclesWrapper.isVisible = pinLockedMessage.isEmpty()
 
-        if(pinLockedMessage.isNotEmpty()){
+        if (pinLockedMessage.isNotEmpty()) {
             lockMessage.text = pinLockedMessage
             return
         }
@@ -329,7 +369,7 @@ class PinPageViewHolder(itemView: View, onCancelClick: () -> (Unit)) : RecyclerV
             }
         }
 
-        if(showCancel) {
+        if (showCancel) {
             cancelButton.isVisible = true
         }
 

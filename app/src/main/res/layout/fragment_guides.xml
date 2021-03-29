@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:windowBackground"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -12,50 +14,43 @@
         android:background="@color/transparent"
         app:elevation="0dp">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/app_bar_height_tall"
-            app:collapsedTitleTextAppearance="@style/Title3"
-            app:elevation="0dp"
-            app:expandedTitleMarginBottom="16dp"
-            app:expandedTitleMarginStart="16dp"
-            app:expandedTitleTextAppearance="@style/Title2"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:title="@string/Guides_Title" >
-                <ProgressBar
-                    android:id="@+id/toolbarSpinner"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:indeterminateTint="@color/grey"
-                    android:indeterminate="true"
-                    android:layout_marginEnd="18dp"
-                    android:layout_gravity="end"
-                    android:indeterminateDrawable="@drawable/circular_spinner"
-                    android:visibility="invisible"/>
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerTags"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:itemCount="3"
-            tools:listitem="@layout/view_holder_filter" />
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_back"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:title="@string/Guides_Title">
+
+            <ProgressBar
+                android:id="@+id/toolbarSpinner"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="18dp"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/circular_spinner"
+                android:indeterminateTint="@color/grey"
+                android:visibility="invisible" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <io.horizontalsystems.bankwallet.ui.extensions.NestedScrollableHost
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/view_holder_filter" />
+        </io.horizontalsystems.bankwallet.ui.extensions.NestedScrollableHost>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -71,4 +66,4 @@
         tools:itemCount="4"
         tools:listitem="@layout/view_holder_guide_preview" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

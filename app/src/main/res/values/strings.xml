@@ -1,52 +1,50 @@
 <resources>
-    <string name="App_Name" translatable="false">Unstoppable</string>
+    <string name="App_Name" translatable="false">WILC Wallet</string>
 
     <!--Common-->
 
-    <string name="Alert_Ok">OK</string>
     <string name="Alert_Cancel">Cancel</string>
     <string name="Alert_Copy">Copy</string>
-    <string name="Alert_Share">Forward</string>
     <string name="Alert_Close">Close</string>
-    <string name="Alert_Success">Success</string>
-    <string name="Alert_Copied">Copied</string>
     <string name="Alert_Loading">Loading...</string>
     <string name="Alert_Restart">Restart</string>
+    <string name="Alert_Skip" translatable="false">SKIP</string>
+    <string name="Alert_Select" translatable="false">SELECT</string>
 
     <string name="Button_Cancel">Cancel</string>
-    <string name="Button_Create">Create</string>
     <string name="Button_Skip">Skip</string>
     <string name="Button_Next">Next</string>
-    <string name="Button_Restore">Restore</string>
     <string name="Button_Enable">Enable</string>
     <string name="Button_Disable">Disable</string>
-    <string name="Button_Back">Back</string>
     <string name="Button_Close">Close</string>
     <string name="Button_Ok">OK</string>
-    <string name="Button_Share">Share</string>
     <string name="Button_Done">Done</string>
     <string name="Button_Retry">Retry</string>
     <string name="Button_Change">Change</string>
     <string name="Button_Add">Add</string>
     <string name="Button_Approve">Approve</string>
+    <string name="Button_Connect">Connect</string>
+    <string name="Button_Reject">Reject</string>
+    <string name="Button_Disconnect">Disconnect</string>
 
     <string name="Error">Error</string>
     <string name="NotAvailable">N/A</string>
 
     <string name="Wallet">%s Wallet</string>
-    <string name="FooterText" translatable="false">© Horizontal Systems 2020</string>
+    <string name="FooterText" translatable="false">© Horizontal Systems 2021</string>
 
     <!--Intro-->
-    <string name="Intro_Independence_Title">Independence</string>
-    <string name="Intro_Independence_Description">Keep crypto assets safe, unconfiscatable and accessible at all times</string>
-    <string name="Intro_Knowledge_Title">Knowledge</string>
-    <string name="Intro_Knowledge_Description">Become informed and discover growing blockchain projects in early stages</string>
-    <string name="Intro_Privacy_Title">Privacy</string>
-    <string name="Intro_Privacy_Description">Stay incognito and under the radar while growing your wealth</string>
+    <string name="Intro_Wallet_Description">Store and Trade crypto. Have full control over assets. Remain anonymous.</string>
+    <string name="Intro_Invest_Title">Invest Wisely</string>
+    <string name="Intro_Invest_Description">WILC Wallet integrates unmatched trading, monitoring and analytical instruments.</string>
+    <string name="Intro_Independence_Title">Be Independent</string>
+    <string name="Intro_Independence_Description">WILC Wallet is built to ensure users are able to access funds at any time from anywhere.</string>
+    <string name="Intro_Privacy_Title">Stay Private</string>
+    <string name="Intro_Privacy_Description">Use this wallet to remain incognito and be able to keep your information private.</string>
 
     <!--Welcome-->
 
-    <string name="Welcome_Title">Unstoppable\nWallet</string>
+    <string name="Welcome_Title">WILC Wallet</string>
     <string name="Welcome_PrivacySettings">Privacy Settings</string>
     <string name="Welcome_CreateWallet">Create Wallet</string>
     <string name="Welcome_RestoreWallet">Restore Wallet</string>
@@ -54,7 +52,7 @@
 
     <!--Rate App-->
     <string name="RateApp_Title_Rate_This_App">Rate this App</string>
-    <string name="RateApp_Description_Rate_This_App">Enjoying Unstoppable Wallet? Please take a moment to rate this app</string>
+    <string name="RateApp_Description_Rate_This_App">Enjoying WILC Wallet? Please take a moment to rate this app</string>
     <string name="RateApp_Button_RateIt">Rate It</string>
     <string name="RateApp_Button_NotNow">Not now</string>
 
@@ -64,47 +62,118 @@
     <string name="Restore_Enter_Key_Title">Enter Key</string>
     <string name="Restore_Enter_Key_Description_Mnemonic">Enter your private key for %1s Wallet which consists of %2s words. The words needs to be entered in correct order and separated by spaces.</string>
     <string name="Restore_ValidationFailed">Incorrect Key</string>
-    <string name="Restore_RestoreFailed">Failed to restore wallet</string>
-
-    <string name="Restore_EosAccountName" translatable="false">Account Name</string>
-    <string name="Restore_EosActivePrivateKey" translatable="false">Active Private Key</string>
-
-    <string name="Restore_EosAccountIncorrect">Incorrect Account</string>
-    <string name="Restore_EosKeyIncorrect">Incorrect Key</string>
+    <string name="Restore_InvalidWordCount">Invalid words count: %1$d but required %2$d</string>
+    <string name="Restore_InvalidChecksum">Invalid Checksum</string>
 
     <string name="Select_Coins">Choose Crypto</string>
+
+    <string name="Restore_BirthdayHeight_Hint">Wallet birthday height (optional)</string>
+    <string name="Restore_BirthdayHeight_Description">This determines where to start scanning for transactions. Leave it blank to scan from the beginning, which takes a while.</string>
+    <string name="Restore_BirthdayHeight_InvalidError">Invalid birthday height</string>
 
     <!--Backup-->
 
     <string name="Backup_Intro_Title">Backup</string>
     <string name="Backup_Intro_TitleShow">Show Key</string>
     <string name="Backup_Intro_Subtitle">The private key that will be shown next is the only way to restore your funds if your phone is ever lost, stolen, broken etc.\n\nMake sure that no one is watching your screen.\n\nThe coins controlled by this key: %s.</string>
-    <string name="Backup_Intro_Later">Later</string>
-    <string name="Backup_Intro_BackupNow">Backup</string>
 
     <string name="Backup_DisplayTitle">Private Key</string>
+    <string name="Backup_BirthdayHeight">Birthday Height</string>
 
     <string name="Backup_Confirmation_Description">Enter words from your %s key</string>
     <string name="Backup_Confirmation_FailureAlertText"> Words do not match</string>
     <string name="Backup_Confirmation_CheckTitle">Check…</string>
 
-    <string name="Backup_Button_Confirm">Confirm</string>
     <string name="Backup_Button_Backup">Backup</string>
-    <string name="Backup_Button_Submit">Submit</string>
     <string name="Backup_Button_ShowKey">Show Key</string>
 
-    <!--Backup Eos-->
+    <!--Market-->
 
-    <string name="Backup_Eos_AccountName" translatable="false">Account Name</string>
-    <string name="Backup_Eos_ActivePrivateKey" translatable="false">Private Key</string>
-    <string name="Backup_Eos_Warning">Copying your key using “copy” action poses some risks if you use any clipboard management apps or some other apps that may have access to clipboard data.</string>
+    <string name="Market_Field_MarketCap">MCap</string>
+    <string name="Market_Field_Volume">Volume</string>
+    <string name="Market_Field_PriceDiff">Price</string>
+    <string name="Market_Title">Markets</string>
+    <string name="Market_Search">Search</string>
+    <string name="Market_Field_HighestCap">Highest Cap</string>
+    <string name="Market_Field_LowestCap">Lowest Cap</string>
+    <string name="Market_Field_HighestVolume">Highest Volume</string>
+    <string name="Market_Field_LowestVolume">Lowest Volume</string>
+    <string name="Market_Field_HighestPrice">Highest Price</string>
+    <string name="Market_Field_LowestPrice">Lowest Price</string>
+    <string name="Market_Sort_PopupTitle">Sort by</string>
+    <string name="Market_TotalMarketCap">Total\nMarket Cap</string>
+    <string name="Market_BtcDominance">BTC Dominance</string>
+    <string name="Market_Volume24h">24h Volume</string>
+    <string name="Market_TvlDeFi">TVL in DeFi</string>
+    <string name="Market_DeFiCap">DeFi Cap</string>
+    <string name="Market_SeeAll">See All</string>
+    <string name="Market_PoweredByApi" translatable="false">Powered by CoinGeko API</string>
+    <string name="Market_Tab_Overview">Overview</string>
+    <string name="Market_Tab_Discovery">Discovery</string>
+    <string name="Market_Tab_Watchlist">Watchlist</string>
+    <string name="Market_Tab_Watchlist_EmptyList">You don\’t have any favorite assets.\nYou can add the favorites by clicking on star icon in the asset page</string>
+    <string name="Market_Category_Rated">Rated</string>
+    <string name="Market_Category_Rated_Description">Token ratings based on project security and market liquidity.</string>
+    <string name="Market_Category_Blockchains">Blockchains</string>
+    <string name="Market_Category_Blockchains_Description">Native cryptocurrencies on major blockchains. </string>
+    <string name="Market_Category_Dexes">DEXes</string>
+    <string name="Market_Category_Dexes_Description">Decentralized cryptocurrency exchanges.</string>
+    <string name="Market_Category_Lending">Lending</string>
+    <string name="Market_Category_Lending_Description">Protocols for lending and borrowing.</string>
+    <string name="Market_Category_Privacy">Privacy</string>
+    <string name="Market_Category_Privacy_Description">Projects working on privacy solutions.</string>
+    <string name="Market_Category_Scaling">Scaling</string>
+    <string name="Market_Category_Scaling_Description">Solutions for faster blockchain transactions.</string>
+    <string name="Market_Category_Oracles">Oracles</string>
+    <string name="Market_Category_Oracles_Description">Connecting real world data to smart contracts.</string>
+    <string name="Market_Category_Prediction">Prediction</string>
+    <string name="Market_Category_Prediction_Description">Markets to bet on events in the future.</string>
+    <string name="Market_Category_YieldAggregators">Yield Aggregators</string>
+    <string name="Market_Category_YieldAggregators_Description">Solutions for earning from idle crypto assets.</string>
+    <string name="Market_Category_FiatStableCoins">Fiat Stablecoins</string>
+    <string name="Market_Category_FiatStableCoins_Description">Crypto tokens pegged 1–1 to fiat currency.</string>
+    <string name="Market_Category_AlgoStablecoins">Algo Stablecoins</string>
+    <string name="Market_Category_AlgoStablecoins_Description">Stablecoins with algorithmic 1–1 price peg to fiat.</string>
+    <string name="Market_Category_TokenizedBitcoin">Tokenized Bitcoin</string>
+    <string name="Market_Category_TokenizedBitcoin_Description">Crypto tokens pegged 1–1 to Bitcoin price.</string>
+    <string name="Market_Category_StablecoinIssuers">Stablecoin Issuers</string>
+    <string name="Market_Category_StablecoinIssuers_Description">Decentralized issuers of fiat pegged stablecoin tokens.</string>
+    <string name="Market_Category_ExchangeTokens">Exchange Tokens</string>
+    <string name="Market_Category_ExchangeTokens_Description">Tokens issued by centralized exchanges.</string>
+    <string name="Market_Category_Metals">Metals</string>
+    <string name="Market_Category_Metals_Description">Tokens pegged to metal prices.</string>
+    <string name="Market_Category_RiskManagement">Risk Management</string>
+    <string name="Market_Category_RiskManagement_Description">Risk assessment, insurance and hedging.</string>
+    <string name="Market_Category_Wallets">Wallets</string>
+    <string name="Market_Category_Wallets_Description">Tokens issued by cryptocurrency wallets.</string>
+    <string name="Market_Category_Synthetics">Synthetics</string>
+    <string name="Market_Category_Synthetics_Description">Platforms for creating decentralized synthetic assets.</string>
+    <string name="Market_Category_IndexFunds">Index Funds</string>
+    <string name="Market_Category_IndexFunds_Description">Assets that pegged in price to a set of tokens.</string>
+    <string name="Market_Category_NFT">NFT</string>
+    <string name="Market_Category_NFT_Description">Marketplaces for trading NFT tokens.</string>
+    <string name="Market_Category_Fundraising">Fundraising</string>
+    <string name="Market_Category_Fundraising_Description">Fundraising and token sale platforms.</string>
+    <string name="Market_Category_Gaming">Gaming</string>
+    <string name="Market_Category_Gaming_Description">Crypto projects in gaming and VR sector.</string>
+    <string name="Market_Category_B2B">B2B</string>
+    <string name="Market_Category_B2B_Description">B2B service providers.</string>
+    <string name="Market_Category_Infrastructure">Infrastructure</string>
+    <string name="Market_Category_Infrastructure_Description">Projects building infrastructure solutions.</string>
+    <string name="Market_Category_Staking">Staking ETH 2.0</string>
+    <string name="Market_Category_Staking_Description">Protocols that reward liquidity providers.</string>
+    <string name="Market_Category_Governance">Governance</string>
+    <string name="Market_Category_Governance_Description">Decentralized governance protocols for DAOs.</string>
+    <string name="Market_Category_CrossChain">Cross Chain</string>
+    <string name="Market_Category_CrossChain_Description">Cross-chain protocols.</string>
+    <string name="Market_Category_Computing">Computing</string>
+    <string name="Market_Category_Computing_Description">Decentralized on-demand computing solutions.</string>
 
     <!--Balance-->
 
     <string name="Balance_Title">Balance</string>
     <string name="Balance_Deposit">Receive</string>
     <string name="Balance_Send">Send</string>
-    <string name="Balance_Swap">Swap</string>
     <string name="Balance_RatePerCoin">%s per %s</string>
     <string name="Balance_SyncedUntil">until %s</string>
     <string name="Balance_Syncing">Syncing…</string>
@@ -122,30 +191,25 @@
 
     <string name="Send_Title">Send %s</string>
 
-    <string name="Send_Hint_Address">Address</string>
+    <string name="Send_Hint_Address">Address or Domain</string>
     <string name="Send_Hint_Amount">Amount</string>
 
     <string name="Send_Fee">Fee</string>
     <string name="Send_Button_Paste">Paste</string>
-    <string name="Send_Button_Next">Next</string>
     <string name="Send_Button_Max">Max</string>
 
     <string name="Send_Confirmation_Title">Confirm</string>
-    <string name="Send_Confirmation_To">To: </string>
+    <string name="Send_Confirmation_Domain">Domain</string>
+    <string name="Send_Confirmation_Receiver">Receiver</string>
     <string name="Send_Confirmation_HintMemo" translatable="false">Memo</string>
-    <string name="Send_Confirmation_Eos_HintAccount" translatable="false">Account</string>
-    <string name="Send_Confirmation_Total">Total:</string>
     <string name="Send_Confirmation_EstimateTime">Duration</string>
     <string name="Send_Confirmation_LockTime" translatable="false">TimeLock</string>
     <string name="Send_Confirmation_Send_Button">Send</string>
 
-    <string name="Send_ScanQrCode">Scan QR Code</string>
     <string name="Send_Success">\u2713 Sent</string>
 
     <string name="ScanQr_PleaseGrantCameraPermission">Please grant the camera permission</string>
 
-    <string name="Send_Error_InvalidAddress">Address seems invalid. Please check and try again!</string>
-    <string name="Send_Error_InsufficientBalance">Not enough funds.</string>
     <string name="Send_Error_IncorrectAddress">Incorrect Address</string>
     <string name="Send_Error_UnsupportedAddress">Time locking works only with P2PKH addresses (starting with 1)</string>
     <string name="Send_Error_BalanceAmount">Balance %s</string>
@@ -153,20 +217,21 @@
     <string name="Send_Error_MaximumAmount">Max. amount %s</string>
     <string name="Send_Error_MinRequiredBalance">Min. required remainder %s</string>
     <string name="Send_Error_WrongParameters">Wrong parameters</string>
+    <string name="Send_Error_TransparentAddress">WILC Wallet doesn\'t support payments to a transparent address</string>
+    <string name="Send_Error_SendToSelf">Sending to self is not supported</string>
 
-    <string name="Send_DialogTitle">Confirm</string>
     <string name="Send_DialogAvailableBalance">Available Balance</string>
     <string name="Send_DialogSpeed">Transaction Speed</string>
     <string name="Send_TxSpeed_Low">Low</string>
     <string name="Send_TxSpeed_Medium">Medium</string>
     <string name="Send_TxSpeed_High">High</string>
+    <string name="Send_TxSpeed_Recommended">Recommended</string>
     <string name="Send_TxSpeed_Custom">Custom</string>
     <string name="Send_TxSpeed_CustomFeeHint">sat/byte</string>
     <string name="Send_DialogDuration">Duration</string>
     <string name="Send_DialogFee">Fee</string>
-    <string name="Send_DialogTotal">Total:</string>
     <string name="Send_DialogMemoHint" translatable="false">Memo</string>
-    <string name="Send_DialogProceed">Proceed</string>
+    <string name="Send_DialogProceed">Next</string>
     <string name="Send_DialogLockTime" translatable="false">TimeLock</string>
     <string name="Send_LockTime_Off">Off</string>
     <string name="Send_LockTime_Hour">1 hour</string>
@@ -175,8 +240,37 @@
     <string name="Send_LockTime_Year">1 year</string>
     <string name="Send_Sending">Sending</string>
 
-    <string name="Send_ERC_Alert">Transaction fees for %s (ERC20) paid in Ethereum. You need %s ETH.</string>
     <string name="Send_Token_InsufficientFeeAlert">Transaction fees for %s (%s) paid in %s. You need %s.</string>
+
+    <!--Fee Info -->
+
+    <string name="FeeInfo_Title">Transaction Speed</string>
+    <string name="FeeInfo_Description">Both Bitcoin and Ethereum blockchains require users to pay usage fees while sending transactions on the blockchain.\n\nUnstoppable uses public fee estimate services to help user determine appropriate transaction fees for the moment. The fees are higher when there are a lot of transactions taking place and lower when the blockchain is less busy.</string>
+    <string name="FeeInfo_Slow">Slow</string>
+    <string name="FeeInfo_SlowDescription">Selecting a value from this range may result in transaction being pending for hours or being rejected entirely. The lower the value the longer it will take for the transaction to confirm.</string>
+    <string name="FeeInfo_Average">Average</string>
+    <string name="FeeInfo_AverageDescription">Typically, this fee range should be sufficient for transaction to be processed within minutes/hour for Bitcoin and within minutes for Ethereum.</string>
+    <string name="FeeInfo_Fast">Fast</string>
+    <string name="FeeInfo_FastDescription">For transactions where priority is important we recommend using high fee setting. It\'s expected that selecting high fee setting will be sufficient for transaction to be completed within 10 minutes for Bitcoin and within a few minutes for Ethereum.\n\nThe Unstoppable wallet makes an educated guess based on the network activity and can\'t not guarantee that the suggested fee values will always result in expected behavior.</string>
+
+    <!--Wallet Connect-->
+    <string name="WalletConnect_Title">Wallet Connect</string>
+    <string name="WalletConnect_Request">Request</string>
+    <string name="WalletConnect_Url">URL</string>
+    <string name="WalletConnect_Status">Status</string>
+    <string name="WalletConnect_SignedTransactions">Signed Transactions</string>
+    <string name="WalletConnect_Approve_Hint">By clicking connect, you allow this app to view your public address. This is important security step to protect your datat from potential phishing risks.</string>
+    <string name="WalletConnect_Ready_Hint">You can go to the browser. Do not close this page while interacting in the browser.</string>
+    <string name="WalletConnect_Error_InvalidUrl">Invalid URL Address</string>
+    <string name="WalletConnect_Requirement">Requirement</string>
+    <string name="WalletConnect_RequirementDescription">You need to add Ethereum or some ERC20 coin to balance tab in order to use WalletConnet.</string>
+    <string name="WalletConnect_Status_Offline">Offline</string>
+    <string name="WalletConnect_Status_Online">Online</string>
+    <string name="WalletConnect_Status_Connecting">Connecting…</string>
+
+    <!--EthereumTransaction-->
+    <string name="EthereumTransaction_Error_InsufficientBalance">Transaction requires %s for sending</string>
+    <string name="EthereumTransaction_Error_InsufficientBalanceForFee">Current ETH balance is below amount required to process this transaction including transaction fee.</string>
 
     <!--Swap-->
 
@@ -186,59 +280,78 @@
     <string name="Swap_AmountHint" translatable="false">0</string>
     <string name="Swap_Percent">%s%%</string>
     <string name="Swap_Estimated">ESTIMATED</string>
-    <string name="Swap_MaxButtonTitle">Max</string>
-    <string name="Swap_TokenSelectorTitle">Token</string>
+    <string name="Swap_TokenSelectorTitle">Select</string>
     <string name="Swap_Balance">Balance</string>
     <string name="Swap_Allowance">Allowance</string>
     <string name="Swap_Price">Price</string>
     <string name="Swap_PriceImpact">Price Impact</string>
-    <string name="Swap_MinimumReceived">Minimum Got</string>
-    <string name="Swap_MaximumSold">Maximum Paid</string>
+    <string name="Swap_MinimumReceived">Guaranteed Amount</string>
     <string name="Swap_SwapFee">Swap Fee</string>
-    <string name="Swap_TransactionSpeed">Transaction Speed</string>
-    <string name="Swap_TransactionFee">Transaction Fee</string>
+    <string name="Swap_EstimatedFee">Estimated Fee</string>
+    <string name="Swap_MaxFee">Max Fee</string>
+    <string name="Swap_Fee">Fee</string>
     <string name="Swap_ErrorInsufficientBalance">Insufficient balance</string>
-    <string name="Swap_ErrorInsufficientBalanceForFee">Transaction fees for swap paid in %s. You need %s.</string>
-    <string name="Swap_ErrorNoLiquidity">No Liquidity</string>
-    <string name="Swap_ErrorCouldNotFetchTrade">Could not fetch trade info</string>
-    <string name="Swap_ErrorCouldNotFetchAllowance">Could not fetch allowance info</string>
-    <string name="Swap_ErrorCouldNotFetchFee">Could not fetch fee info</string>
-    <string name="Swap_Proceed">Proceed</string>
+    <string name="Swap_ErrorInsufficientEthBalance">Current ETH balance is below amount required to process this transaction including transaction fee.</string>
+    <string name="Swap_ErrorNoLiquidity">Can\'t swap these tokens</string>
+    <string name="Swap_ErrorHighPriceImpact">High price impact</string>
+    <string name="Swap_Proceed">Next</string>
     <string name="Swap_Approve">Approve</string>
-    <string name="Swap_Approving">Approving</string>
+    <string name="Swap_Approving">Approving...</string>
     <string name="Swap_Swapping">Swapping</string>
+    <string name="Swap_MaximumPaid">Maximum Amount</string>
+    <string name="Swap_MinimumGot">Guaranteed Amount</string>
 
+    <!-- Swap Settings -->
+    <string name="SwapSettings_Title">Advanced Settings</string>
+    <string name="SwapSettings_SlippageTitle">Slippage Tolerance</string>
+    <string name="SwapSettings_SlippageDescription">Your Transaction will revert if the price change unfavorably by more than this percentage</string>
+    <string name="SwapSettings_DeadlineTitle">Transaction Deadline</string>
+    <string name="SwapSettings_DeadlineDescription">Your Transaction will revert if it is pending for more than this long</string>
+    <string name="SwapSettings_RecipientAddressTitle">Recipient Address</string>
+    <string name="SwapSettings_RecipientAddressDescription">After the exchange operation, the amount will be transferred to the specified address</string>
+    <string name="SwapSettings_Apply">Apply</string>
+    <string name="SwapSettings_DeadlineMinute">%s min</string>
+    <string name="SwapSettings_RecipientPlaceholder">Address or domain</string>
+
+    <string name="SwapSettings_Error_DeadlineZero">Zero Deadline</string>
+    <string name="SwapSettings_Error_SlippageZero">Zero Slippage</string>
+    <string name="SwapSettings_Error_SlippageTooLow">Your transaction is likely to fail.</string>
+    <string name="SwapSettings_Error_SlippageTooHigh">Max. allowed value is %s%%</string>
+    <string name="SwapSettings_Error_InvalidAddress">Invalid address</string>
+    <string name="SwapSettings_Error_InvalidSlippage">Invalid Slippage</string>
+    <string name="SwapSettings_Error_InvalidDeadline">Invalid Deadline</string>
+
+    <!-- Swap Confirmation -->
     <string name="Swap_Confirmation">Confirmation</string>
-    <string name="Swap_Confirmation_Pay">Pay %s</string>
-    <string name="Swap_Confirmation_Get">Get %s</string>
 
     <!--Swap Coin Select-->
 
-    <string name="SwapCoinSelect_Title">Choose Coin</string>
-
     <!--Approve-->
 
-    <string name="Approve_Title">Approve</string>
-    <string name="Approve_Subtitle">Swap</string>
-    <string name="Approve_FeeTitle">Fee</string>
-    <string name="Approve_TransactionSpeedTitle">Transaction Speed</string>
-    <string name="Approve_InsufficientFeeAlert">Transaction fees for approve paid in %s. You need %s.</string>
-    <string name="Approve_Info">You should grant a permission to a smart contract to execute the trade using your funds. This permission doesn\’t affect funds on your balance</string>
+    <string name="Approve_Title">Swap Approve</string>
+    <string name="Approve_Info">You should grant permission to a smart contract to swap given token on your behalf. This permission sets amount that can be used by a smart contract. It doesn\'t affect your balance but requires a small fee to execute approval transaction. \n\nWhile it may be done on demand before each trade, it\'s cheaper to approve higher amount in advance for us in future trades.</string>
+    <string name="Approve_Error_AlreadyApproved">You already have an allowance for this amount</string>
 
-    <!--Uniwwap Info -->
+    <!--Uniswap Info -->
 
     <string name="UniswapInfo_Title">Uniswap v.2</string>
-    <string name="UniswapInfo_Description">
-Uniswap is a fully decentralized protocol for automated liquidity provision on Ethereum.
-\n\nA simple formalized equation drives unstoppable liquidity for thousands of users and hundreds of applications.
-\n\nUniswap empowers developers, liquidity providers and traders to participate in a financial marketplace that is open and accessible to all.
-    </string>
-    <string name="UniswapInfo_MinReceivedTitle">Minimum Received</string>
-    <string name="UniswapInfo_MinReceivedDescription">Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.</string>
+    <string name="UniswapInfo_Description">This exchange service is powered by Uniswap, a decentralized token exchange protocol built on Ethereum blockchain.\n\nUniswap is fully automated and managed by smart contracts that facilitate token exchanges in a reliable manner without any means to cheat.</string>
+    <string name="UniswapInfo_UniswapRelated">Uniswap Related</string>
+    <string name="UniswapInfo_AllowanceTitle">Allowance</string>
+    <string name="UniswapInfo_AllowanceDescription">The amount of some currency that Uniswap can spend on your behalf when executing token swaps. Sufficient allowance is required before swap action can take place</string>
     <string name="UniswapInfo_PriceImpactTitle">Price Impact</string>
-    <string name="UniswapInfo_PriceImpactDescription">The difference between the market price and estimated price due to trade size.</string>
+    <string name="UniswapInfo_PriceImpactDescription">Expected price deviation from a shown price, typically increases with the swap amount.</string>
     <string name="UniswapInfo_SwapFeeTitle">Swap Fee</string>
-    <string name="UniswapInfo_SwapFeeDescription">A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive.</string>
+    <string name="UniswapInfo_SwapFeeDescription">A service fee for the swap action on Uniswap platform, shown in the currency the user sells. For most orders it should be either 0.3 % or 0.6 %.</string>
+    <string name="UniswapInfo_GuaranteedAmountTitle">Guaranteed Amount</string>
+    <string name="UniswapInfo_GuaranteedAmountDescription">The minimum amount a user is going to receive as a result of a swap action.</string>
+    <string name="UniswapInfo_MaxSpendTitle">Maximum Spend</string>
+    <string name="UniswapInfo_MaxSpendDescription">The maximum amount a user is going to spend as a result of a swap action.</string>
+    <string name="UniswapInfo_Other">Other</string>
+    <string name="UniswapInfo_TransactionFeeTitle">Transaction Fee</string>
+    <string name="UniswapInfo_TransactionFeeDescription">The estimated processing cost of the given transaction on Ethereum blockchain. Uniswap related transactions will typically cost more than generic token transfer transactions.</string>
+    <string name="UniswapInfo_TransactionSpeedTitle">Transaction Speed</string>
+    <string name="UniswapInfo_TransactionSpeedDescription">Transactions with higher transaction fee will result in faster processing speeds. The opposite is true as well.</string>
     <string name="UniswapInfo_UniswapSite">Uniswap Site</string>
 
     <!--Deposit-->
@@ -246,28 +359,29 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
     <string name="Deposit_Title">Receive %s</string>
     <string name="Deposit_Share">Share</string>
     <string name="Deposit_Your_Address">Your Address</string>
-    <string name="Deposit_Your_Account">Your Account</string>
 
     <!--Transactions-->
 
     <string name="Transactions_Title">Transactions</string>
     <string name="Transactions_FilterAll">ALL</string>
     <string name="Transactions_EmptyList">You don\’t have any pending or past transactions yet</string>
+    <string name="Transactions_Pending">Pending</string>
     <string name="Transactions_Receiving">Receiving</string>
     <string name="Transactions_Sending">Sending</string>
+    <string name="Transactions_Approving">Swap approval</string>
     <string name="Transactions_Failed">Failed</string>
 
     <!--Transaction Info-->
 
-    <string name="TransactionInfo_Title">Transaction</string>
+    <string name="TransactionInfo_Transaction">Transaction</string>
+    <string name="TransactionInfo_Approval">Swap Approval</string>
     <string name="TransactionInfo_Status">Status</string>
     <string name="TransactionInfo_Status_Confirmed">Confirmed</string>
     <string name="TransactionInfo_Id">ID</string>
     <string name="TransactionInfo_RawTransaction">Raw Transaction</string>
     <string name="TransactionInfo_To">To</string>
     <string name="TransactionInfo_From">From</string>
-    <string name="TransactionInfo_Time">Time</string>
-    <string name="TransactionInfo_ButtonVerify">Verify</string>
+    <string name="TransactionInfo_Memo">Memo</string>
     <string name="TransactionInfo_LockedUntil">Locked until %s</string>
     <string name="TransactionInfo_UnlockedAt">Unlocked at %s</string>
     <string name="TransactionInfo_RecipientHash">Recipient</string>
@@ -275,6 +389,16 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
     <string name="TransactionInfo_Fee">Fee</string>
     <string name="TransactionInfo_SentToSelfNote">The transaction sent to own address</string>
     <string name="TransactionInfo_DoubleSpendNote">Double Spend Risk!</string>
+    <string name="TransactionInfo_Input">Input</string>
+    <string name="TransactionInfo_ButtonViewOnExplorerName">View on %s</string>
+
+    <string name="StatusInfo_Pending">Pending</string>
+    <string name="StatusInfo_Confirmed">Confirmed</string>
+    <string name="StatusInfo_Failed">Failed</string>
+    <string name="StatusInfo_PendingDescription">Transaction has not been confirmed on the blockchain yet. This step can take anywhere from a few minutes to a few hours depending on the transaction fee. Transactions sent with a very low fee usually get processed within a few days or can be rejected by network i.e. no transaction took place.</string>
+    <string name="StatusInfo_ReceivingDescription">The sender has sent you a transaction but it\'s not final yet. For larger payments it\'s suggested to wait until the transaction status changes to \'completed\'. Usually this should happen within an hour but can take longer sometimes if the sender sent the transaction with a low fee.</string>
+    <string name="StatusInfo_ConfirmedDescription">Transaction is final and irreversible.</string>
+    <string name="StatusInfo_FailedDescription">Transaction did not get processed as intended and no token value transfer took place. On Ethereum blockchain failed transactions do consume transaction fees.</string>
 
     <!-- Info -->
 
@@ -286,61 +410,13 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
     <string name="Info_DoubleSpend_ThisTx">This Tx</string>
     <string name="Info_DoubleSpend_ConflictingTx">Conflicting Tx</string>
 
-    <!--Full Info-->
-
-    <string name="FullInfo_Title">Transaction</string>
-    <string name="FullInfo_Time">Time</string>
-    <string name="FullInfo_Block">Block</string>
-    <string name="FullInfo_Confirmations">Confirmations</string>
-    <string name="FullInfo_Inputs">Inputs</string>
-    <string name="FullInfo_Outputs">Outputs</string>
-    <string name="FullInfo_Size">Size</string>
-    <string name="FullInfo_Fee">Fee</string>
-    <string name="FullInfo_Rate">Rate</string>
-    <string name="FullInfo_Source">Source</string>
-    <string name="FullInfo_Contract">Contract</string>
-    <string name="FullInfo_From">From</string>
-    <string name="FullInfo_To">To</string>
-    <string name="FullInfo_Status">Status</string>
-    <string name="FullInfo_Memo" translatable="false">Memo</string>
-    <string name="FullInfo_CpuUsage" translatable="false">CPU Usage</string>
-    <string name="FullInfo_NetUsage" translatable="false">Net Usage</string>
-
-    <string name="FullInfo_GasLimit" translatable="false">Gas Limit</string>
-    <string name="FullInfo_GasUsed" translatable="false">Gas Used</string>
-    <string name="FullInfo_GasPrice" translatable="false">Gas Price</string>
-
-    <string name="FullInfo_Source_Title">Source</string>
-    <string name="FullInfo_Source_Online">Online</string>
-    <string name="FullInfo_Source_Offline">Offline</string>
-
-    <string name="FullInfo_Error_ProviderOffline">Offline</string>
-    <string name="FullInfo_Error_TransactionNotFound">Transaction can not be found on the blockchain</string>
-    <string name="FullInfo_Error_Retry">Retry</string>
-    <string name="FullInfo_Error_ChangeSource">Change Source</string>
-
-    <!--no used-->
-    <string name="FullInfo_Id">ID</string>
-    <string name="FullInfo_TotalInput">Total Input</string>
-    <string name="FullInfo_TotalOutput">Total Output</string>
-    <string name="FullInfo_FeePerByte">Fee per byte</string>
-    <string name="FullInfo_FeeRate">Fee Rate</string>
-    <string name="FullInfo_NoAddress">Empty Address</string>
-    <string name="FullInfo_SatByte" translatable="false">sat/B</string>
-    <string name="FullInfo_Bytes" translatable="false">Bytes</string>
-    <string name="FullInfo_SubtitleInputs">Inputs</string>
-    <string name="FullInfo_SubtitleOutputs">Outputs</string>
-    <string name="FullInfoEth_Nonce" translatable="false">Nonce</string>
-    <string name="FullInfoEth_Amount">Amount</string>
-
-
     <!--Guides-->
 
     <string name="Guides_Title">Academy</string>
 
-    <!--Guide-->
+    <!--Markdown-->
 
-    <string name="Guide_Error_NotFound">Guide not found</string>
+    <string name="Markdown_Error_NotFound">Page not found</string>
 
     <!--Settings-->
 
@@ -348,24 +424,30 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
     <string name="Settings_SecurityCenter">Security Center</string>
     <string name="Settings_Notifications">Notifications</string>
     <string name="Settings_ExperimentalFeatures">Experimental Features</string>
-    <string name="Settings_RestoreWallet">Restore Wallet</string>
     <string name="Settings_BaseCurrency">Base Currency</string>
     <string name="Settings_Language">Language</string>
     <string name="Settings_LightMode">Light Mode</string>
     <string name="Settings_Terms">Terms</string>
     <string name="Settings_ShareThisWallet">Tell Friends</string>
-    <string name="Settings_InfoTitleWithVersion" translatable="false">Unstoppable %s</string>
+    <string name="Settings_InfoTitleWithVersion" translatable="false">WILC Wallet %s</string>
     <string name="Settings_InfoSubtitle" translatable="false">decentralized app</string>
     <string name="Settings_CompanyName" translatable="false">horizontal systems</string>
-    <string name="Settings_Report">Contact</string>
+    <string name="Settings_Faq">FAQ</string>
+    <string name="Settings_Twitter" translatable="false">Twitter</string>
+    <string name="Settings_Telegram" translatable="false">Telegram</string>
+    <string name="Settings_Reddit" translatable="false">Reddit</string>
     <string name="Settings_AppStatus">App Status</string>
+    <string name="Settings_WalletConnect">Wallet Connect</string>
+    <string name="Settings_RateUs">Rate Us</string>
 
-    <string name="SettingsOption_Enabled">Enabled</string>
-    <string name="SettingsOption_Disabled">Disabled</string>
+    <string name="SettingsAboutApp_Title">About App</string>
+    <string name="SettingsAboutApp_Github" translatable="false">Github</string>
+    <string name="SettingsAboutApp_Site">Website</string>
+
     <string name="SettingsPrivacy_Info">This app doesn’t share any of your data. However, as it communicates with blockchains some public data like IP address can potentially be leaked. Use the info button on the top right to get detailed information about each section.</string>
     <string name="SettingsPrivacy_ConnectionSettingsTitle">Internet</string>
     <string name="SettingsPrivacy_CommunicationSettingsTitle">Blockchain Sync</string>
-    <string name="SettingsPrivacy_CommunicationDescription">Some blockchains do not yet provide means for mobile apps to operate in peer to peer manner. The communications with BTC, BCH, LTC, DASH blockchains is fully peer to peer.</string>
+    <string name="SettingsPrivacy_CommunicationDescription">Some blockchains do not yet provide means for mobile apps to operate in peer to peer manner.</string>
     <string name="SettingsPrivacy_WalletRestore">Blockchain Restore</string>
     <string name="SettingsPrivacy_WalletRestoreDescription">Select data source for restoring wallet with transactions.</string>
     <string name="SettingsPrivacy_Transactions">Blockchain Transactions</string>
@@ -375,23 +457,20 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
     <string name="SettingsPrivacy_Info_Details">Below you will find detailed explanation of the privacy settings that are available in the app. It\'s safe to consider them as settings for those that require extensive privacy.</string>
     <string name="SettingsPrivacy_Info_BlockchainTx_Title">Blockchain Transactions</string>
     <string name="SettingsPrivacy_Info_BlockchainTx_Description">This setting controls the privacy level of user\'s transactions on Bitcoin, Bitcoin Cash and Litecoin blockchains.
-        \n\nMost Bitcoin transactions generate two outputs. One output is the amount that goes to the receiver and the other is the change output that is returned to the sender. The way most wallets construct transactions makes it easy for a third party monitoring Bitcoin blockchain to understand which of the outputs went to the receiving party and which one was the change returned to the sender. The output returned to the sender can then be used in future transactions and further reveal the details to the monitoring party.
-        \n\nUnstoppable wallet implements measures to makes it significantly harder to figure out which output goes where. There are two options available to Unstoppable users:
-        \n\na) Shuffle : The order of transaction outputs are randomized on every transaction. Sometimes change can be the first output, sometimes it can be the second. If a user trusts the developer of the app, then this is regarded as the recommended option.
-        \n\nb) Deterministic : There is a commonly agreed standard for ordering transaction outputs (known as BIP69). In open source wallets that standard ensures that wallet users do not need to trust how developers of the app implement the ordering of the outputs. As this standard is new, not many wallets have implemented it yet. As a result, it\'s somewhat possible to see on the blockchain whether transaction was sent from the wallet that uses that standard or not.</string>
+        \n\nMost Bitcoin transactions generate two outputs. One output is the amount that goes to the receiver and the other is the change output that is returned to the sender. The way most wallets construct transactions makes it easy for a third party monitoring Bitcoin blockchain to understand which of the outputs went to the receiving party and which one was the change amount returned to the sender. The output returned to the sender can then be used in future transactions and further reveal the details to the monitoring party.
+        \n\nWILC Wallet implements measures to makes it significantly harder to figure out which output goes where. There are two options available to WILC Wallet users:
+        \n\n1. Shuffle : The order of transaction outputs are randomized on every transaction. Sometimes change can be the first output, sometimes it can be the second. If a user trusts the developer of the app, than consider this a recommended option.
+        \n\n2. Deterministic : There is a commonly agreed standard for ordering transaction outputs (known as BIP69). In open source wallets that standard ensures that wallet users do not need to trust how developers of the app implement the ordering of the outputs. As this standard is new, not many wallets have implemented it yet. As a result, it\'s somewhat possible to see on the blockchain whether transaction was sent from the wallet that uses that standard or not.</string>
     <string name="SettingsPrivacy_Info_BlockchainConnection_Title">Blockchain Sync</string>
     <string name="SettingsPrivacy_Info_BlockchainConnection_Description">This setting controls how this app interacts with blockchains (sending/receiving transactions). In case of Bitcoin, Bitcoin Cash, Litecoin and Dash it is fully peer to peer. The app pings many nodes and communicates with them. Potentially these nodes can record IP address and data requested but since they are chosen randomly, each time the app connects to a different node.
-        \n\nIn case of Ethereum, there is no alternative for mobile wallets to interact with blockchain other than via third party service providers (i.e. Infura.io) or personal Ethereum nodes. Third party services can potentially record IP addresses and the requests made. That info can reveal location, balance, transactions etc. Moreover, the wallet has to trust that information returned is correct. There is a an alternative known as Incubed which in essence is a network of special Ethereum nodes. These nodes can also record IP addresses and requests made, but they are chosen randomly each time. While being slightly slower than Infura, the way Incubed works pretty much guarantees that the information returned is correct (not fake).
+        \n\nIn case of Ethereum, there is no alternative for mobile wallets to interact with blockchain other than via third party providers (i.e. Infura.io) or personal Ethereum nodes. Third party services can potentially record IP addresses and the requests made. That info can reveal location, balance, transactions etc. Moreover, the wallet has to trust that information returned is correct. There is a an alternative known as Incubed which in essence is a network of special Ethereum nodes. These nodes can also record IP addresses and requests made, but they are chosen randomly each time. While being slightly slower than Infura, the way Incubed works pretty much guarantees that the information returned is correct (not fake).
         \n\nWhen it comes to other blockchains like EOSIO and Binance Chain, at this point they only provide centralized means of connecting, without viable alternatives. Potentially they can be recording IP addresses and requests made.</string>
     <string name="SettingsPrivacy_Info_BlockchainRestore_Title">Blockchain Restore</string>
-    <string name="SettingsPrivacy_Info_BlockchainRestore_Description">This setting is only relevant when restoring an existing wallet. It is a process of getting transactions history for a given coin so that the wallet app is able to display past transactions and figure out latest balance. This needs to happen only once, when user restores previously created wallet. At this point there are two potential ways for a mobile wallet like Unstoppable to do this:
-        \n\na) from API Server : There is a predefined server which hosts the entire blockchain and has all the data processed and ready to provide it in a fast manner. This method is fast but can potentially keep track of the IP addresses and the data requested. This option is recommended due to its speed of getting data (5-10 minutes). The risks are minimal. If the user restoring from his own server then no privacy risks at all.
-        \n\nb) from Blockchain : In this case the app tries to restore directly from a p2p network of the blockchain nodes. The app pings many of those nodes and requests data from them. Potentially these nodes can keep track of user\'s IP address and requests made however during restore the app can switch between nodes. There are close to 10,000 Bitcoin nodes on the network at any given time. This option is slow and can easily take 2-3 hours, app needs to be open while restore is happening.</string>
+    <string name="SettingsPrivacy_Info_BlockchainRestore_Description">This setting is only relevant when restoring an existing wallet. It is a process of getting transactions history for a given coin so that the wallet app is able to display past transactions and calculate user\'s balance. This needs to happen only once, when user restores previously created wallet. At this point there are two potential ways for a mobile wallet like WILC Wallet to do this:
+        \n\n1. from API Server : There is a third-party predefined server which hosts the entire blockchain and has all the data processed and ready to provide it in a fast manner. This method is fast but can potentially keep track of the IP addresses and the data requested. This option is recommended due to its speed of getting data (5-10 minutes). The risks are minimal. If the user restoring from his own server then no privacy risks at all.
+        \n\n2. from Blockchain : In this case the app tries to restore directly from a p2p network of the blockchain nodes. The app pings many of those nodes and requests data from them. Potentially these nodes can keep track of user\'s IP address and requests made however during restore the app can switch between nodes. There are close to 10,000 Bitcoin nodes on the network at any given time. This option is slow and can easily take 2-3 hours, app needs to be open while restore is happening...</string>
 
     <!--Settings-->
-
-    <string name="Settings_Error_FingerprintNotEnabled">Fingerprint Not Enabled</string>
-    <string name="Settings_Error_NoFingerprintAddedYet">Fingerprint access is not enabled on this device. It can be activated in security section of Android settings.</string>
 
     <!--Setting_Security-->
 
@@ -401,14 +480,12 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
     <string name="SettingsSecurity_EnablePin">Passcode</string>
     <string name="SettingsSecurity_EditPin">Edit Passcode</string>
     <string name="SettingsSecurity_ManageKeys">Manage Wallets</string>
-    <string name="SettingsSecurity_BackupWallet">Backup Wallet</string>
-    <string name="SettingsSecurity_EnableTor">Enable Tor</string>
-    <string name="SettingsSecurity_AppRestartWarning">This action will restart Unstoppable Wallet.</string>
+    <string name="SettingsSecurity_AppRestartWarning">This action will restart WILC Wallet.</string>
     <string name="SettingsSecurity_TorConnectionDescription">Fully anonymize your internet traffic while using this app. Can be slow.</string>
-    <string name="SettingsSecurity_NotificationsDisabledWarning">The notifications for Unstoppable Wallet app are disabled. You need to turn them on in order for Tor to work.</string>
+    <string name="SettingsSecurity_NotificationsDisabledWarning">The notifications for WILC Wallet app are disabled. You need to turn them on in order for Tor to work.</string>
     <string name="SettingsSecurity_SortingShuffle">Shuffle</string>
     <string name="SettingsSecurity_SortingShuffleDescription">Random Indexing</string>
-    <string name="SettingsSecurity_SortingBip69">BIP69</string>
+    <string name="SettingsSecurity_SortingBip69">Deterministic BIP69</string>
     <string name="SettingsSecurity_SortingBip69Description">Lexicographical Indexing</string>
     <string name="SettingsSecurity_SyncModeAPI">API</string>
     <string name="SettingsSecurity_SyncModeAPIDescription">Recommended</string>
@@ -417,42 +494,41 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
 
     <!--Setting_Terms-->
 
-    <string name="SettingsTerms_AppTitle">Unstoppable</string>
+    <string name="SettingsTerms_AppTitle">WILC Wallet</string>
     <string name="SettingsTerms_Subtitle" translatable="false">Decentralized App</string>
     <string name="SettingsTerms_Github">Github</string>
     <string name="SettingsTerms_Site">Site</string>
-    <string name="SettingsTerms_Text">The Unstoppable wallet is built for those looking to invest and store cryptocurrencies in a private and independent manner.
+    <string name="SettingsTerms_Text">The WILC Wallet is built for those looking to invest and store cryptocurrencies in a private and independent manner.
 \n\nIt\'s a non-custodial, peer-to-peer wallet where only the user has control over funds. It doesn\'t collect any data and keeps user independent by not locking his/her wallet to a specific wallet app.
-\n\nThe Unstoppable wallet is fully open-source and anyone can confirm that the app works exactly as it claims to.
-\n\nWe built Unstoppable for ourselves as the available solutions were not up to par. Both from engineering and usability perspective we believe this wallet to be significantly ahead of alternative products.</string>
+\n\nThe WILC Wallet is fully open-source and anyone can confirm that the app works exactly as it claims to.
+\n\nWe built WILC Wallet for ourselves as the available solutions were not up to par. Both from engineering and usability perspective we believe this wallet to be significantly ahead of alternative products.</string>
     <string name="SettingsTerms_TermAcademy">I went through the Academy section of this app and got familiar with the fundamental aspects of storing cryptocurrencies.</string>
     <string name="SettingsTerms_TermBackup">I have backed up the private key(s) for my wallets that were shown to me in a form of 12-24 words. I understand that these private keys are stored on my smartphone and not elsewhere.</string>
     <string name="SettingsTerms_TermOwner">I understand that only the owner of my private key(s) can access and spend funds on my wallet and therefore these keys should never be shared with anyone.</string>
-    <string name="SettingsTerms_TermRecover">I understand that I will need my private keys in order to restore access to my funds should I loose my phone or if the app malfunctions. Without my private keys it will be impossible to recover access to my wallet.</string>
+    <string name="SettingsTerms_TermRecover">I understand that I will need my private keys in order to restore access to my funds should I lose my phone or if the app malfunctions. Without my private keys it will be impossible to recover access to my wallet.</string>
     <string name="SettingsTerms_TermPhone">I understand that passing my phone to untrusted entities or leaving the wallet app without safe PIN lock may potentially endanger the safety of my funds.</string>
     <string name="SettingsTerms_TermRoot">I understand that jail breaking (rooting) my phone, installing third party apps from unknown sources, keeping the operating system outdated can potentially endanger the safety of my funds.</string>
     <string name="SettingsTerms_TermBugs">I understand there may be undiscovered software issues in the code powering this wallet app which may lead to unexpected behavior or the app malfunctioning.</string>
+    <string name="Settings_TermsPin">I understand that disabling the phone unlock PIN (or its equivalent) in Settings of Android OS will erase wallet private keys from my device.I will need my private keys to regain access to my wallet.</string>
     <string name="SettingsTerms_BottomThankYou">Thank you \nfor choosing \nthis wallet!</string>
 
 
     <!--Setting_Tell Friends-->
 
     <string name="SettingsShare_Title">Share</string>
-    <string name="SettingsShare_Text">Unstoppable Wallet - a crypto wallet I recommend</string>
+    <string name="SettingsShare_Text">WILC Wallet - a crypto wallet I recommend</string>
 
     <!--Setting_Contact-->
 
     <string name="SettingsContact_Title">Contact</string>
-    <string name="SettingsContact_Email">E-mail</string>
-    <string name="SettingsContact_Telegram">Telegram</string>
 
     <!--Setting_Notifications-->
 
     <string name="SettingsNotifications_Description">Set price change alerts for the coins you would like to watch.\n\nYou will be alerted when the change in price for the last 24 hours exceeds selected threshold.\n\nPrice Trend Alert warns of a trend change for the short 1 week, for the long 6 month.</string>
-    <string name="SettingsNotifications_NotificationsDisabledWarning">The notifications for Unstoppable Wallet app are disabled. You need to turn them on in order to be able to receive price change alerts.</string>
+    <string name="SettingsNotifications_NotificationsDisabledWarning">The notifications for WILC Wallet app are disabled. You need to turn them on in order to be able to receive price change alerts.</string>
     <string name="SettingsNotifications_TurnOn">Turn on in Settings</string>
     <string name="SettingsNotifications_Off">Off</string>
-    <string name="SettingsNotifications_DeactivateAll">Deactivate All</string>
+    <string name="SettingsNotifications_DeactivateAll">Reset All</string>
     <string name="SettingsNotifications_PushNotification">Push Notification</string>
 
     <string name="Notification_Title">Notifications</string>
@@ -473,32 +549,25 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
 
     <!--Errors-->
 
-    <string name="Error_UnsupportedBlockchain">Unsupported currency</string>
-    <string name="Eos_Backend_Error_SelfTransfer">Can\'t transfer token to own account</string>
-    <string name="Eos_Backend_Error_AccountNotExist">Target account does not exist</string>
-    <string name="Eos_Backend_Error_InsufficientRam">Your EOS account doesn\'t have enough RAM to send this token. You need to increase RAM stake to proceed.</string>
     <string name="Binance_Backend_Error_MemoRequired">Receiver requires non-empty memo in transfer transaction</string>
     <string name="Binance_Backend_Error_RequiresDigits">Requires the memo to contain only digits</string>
 
     <!--Hud texts-->
 
-    <string name="Hud_Text_Unlock">Unlock</string>
     <string name="Hud_Text_Success">Success</string>
     <string name="Hud_Text_Done">Done</string>
-    <string name="Hud_Text_Error">Error</string>
     <string name="Hud_Text_NoInternet">No Internet</string>
     <string name="Hud_Text_Copied">Copied</string>
-    <string name="Hud_Text_InvalidPinError">Incorrect Passcode</string>
-    <string name="Hud_Network_Issue">Network issues. Try again in a short moment</string>
+    <string name="Hud_Text_EmailAddressCopied">Email address copied</string>
     <string name="Hud_UnknownError">%s</string>
 
     <!--Manage Coins-->
 
     <string name="ManageCoins_title">Choose Coins</string>
-    <string name="ManageCoins_save">Save</string>
+    <string name="ManageCoins_Search">Search</string>
     <string name="ManageCoins_AddToken">Add Token</string>
     <string name="ManageCoins_Alert_CantCreateTitle">%s Wallet</string>
-    <string name="ManageCoins_Alert_CantCreateDescription">At this point Unstoppable is not able to create new %s wallets. You\'re only able to restore the existing one.</string>
+    <string name="ManageCoins_Alert_CantCreateDescription">At this point WILC Wallet is not able to create new %s wallets. You\'re only able to restore the existing one.</string>
 
     <!-- Experimental Feature -->
 
@@ -510,7 +579,7 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
 
     <string name="BitcoinHodling_Title">TimeLock</string>
     <string name="BitcoinHodling_LockTime" translatable="false">Activate</string>
-    <string name="BitcoinHodling_Description">Enables you to send Bitcoins that can not be spent until specified date.\n\nThe receiver of such transaction should use Unstoppable wallet app version 0.10 or newer with BIP44 address format for the Bitcoin.\n\nOnly Unstoppable wallet can correctly identify such transactions on Bitcoin network as well as enable receiver to spend those Bitcoins after the lock period expires.\n\nIf you’re a HODLer, you may use this feature to force yourself into hodling your Bitcoins by sending such transaction to yourself.\n\nBeing an experimental feature the maximum amount per transaction is limited to 0.5 BTC.</string>
+    <string name="BitcoinHodling_Description">Enables you to send Bitcoins that can not be spent until specified date.\n\nThe receiver of such transaction should use WILC Wallet app version 0.10 or newer with BIP44 address format for the Bitcoin.\n\nOnly WILC Wallet can correctly identify such transactions on Bitcoin network as well as enable receiver to spend those Bitcoins after the lock period expires.\n\nIf you’re a HODLer, you may use this feature to force yourself into hodling your Bitcoins by sending such transaction to yourself.\n\nBeing an experimental feature the maximum amount per transaction is limited to 0.5 BTC.</string>
 
     <!--Manage Keys-->
 
@@ -518,7 +587,6 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
     <string name="ManageKeys_AddressFormat">Address Format</string>
     <string name="ManageKeys_Create">Create</string>
     <string name="ManageKeys_Restore">Restore</string>
-    <string name="ManageKeys_Delete">Delete</string>
     <string name="ManageKeys_Backup">Backup</string>
     <string name="ManageKeys_Show">Show Key</string>
     <string name="ManageKeys_Unlink">Delete</string>
@@ -538,26 +606,44 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
     <string name="AddCoin_Title">Add %s</string>
     <string name="AddCoin_Subtitle">%s Wallet</string>
     <string name="AddCoin_Description">You need to set up %1$s wallet to be able to send or receive %2$s.\n\nUse the Create button below to set up a new %3$s wallet, or Restore button to import the existing one.\n\nYou will be able to use this wallet for: %4$s.</string>
-    <string name="AddCoin_CreationNotSupportedDescription">You need to set up %1$s wallet to be able to send or receive %2$s.\n\nAt this point Unstoppable is not able to create new %3$s wallet. You’re only able to restore the existing one.\n\nYou will be able to use this wallet for: %4$s.</string>
+    <string name="AddCoin_CreationNotSupportedDescription">You need to set up %1$s wallet to be able to send or receive %2$s.\n\nAt this point WILC Wallet is not able to create new %3$s wallet. You’re only able to restore the existing one.\n\nYou will be able to use this wallet for: %4$s.</string>
     <string name="AddCoin_CreateKey">Create</string>
     <string name="AddCoin_RestoreKey">Restore</string>
 
     <!-- Add Token Dialog-->
     <string name="AddTokenDialog_Title">Choose Blockchain</string>
     <string name="AddTokenDialog_Subtitle">Adding Token</string>
-    <string name="AddTokenDialog_Erc20Tokens">ERC 20 Tokens</string>
-    <string name="AddTokenDialog_EosTokens">EOS Tokens</string>
-    <string name="AddTokenDialog_BinanceTokens">Binance Tokens</string>
+    <string name="AddTokenDialog_Erc20Tokens">ERC20 Tokens</string>
+    <string name="AddTokenDialog_BinanceTokens">BEP2 Tokens</string>
+
+    <!-- Enable Token -->
+    <string name="EnalbeToken_Title">Enable Token</string>
+    <string name="EnalbeToken_Description">Enable all %s coins that have any balance</string>
+    <string name="EnalbeToken_Enabling">Enabling</string>
+    <string name="EnalbeToken_EnabledCoins">Enabled %d coins</string>
+    <string name="EnalbeToken_NoCoins">No coins found with balance</string>
+    <string name="EnalbeToken_EnableKey">Enable</string>
+
+    <!-- Add Token -->
+    <string name="AddToken_CoinName">Coin Name</string>
+    <string name="AddToken_Symbol">Symbol</string>
+    <string name="AddToken_Decimals">Decimals</string>
+    <string name="AddToken_Dots">…</string>
+
+    <string name="AddToken_CoinAlreadyInListWarning">This token is already in the coin manager list</string>
+    <string name="AddToken_InvalidAddressError">Invalid Address</string>
+    <string name="AddToken_ApiLimitExceeded">Api limit exceeded. Try again later.</string>
 
     <!-- Add Erc20 Token -->
     <string name="AddErc20Token_Title">Add ERC20</string>
-    <string name="AddErc20Token_CoinName">Coin Name</string>
-    <string name="AddErc20Token_Symbol">Symbol</string>
-    <string name="AddErc20Token_Decimals">Decimals</string>
-    <string name="AddErc20Token_Dots">…</string>
-    <string name="AddErc20Token_ContractAddressHint">Contract  Address</string>
-    <string name="AddErc20Token_CoinAlreadyInListWarning">This token is already in the coin manager list</string>
-    <string name="AddErc20Token_InvalidAddressError">Invalid Address</string>
+    <string name="AddErc20Token_ContractAddressHint">Contract Address</string>
+    <string name="AddErc20Token_ContractNotFound">Contract not found</string>
+
+    <!-- Add Bep2 Token -->
+    <string name="AddBep2Token_Title">Add BEP2</string>
+    <string name="AddBep2Token_TokenSymbolHint">Token Symbol</string>
+    <string name="AddBep2Token_TokenNotFound">Token Not Found</string>
+
 
     <!-- Address Format Settings List -->
 
@@ -571,64 +657,55 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
     <string name="BlockchainSettings_SyncModeChangeAlert_Title">Restore Source</string>
     <string name="BlockchainSettings_SyncModeChangeAlert_Content">After this change the wallet will have to resync itself with the %s blockchain.</string>
     <string name="BlockchainSettings_CommunicationModeChangeAlert_Title">Communication</string>
-    <string name="BlockchainSettings_SyncMode_Blockchain">Blockchain</string>
-    <string name="BlockchainSettings_SyncMode_Api">API</string>
-    <string name="BlockchainSettings_CoinSettings">%s Settings</string>
+    <string name="CoinSettings_BitcoinCashCoinType_Type0_Title">Legacy</string>
+    <string name="CoinSettings_BitcoinCashCoinType_Type145_Title">New</string>
+    <string name="CoinSettings_BitcoinCashCoinType_Type0_Description">Older wallets (before Aug 2017)</string>
+    <string name="CoinSettings_BitcoinCashCoinType_Type145_Description">Newer wallets</string>
 
     <!-- Tor -->
 
+    <string name="Tor_Title">Tor</string>
+    <string name="Tor_Connection_Title">Connection</string>
     <string name="Tor_Status_Starting">Starting Tor...</string>
     <string name="Tor_Status_Error">Error starting Tor !</string>
     <string name="TorPage_Connecting">Connecting…</string>
     <string name="TorPage_Connected">Connected</string>
     <string name="TorPage_Failed">Failed</string>
     <string name="TorPage_ConnectionClosed">Disconnected</string>
-    <string name="TorPage_Title">TOR Network</string>
     <string name="Tor_PrerequisitesAlert_Content">Activating TOR will reset Ethereum blockchain connection back to Infura.</string>
 
 
     <!-- Account Types -->
 
     <string name="AccountType_Unstoppable">Standard</string>
-    <string name="AccountType_Unstoppable_Text" translatable="false">BTC, LTC, BCH, DASH, ETH, ERC20 tokens</string>
-    <string name="AccountType_Eos" translatable="false">EOS</string>
-    <string name="AccountType_Eos_Text" translatable="false">EOS, EOSIO tokens</string>
+    <string name="AccountType_Unstoppable_Text" translatable="false">ETH, ERC20 tokens</string>
     <string name="AccountType_Binance" translatable="false">Binance</string>
     <string name="AccountType_Binance_Text" translatable="false">BNB, BEP2 tokens</string>
+    <string name="AccountType_Zcash" translatable="false">Zcash</string>
+    <string name="AccountType_Zcash_Text" translatable="false">ZEC</string>
 
     <!--Coin Option-->
 
-    <string name="CoinOption_Title">Restore Options</string>
-    <string name="CoinOption_Fast" translatable="false">API</string>
-    <string name="CoinOption_Fast_Subtitle">0–2 hours (Recommended)</string>
-    <string name="CoinOption_RestoreSource">API source link: \n%s</string>
-    <string name="CoinOption_Slow" translatable="false">Blockchain</string>
-    <string name="CoinOption_Slow_Subtitle">1–24 hours</string>
-    <string name="CoinOption_AddressFormatTitle">Address format</string>
-    <string name="CoinOption_SyncModeTitle">Restore Source</string>
-    <string name="CoinOption_bip44_Subtitle">Older (starts with %s)</string>
-    <string name="CoinOption_bip49_Subtitle">Popular (starts with %s)</string>
-    <string name="CoinOption_bip84_Subtitle">Newest (starts with %s)</string>
+    <string name="CoinOption_bip44_Subtitle">Older (starts with %s...)</string>
+    <string name="CoinOption_bip49_Subtitle">Popular (starts with %s...)</string>
+    <string name="CoinOption_bip84_Subtitle">Newest (starts with %s...)</string>
 
     <!--Charts-->
 
-    <string name="Charts_TimeDuration_Day">1D</string>
+    <string name="Charts_TimeDuration_Today">TDY</string>
+    <string name="Charts_TimeDuration_Day">24H</string>
     <string name="Charts_TimeDuration_Week">7D</string>
     <string name="Charts_TimeDuration_Month">1M</string>
     <string name="Charts_TimeDuration_TwoWeeks">2W</string>
     <string name="Charts_TimeDuration_Month3">3M</string>
-    <string name="Charts_TimeDuration_Quartal">3M</string>
     <string name="Charts_TimeDuration_HalfYear">6M</string>
     <string name="Charts_TimeDuration_Year">1Y</string>
     <string name="Charts_TimeDuration_Year2">2Y</string>
 
-    <string name="Charts_Title">%s Price</string>
-    <string name="Charts_Rate_High">%s High</string>
-    <string name="Charts_Rate_Low">%s Low</string>
-    <string name="Charts_MarketCap">MCap</string>
-    <string name="Charts_Volume24">Vol (24h)</string>
-    <string name="Charts_inCirculation">In Circ</string>
-    <string name="Charts_TotalSupply">Total</string>
+    <string name="Charts_MarketCap">Market Cap</string>
+    <string name="Charts_Volume24">Volume (24h)</string>
+    <string name="Charts_inCirculation">In Circulation</string>
+    <string name="Charts_TotalSupply">Total Supply</string>
     <string name="Charts_StartDate">Launch Date</string>
     <string name="Charts_Website">Project Website</string>
     <string name="Charts_CryptoCompare" translatable="false">\@CryptoCompare.com</string>
@@ -640,22 +717,23 @@ Uniswap is a fully decentralized protocol for automated liquidity provision on E
     <string name="Charts_MarketCap_Billion">B</string>
     <string name="Charts_MarketCap_Trillion">T</string>
     <string name="Charts_Volume">Vol</string>
-    <string name="Charts_Price">Price</string>
     <string name="Charts_Error_NotAvailable">Chart not available</string>
     <string name="Charts_LatestNews">Latest News</string>
+    <string name="Charts_Favorite">Favorite</string>
+    <string name="Charts_Unfavorite">Unfavorite</string>
 
     <!--Rate list-->
 
     <string name="RateList_portfolio">Portfolio</string>
     <string name="RateList_top100">Top 100</string>
     <string name="RateList_Rank">Rank</string>
-    <string name="RateList_TopWinners">Top Winners</string>
+    <string name="RateList_TopGainers">Top Gainers</string>
     <string name="RateList_TopLosers">Top Losers</string>
+    <string name="RateList_TopByVolume">Top by Volume</string>
 
     <!-- Balance Sync Error -->
 
     <string name="BalanceSyncError_Title">Sync Error</string>
-    <string name="BalanceSyncError_Description">The error text will be copied to your clipboard should you decide to report it.</string>
     <string name="BalanceSyncError_ButtonRetry">Retry</string>
     <string name="BalanceSyncError_ButtonChangeSource">Change Source</string>
     <string name="BalanceSyncError_ButtonReport">Report</string>

@@ -12,7 +12,7 @@ import javax.crypto.SecretKey
 
 interface ICoreApp {
     var preferences: SharedPreferences
-    var appConfigTestMode: IAppConfigTestMode
+    var buildConfigProvider: IBuildConfigProvider
     var languageConfigProvider: ILanguageConfigProvider
     var backgroundManager: BackgroundManager
     var encryptionManager: IEncryptionManager
@@ -24,7 +24,7 @@ interface ICoreApp {
     var pinComponent: IPinComponent
     var pinStorage: IPinStorage
     var themeStorage: IThemeStorage
-
+    var thirdKeyboardStorage: IThirdKeyboard
     var instance: CoreApp
 }
 
@@ -34,8 +34,9 @@ interface IEncryptionManager {
     fun getCryptoObject(): BiometricPrompt.CryptoObject?
 }
 
-interface IAppConfigTestMode {
+interface IBuildConfigProvider {
     val testMode: Boolean
+    val skipRootCheck: Boolean
 }
 
 interface ILanguageConfigProvider {
@@ -94,6 +95,10 @@ interface IPinStorage {
 
 interface IThemeStorage {
     var isLightModeOn: Boolean
+}
+
+interface IThirdKeyboard {
+    var isThirdPartyKeyboardAllowed: Boolean
 }
 
 interface IKeyStoreManager {

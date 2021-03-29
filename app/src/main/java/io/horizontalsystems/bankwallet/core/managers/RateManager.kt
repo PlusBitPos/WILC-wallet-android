@@ -1,9 +1,9 @@
 package io.horizontalsystems.bankwallet.core.managers
 
 import android.content.Context
-import io.horizontalsystems.bankwallet.core.IRateCoinMapper
-import io.horizontalsystems.bankwallet.core.IRateManager
-import io.horizontalsystems.bankwallet.core.IWalletManager
+import io.horizontalsystems.bankwallet.core.*
+import io.horizontalsystems.bankwallet.core.providers.FeeCoinProvider
+import io.horizontalsystems.bankwallet.entities.CoinType.*
 import io.horizontalsystems.bankwallet.entities.Wallet
 import io.horizontalsystems.core.ICurrencyManager
 import io.horizontalsystems.xrateskit.XRatesKit
@@ -18,17 +18,17 @@ class RateManager(
         context: Context,
         walletManager: IWalletManager,
         private val currencyManager: ICurrencyManager,
-        private val rateCoinMapper: IRateCoinMapper) : IRateManager {
+        private val rateCoinMapper: IRateCoinMapper,
+        private val feeCoinProvider: FeeCoinProvider,
+        private val appConfigProvider: IAppConfigProvider) : IRateManager {
 
     private val disposables = CompositeDisposable()
-    private val coinMarketCapApiKey = "f33ccd44-6545-4cbb-991c-4584b9501251"
     private val kit: XRatesKit by lazy {
         XRatesKit.create(
                 context,
                 currencyManager.baseCurrency.code,
                 rateExpirationInterval = 60 * 10,
-                topMarketsCount = 100,
-                coinMarketCapApiKey = coinMarketCapApiKey
+                cryptoCompareApiKey = appConfigProvider.cryptoCompareApiKey
         )
     }
 
@@ -52,9 +52,8 @@ class RateManager(
                 }
     }
 
-    override fun set(coins: List<String>) {
-        val convertedCoins = coins.mapNotNull { rateCoinMapper.convert(it) }
-        kit.set(convertedCoins)
+    override fun set(coins: List<io.horizontalsystems.bankwallet.entities.Coin>) {
+        kit.set(mapCoinForXRates(coins))
     }
 
     override fun marketInfo(coinCode: String, currencyCode: String): MarketInfo? {
@@ -111,8 +110,16 @@ class RateManager(
         return kit.cryptoNews(coinCode)
     }
 
-    override fun getTopMarketList(currency: String): Single<List<TopMarket>> {
-        return kit.getTopMarkets(currency)
+    override fun getTopMarketList(currency: String, itemsCount: Int): Single<List<CoinMarket>> {
+        return kit.getTopCoinMarketsAsync(currency, itemsCount = itemsCount)
+    }
+
+    override fun getCoinMarketList(coinCodes: List<String>, currency: String): Single<List<CoinMarket>> {
+        return kit.getCoinMarketsAsync(coinCodes, currency)
+    }
+
+    override fun getGlobalMarketInfoAsync(currency: String): Single<GlobalCoinMarket> {
+        return kit.getGlobalCoinMarketsAsync(currency)
     }
 
     override fun refresh() {
@@ -120,16 +127,39 @@ class RateManager(
     }
 
     private fun onWalletsUpdated(wallets: List<Wallet>) {
-        kit.set(wallets.mapNotNull { rateCoinMapper.convert(it.coin.code) })
+        val feeCoins = wallets.mapNotNull { feeCoinProvider.feeCoinData(it.coin)?.first }
+        val coins = wallets.map { it.coin }
+        val uniqueCoins = (feeCoins + coins).distinct()
+        kit.set(mapCoinForXRates(uniqueCoins))
+    }
+
+    private fun mapCoinForXRates(coins: List<io.horizontalsystems.bankwallet.entities.Coin>): List<Coin> {
+        return coins.mapNotNull { coin ->
+            val coinType = coin.type
+            rateCoinMapper.convert(coin.code)?.let {
+                Coin(coin.code, coin.title, convertCoinTypeToXRateKitCoinType(coinType))
+            }
+        }
+    }
+
+    private fun convertCoinTypeToXRateKitCoinType(coinType: io.horizontalsystems.bankwallet.entities.CoinType): CoinType {
+        return when (coinType) {
+            is Bitcoin -> CoinType.Bitcoin
+            is BitcoinCash -> CoinType.BitcoinCash
+            is Dash -> CoinType.Dash
+            is Ethereum -> CoinType.Ethereum
+            is Litecoin -> CoinType.Litecoin
+            is Zcash -> CoinType.Zcash
+            is Binance -> CoinType.Binance
+            is Erc20 -> CoinType.Erc20(coinType.address)
+        }
     }
 
     private fun onBaseCurrencyUpdated() {
         kit.set(currencyManager.baseCurrency.code)
     }
 
-
     sealed class RateError : Exception() {
         class DisabledCoin : RateError()
     }
-
 }

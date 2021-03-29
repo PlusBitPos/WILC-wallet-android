@@ -1,7 +1,5 @@
 package io.horizontalsystems.bankwallet.modules.settings.security
 
-import android.app.Activity
-import android.content.Intent
 import io.horizontalsystems.bankwallet.core.App
 
 object SecuritySettingsModule {
@@ -38,10 +36,6 @@ object SecuritySettingsModule {
         fun showSetPin()
         fun showUnlockPin()
         fun openPrivacySettings()
-    }
-
-    fun start(activity: Activity) {
-        activity.startActivity(Intent(activity, SecuritySettingsActivity::class.java))
     }
 
     fun init(view: SecuritySettingsViewModel, router: ISecuritySettingsRouter) {

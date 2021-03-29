@@ -1,14 +1,11 @@
 package io.horizontalsystems.languageswitcher
 
-import android.content.Intent
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.horizontalsystems.core.CoreApp
+import io.horizontalsystems.views.ListPosition
 
 object LanguageSwitcherModule {
-
-    const val LANGUAGE_CHANGED = 1
 
     interface IView {
         fun show(items: List<LanguageViewItem>)
@@ -31,11 +28,6 @@ object LanguageSwitcherModule {
         fun close()
     }
 
-    fun start(fragment: Fragment, requestCode: Int) {
-        val intent = Intent(fragment.context, LanguageSettingsActivity::class.java)
-        fragment.startActivityForResult(intent, requestCode)
-    }
-
     class Factory : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -49,4 +41,4 @@ object LanguageSwitcherModule {
     }
 }
 
-data class LanguageViewItem(val language: String, val name: String, val nativeName: String, var current: Boolean)
+data class LanguageViewItem(val language: String, val name: String, val nativeName: String, var current: Boolean, val listPosition: ListPosition)

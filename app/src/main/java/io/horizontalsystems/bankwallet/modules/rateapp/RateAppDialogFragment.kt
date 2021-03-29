@@ -17,8 +17,8 @@ class RateAppDialogFragment(private var listener: Listener? = null) : DialogFrag
 
     interface Listener{
         fun onClickRateApp()
-        fun onClickCancel()
-        fun onDismiss()
+        fun onClickCancel() {}
+        fun onDismiss() {}
     }
 
     override fun onCreateDialog(bundle: Bundle?): Dialog {
@@ -53,8 +53,8 @@ class RateAppDialogFragment(private var listener: Listener? = null) : DialogFrag
 
     companion object{
 
-        fun show(context: Context, listener: Listener? = null){
-            val fragmentManager: FragmentManager = (context as FragmentActivity).supportFragmentManager
+        fun show(activity: FragmentActivity, listener: Listener? = null){
+            val fragmentManager: FragmentManager = activity.supportFragmentManager
             RateAppDialogFragment(listener).show(fragmentManager, "RateApp")
         }
     }

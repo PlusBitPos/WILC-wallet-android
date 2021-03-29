@@ -9,10 +9,12 @@ class TransactionInfoPresenter(
         private val interactor: TransactionInfoModule.Interactor,
         private val router: TransactionInfoModule.Router,
         private val transaction: TransactionRecord,
-        private val wallet: Wallet
+        private val wallet: Wallet,
+        private val transactionInfoAddressMapper: TransactionInfoAddressMapper
 ) : TransactionInfoModule.ViewDelegate, TransactionInfoModule.InteractorDelegate {
 
     var view: TransactionInfoModule.View? = null
+    private var explorerData: TransactionInfoModule.ExplorerData = getExplorerData(transaction.transactionHash, interactor.testMode, wallet.coin.type)
 
     // IViewDelegate methods
 
@@ -20,7 +22,7 @@ class TransactionInfoPresenter(
         val coin = wallet.coin
         val lastBlockInfo = interactor.lastBlockInfo
 
-        val status = transaction.status(lastBlockInfo?.height, interactor.threshold)
+        val status = transaction.status(lastBlockInfo?.height)
         val lockState = transaction.lockState(lastBlockInfo?.timestamp)
 
         val rate = interactor.getRate(wallet.coin.code, transaction.timestamp)
@@ -43,6 +45,8 @@ class TransactionInfoPresenter(
 
         val viewItems = mutableListOf<TransactionDetailViewItem>()
 
+        viewItems.add(TransactionDetailViewItem.Status(status, transaction.type == TransactionType.Incoming))
+
         rate?.let {
             viewItems.add(TransactionDetailViewItem.Rate(rate, wallet.coin.code))
         }
@@ -54,17 +58,21 @@ class TransactionInfoPresenter(
 
         transaction.from?.let { from ->
             if (showFromAddress(wallet.coin.type)) {
-                viewItems.add(TransactionDetailViewItem.From(from))
+                viewItems.add(TransactionDetailViewItem.From(transactionInfoAddressMapper.map(from)))
             }
         }
 
         transaction.to?.let { to ->
-            viewItems.add(TransactionDetailViewItem.To(to))
+            viewItems.add(TransactionDetailViewItem.To(transactionInfoAddressMapper.map(to)))
+        }
+
+        transaction.memo?.let { memo ->
+            viewItems.add(TransactionDetailViewItem.Memo(memo))
         }
 
         transaction.lockInfo?.originalAddress?.let { recipient ->
             if (transaction.type == TransactionType.Outgoing) {
-                viewItems.add(TransactionDetailViewItem.Recipient(recipient))
+                viewItems.add(TransactionDetailViewItem.Recipient(transactionInfoAddressMapper.map(recipient)))
             }
         }
 
@@ -73,8 +81,6 @@ class TransactionInfoPresenter(
         } else {
             viewItems.add(TransactionDetailViewItem.Id(transaction.transactionHash))
         }
-
-        viewItems.add(TransactionDetailViewItem.Status(status, transaction.type == TransactionType.Incoming))
 
         if (transaction.conflictingTxHash != null) {
             viewItems.add(TransactionDetailViewItem.DoubleSpend())
@@ -89,6 +95,8 @@ class TransactionInfoPresenter(
         }
 
         view?.showDetails(viewItems)
+
+        view?.setExplorerButton(explorerData.title, explorerData.url != null)
     }
 
     private fun showFromAddress(coinType: CoinType): Boolean {
@@ -100,8 +108,9 @@ class TransactionInfoPresenter(
         view?.share(transaction.transactionHash)
     }
 
-    override fun openFullInfo() {
-        router.openFullInfo(transaction.transactionHash, wallet)
+    override fun openExplorer() {
+        val url = explorerData.url ?: return
+        router.openUrl(url)
     }
 
     override fun onClickLockInfo() {
@@ -136,10 +145,28 @@ class TransactionInfoPresenter(
         onCopy(interactor.getRaw(transaction.transactionHash))
     }
 
+    override fun onClickStatusInfo() {
+        router.openStatusInfo()
+    }
+
     private fun onCopy(value: String?) {
         value?.let {
             interactor.copyToClipboard(value)
             view?.showCopied()
         }
     }
+
+    private fun getExplorerData(hash: String, testMode: Boolean, coinType: CoinType): TransactionInfoModule.ExplorerData {
+        return when (coinType) {
+            is CoinType.Bitcoin -> TransactionInfoModule.ExplorerData( "blockchair.com", if (testMode) null else "https://blockchair.com/bitcoin/transaction/$hash")
+            is CoinType.BitcoinCash -> TransactionInfoModule.ExplorerData( "btc.com", if (testMode) null else "https://bch.btc.com/$hash")
+            is CoinType.Litecoin -> TransactionInfoModule.ExplorerData( "blockchair.com", if (testMode) null else "https://blockchair.com/litecoin/transaction/$hash")
+            is CoinType.Dash -> TransactionInfoModule.ExplorerData( "dash.org", if (testMode) null else "https://insight.dash.org/insight/tx/$hash")
+            is CoinType.Ethereum,
+            is CoinType.Erc20 -> TransactionInfoModule.ExplorerData( "etherscan.io", if (testMode) "https://ropsten.etherscan.io/tx/$hash" else "https://etherscan.io/tx/$hash")
+            is CoinType.Binance -> TransactionInfoModule.ExplorerData( "binance.org", if (testMode) "https://testnet-explorer.binance.org/tx/$hash" else "https://explorer.binance.org/tx/$hash")
+            is CoinType.Zcash -> TransactionInfoModule.ExplorerData( "zcha.in", if (testMode) null else "https://explorer.zcha.in/transactions/$hash")
+        }
+    }
+
 }

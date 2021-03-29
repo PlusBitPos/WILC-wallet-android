@@ -1,123 +1,127 @@
 package io.horizontalsystems.bankwallet.modules.swap
 
-import android.content.Context
-import android.content.Intent
+import android.os.Parcelable
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.savedstate.SavedStateRegistryOwner
 import io.horizontalsystems.bankwallet.core.App
-import io.horizontalsystems.bankwallet.core.EthereumKitNotCreated
-import io.horizontalsystems.bankwallet.core.FeeRatePriority
+import io.horizontalsystems.bankwallet.core.ethereum.CoinService
+import io.horizontalsystems.bankwallet.core.ethereum.EthereumFeeViewModel
+import io.horizontalsystems.bankwallet.core.ethereum.EthereumTransactionService
 import io.horizontalsystems.bankwallet.core.factories.FeeRateProviderFactory
+import io.horizontalsystems.bankwallet.core.fiat.AmountTypeSwitchService
+import io.horizontalsystems.bankwallet.core.fiat.FiatService
+import io.horizontalsystems.bankwallet.core.providers.EthereumFeeRateProvider
 import io.horizontalsystems.bankwallet.entities.Coin
-import io.horizontalsystems.bankwallet.entities.CoinValue
-import io.horizontalsystems.bankwallet.entities.CurrencyValue
-import io.horizontalsystems.bankwallet.modules.swap.confirmation.ConfirmationPresenter
-import io.horizontalsystems.bankwallet.modules.swap.model.AmountType
-import io.horizontalsystems.bankwallet.modules.swap.model.Trade
-import io.horizontalsystems.bankwallet.modules.swap.provider.StringProvider
-import io.horizontalsystems.bankwallet.modules.swap.provider.AllowanceProvider
-import io.horizontalsystems.bankwallet.modules.swap.repository.UniswapRepository
-import io.horizontalsystems.bankwallet.modules.swap.provider.SwapFeeInfo
-import io.horizontalsystems.bankwallet.modules.swap.provider.UniswapFeeProvider
-import io.horizontalsystems.bankwallet.modules.swap.service.UniswapService
-import io.horizontalsystems.bankwallet.modules.swap.view.SwapActivity
-import io.horizontalsystems.bankwallet.modules.swap.view.SwapViewModel
+import io.horizontalsystems.bankwallet.core.providers.StringProvider
+import io.horizontalsystems.bankwallet.modules.swap.allowance.SwapAllowanceService
+import io.horizontalsystems.bankwallet.modules.swap.allowance.SwapAllowanceViewModel
+import io.horizontalsystems.bankwallet.modules.swap.allowance.SwapPendingAllowanceService
+import io.horizontalsystems.bankwallet.modules.swap.coincard.*
+import io.horizontalsystems.bankwallet.modules.swap.providers.UniswapProvider
 import io.horizontalsystems.uniswapkit.UniswapKit
-import io.reactivex.Observable
+import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
-import java.util.*
 
 object SwapModule {
-    const val tokenInKey = "tokenInKey"
 
-    interface ISwapService {
-        val coinSending: Coin
-        val coinSendingObservable: Observable<Coin>
+    @Parcelize
+    data class CoinBalanceItem(
+            val coin: Coin,
+            val balance: BigDecimal?,
+            val blockchainType: String?
+    ) : Parcelable
 
-        val coinReceiving: Coin?
-        val coinReceivingObservable: Observable<Optional<Coin>>
+    data class ConfirmationAmountViewItem(
+            val payTitle: String,
+            val payValue: String?,
+            val getTitle: String,
+            val getValue: String?
+    )
 
-        val amountSending: BigDecimal?
-        val amountSendingObservable: Observable<Optional<BigDecimal>>
+    data class ConfirmationAdditionalViewItem(val title: String, val value: String?)
 
-        val amountReceiving: BigDecimal?
-        val amountReceivingObservable: Observable<Optional<BigDecimal>>
+    data class GuaranteedAmountViewItem(val title: String, val value: String)
 
-        val trade: DataState<Trade?>?
-        val tradeObservable: Observable<DataState<Trade?>>
+    data class PriceImpactViewItem(val level: SwapTradeService.PriceImpactLevel, val value: String)
 
-        val amountType: Observable<AmountType>
-        val balance: Observable<CoinValue>
-        val allowance: Observable<DataState<CoinValue?>>
-        val errors: Observable<List<SwapError>>
-        val state: Observable<SwapState>
-        val fee: Observable<DataState<SwapFeeInfo?>>
-
-        val swapFee: CoinValue?
-        val feeRatePriority: FeeRatePriority
-        val transactionFee: Pair<CoinValue, CurrencyValue?>?
-
-        fun enterCoinSending(coin: Coin)
-        fun enterCoinReceiving(coin: Coin)
-        fun enterAmountSending(amount: BigDecimal?)
-        fun enterAmountReceiving(amount: BigDecimal?)
-        fun proceed()
-        fun cancelProceed()
-        fun swap()
-        fun approved()
-    }
-
-    sealed class SwapError {
-        object InsufficientBalance : SwapError()
-        class InsufficientAllowance(val approveData: ApproveData) : SwapError()
-        class InsufficientBalanceForFee(val coinValue: CoinValue) : SwapError()
-        object TooHighPriceImpact : SwapError()
-        object NoLiquidity : SwapError()
-        object CouldNotFetchTrade : SwapError()
-        object CouldNotFetchAllowance : SwapError()
-        object CouldNotFetchFee : SwapError()
-        object NotEnoughDataToSwap : SwapError()
-        class Other(val error: Throwable) : SwapError()
-    }
-
-    data class ApproveData(val coin: Coin, val amount: BigDecimal, val spenderAddress: String)
-
-    sealed class SwapState {
-        object Idle : SwapState()
-        class ApproveRequired(val data: ApproveData) : SwapState()
-        object WaitingForApprove : SwapState()
-        object ProceedAllowed : SwapState()
-        object FetchingFee : SwapState()
-        object SwapAllowed : SwapState()
-        object Swapping : SwapState()
-        class Failed(val error: SwapError) : SwapState()
-        object Success : SwapState()
-    }
-
-    fun start(context: Context, tokenIn: Coin) {
-        val intent = Intent(context, SwapActivity::class.java)
-        intent.putExtra(tokenInKey, tokenIn)
-
-        context.startActivity(intent)
-    }
-
-    class Factory(private val coinSending: Coin) : ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            val ethereumKit = App.ethereumKitManager.ethereumKit ?: throw EthereumKitNotCreated()
-            val uniswapKit = UniswapKit.getInstance(ethereumKit)
-
-            val allowanceProvider = AllowanceProvider(ethereumKit, ethereumKit.receiveAddress)
-            val feeRateProvider = FeeRateProviderFactory.provider(coinSending)
-            val uniswapFeeProvider = UniswapFeeProvider(uniswapKit, App.walletManager, App.adapterManager, App.currencyManager.baseCurrency, App.xRateManager, feeRateProvider!!)
-            val stringProvider = StringProvider(App.instance)
-
-            val swapRepository = UniswapRepository(uniswapKit)
-            val swapService = UniswapService(coinSending, swapRepository, allowanceProvider, App.walletManager, App.adapterManager, App.feeCoinProvider, uniswapFeeProvider)
-
-            val confirmationPresenter = ConfirmationPresenter(swapService, stringProvider, App.numberFormatter)
-
-            return SwapViewModel(confirmationPresenter, swapService, stringProvider, App.numberFormatter, listOf(swapService, confirmationPresenter)) as T
+    class Factory(
+            owner: SavedStateRegistryOwner,
+            private val fromCoin: Coin?
+    ) : AbstractSavedStateViewModelFactory(owner, null) {
+        private val ethereumKit by lazy { App.ethereumKitManager.ethereumKit!! }
+        private val uniswapKit by lazy { UniswapKit.getInstance(ethereumKit) }
+        private val transactionService by lazy {
+            val feeRateProvider = FeeRateProviderFactory.provider(App.appConfigProvider.ethereumCoin) as EthereumFeeRateProvider
+            EthereumTransactionService(ethereumKit, feeRateProvider, 20)
         }
+        private val ethCoinService by lazy { CoinService(App.appConfigProvider.ethereumCoin, App.currencyManager, App.xRateManager) }
+        private val uniswapProvider by lazy { UniswapProvider(uniswapKit) }
+        private val allowanceService by lazy { SwapAllowanceService(uniswapProvider.routerAddress, App.adapterManager, ethereumKit) }
+        private val pendingAllowanceService by lazy { SwapPendingAllowanceService(App.adapterManager, allowanceService) }
+        private val service by lazy {
+            SwapService(ethereumKit, tradeService, allowanceService, pendingAllowanceService, transactionService, App.adapterManager)
+        }
+        private val tradeService by lazy {
+            SwapTradeService(ethereumKit, uniswapProvider, fromCoin)
+        }
+        private val stringProvider by lazy {
+            StringProvider(App.instance)
+        }
+        private val formatter by lazy {
+            SwapViewItemHelper(stringProvider, App.numberFormatter)
+        }
+        private val coinProvider by lazy {
+            SwapCoinProvider(App.coinManager, App.walletManager, App.adapterManager)
+        }
+        private val fromCoinCardService by lazy {
+            SwapFromCoinCardService(service, tradeService, coinProvider)
+        }
+        private val toCoinCardService by lazy {
+            SwapToCoinCardService(service, tradeService, coinProvider)
+        }
+        private val switchService by lazy {
+            AmountTypeSwitchService()
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(key: String, modelClass: Class<T>, handle: SavedStateHandle): T {
+
+            return when (modelClass) {
+                SwapViewModel::class.java -> {
+                    SwapViewModel(service, tradeService, allowanceService, pendingAllowanceService, ethCoinService, formatter, stringProvider) as T
+                }
+                SwapCoinCardViewModel::class.java -> {
+                    val fiatService = FiatService(switchService, App.currencyManager, App.xRateManager)
+                    val coinCardService: ISwapCoinCardService
+                    var maxButtonEnabled = false
+
+                    if (key == coinCardTypeFrom) {
+                        coinCardService = fromCoinCardService
+                        switchService.fromListener = fiatService
+                        maxButtonEnabled = true
+                    } else {
+                        coinCardService = toCoinCardService
+                        switchService.toListener = fiatService
+                    }
+                    SwapCoinCardViewModel(coinCardService, fiatService, switchService, maxButtonEnabled, formatter, stringProvider) as T
+                }
+                SwapAllowanceViewModel::class.java -> {
+                    SwapAllowanceViewModel(service, allowanceService, pendingAllowanceService, formatter, stringProvider) as T
+                }
+                EthereumFeeViewModel::class.java -> {
+                    EthereumFeeViewModel(transactionService, ethCoinService) as T
+                }
+                else -> throw IllegalArgumentException()
+            }
+        }
+
+        companion object {
+            const val coinCardTypeFrom = "coinCardTypeFrom"
+            const val coinCardTypeTo = "coinCardTypeTo"
+        }
+
     }
+
 }

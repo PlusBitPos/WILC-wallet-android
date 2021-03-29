@@ -1,15 +1,18 @@
 package io.horizontalsystems.bankwallet.modules.backup.words
 
 import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import io.horizontalsystems.bankwallet.R
+import io.horizontalsystems.bankwallet.core.BaseFragment
 import io.horizontalsystems.core.helpers.HudHelper
+import io.horizontalsystems.core.helpers.KeyboardHelper
 import kotlinx.android.synthetic.main.fragment_backup_words_confirm.*
 
-class BackupWordsConfirmFragment : Fragment() {
+class BackupWordsConfirmFragment : BaseFragment() {
 
     val viewModel by activityViewModels<BackupWordsViewModel>()
 
@@ -22,7 +25,18 @@ class BackupWordsConfirmFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
+        toolbar.setNavigationOnClickListener {
+            viewModel.delegate.onBackClick()
+        }
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.itemDone -> {
+                    validateWords()
+                    true
+                }
+                else -> false
+            }
+        }
 
         textDescription.text = getString(R.string.Backup_Confirmation_Description, getString(viewModel.accountTypeTitle))
 
@@ -39,20 +53,9 @@ class BackupWordsConfirmFragment : Fragment() {
         viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
             HudHelper.showErrorMessage(this.requireView(), it)
         })
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.backup_words_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.itemDone -> {
-                validateWords()
-                true
-            } else -> {
-                super.onOptionsItemSelected(item)
-            }
+        activity?.let {
+            KeyboardHelper.showKeyboardDelayed(it, wordOne, 200)
         }
     }
 
@@ -60,6 +63,11 @@ class BackupWordsConfirmFragment : Fragment() {
         val wordOneEntry = wordOne?.getEnteredText()?.toLowerCase()
         val wordTwoEntry = wordTwo?.getEnteredText()?.toLowerCase()
         if (wordOneEntry.isNullOrEmpty() || wordTwoEntry.isNullOrEmpty()) {
+
+            activity?.let {
+                KeyboardHelper.hideKeyboard(it, this.requireView())
+            }
+
             HudHelper.showErrorMessage(this.requireView(), getString(R.string.Backup_Confirmation_Description, getString(viewModel.accountTypeTitle)))
         } else {
             viewModel.delegate.validateDidClick(hashMapOf(wordIndex1 to wordOneEntry, wordIndex2 to wordTwoEntry))

@@ -1,6 +1,7 @@
 package io.horizontalsystems.bankwallet.modules.settings.main
 
 import androidx.lifecycle.ViewModel
+import com.trustwallet.walletconnect.models.WCPeerMeta
 import io.horizontalsystems.bankwallet.modules.settings.main.MainSettingsModule.IMainSettingsInteractor
 import io.horizontalsystems.bankwallet.modules.settings.main.MainSettingsModule.IMainSettingsInteractorDelegate
 import io.horizontalsystems.bankwallet.modules.settings.main.MainSettingsModule.IMainSettingsRouter
@@ -23,14 +24,35 @@ class MainSettingsPresenter(
         view.setAppVersion(interactor.appVersion)
         view.setTermsAccepted(interactor.termsAccepted)
         view.setPinIsSet(interactor.isPinSet)
+        view.setCurrentWalletConnectPeer(interactor.walletConnectPeerMeta?.name)
     }
 
     override fun didTapManageKeys() {
         router.showManageKeys()
     }
 
-    override fun didTapAppStatus() {
-        router.openAppStatus()
+    override fun didTapWalletConnect() {
+        router.openWalletConnect()
+    }
+
+    override fun didTapFaq() {
+        router.openFaq()
+    }
+
+    override fun didTapAcademy() {
+        router.openAcademy()
+    }
+
+    override fun didTapTwitter() {
+        router.openLink(interactor.companyTwitterLink)
+    }
+
+    override fun didTapTelegram() {
+        router.openLink(interactor.companyTelegramLink)
+    }
+
+    override fun didTapReddit() {
+        router.openLink(interactor.companyRedditLink)
     }
 
     override fun didTapSecurity() {
@@ -54,20 +76,12 @@ class MainSettingsPresenter(
         router.reloadAppInterface()
     }
 
-    override fun didTapAbout() {
-        router.showAbout()
+    override fun didTapAboutApp() {
+        router.showAboutApp()
     }
 
     override fun didTapCompanyLogo() {
         router.openLink(interactor.companyWebPageLink)
-    }
-
-    override fun didTapReportProblem() {
-        router.showReportProblem()
-    }
-
-    override fun didTapTellFriends() {
-        router.showShareApp(interactor.appWebPageLink)
     }
 
     override fun didTapNotifications() {
@@ -90,6 +104,10 @@ class MainSettingsPresenter(
 
     override fun didUpdatePinSet() {
         view.setPinIsSet(interactor.isPinSet)
+    }
+
+    override fun didUpdateWalletConnect(peerMeta: WCPeerMeta?) {
+        view.setCurrentWalletConnectPeer(peerMeta?.name)
     }
 
     // ViewModel
