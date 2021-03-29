@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:src="@mipmap/bitcoin_launcher"
+                android:src="@mipmap/ic_launcher_round"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,7 +94,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/siteLink"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"
-                app:layout_constraintTop_toBottomOf="@id/termsText" />
+                app:layout_constraintTop_toBottomOf="@id/termsText"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/siteLink"
@@ -106,7 +107,8 @@
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/githubLink"
-                app:layout_constraintTop_toTopOf="@id/githubLink" />
+                app:layout_constraintTop_toTopOf="@id/githubLink"
+                android:visibility="gone"/>
 
             <View
                 android:id="@+id/divider"
@@ -127,7 +129,8 @@
                 android:text="@string/SettingsTerms_TermAcademy"
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"
-                app:layout_constraintTop_toBottomOf="@+id/divider" />
+                app:layout_constraintTop_toBottomOf="@+id/divider"
+                android:visibility="gone"/>
 
             <CheckBox
                 android:id="@+id/checkboxBackup"
@@ -138,7 +141,8 @@
                 android:text="@string/SettingsTerms_TermBackup"
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"
-                app:layout_constraintTop_toBottomOf="@+id/checkboxAcademy" />
+                app:layout_constraintTop_toBottomOf="@+id/checkboxAcademy"
+                android:visibility="gone"/>
 
             <CheckBox
                 android:id="@+id/checkboxOwner"
@@ -149,7 +153,8 @@
                 android:text="@string/SettingsTerms_TermOwner"
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"
-                app:layout_constraintTop_toBottomOf="@+id/checkboxBackup" />
+                app:layout_constraintTop_toBottomOf="@+id/checkboxBackup"
+                android:visibility="gone"/>
 
             <CheckBox
                 android:id="@+id/checkboxRecover"
@@ -160,7 +165,8 @@
                 android:text="@string/SettingsTerms_TermRecover"
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"
-                app:layout_constraintTop_toBottomOf="@+id/checkboxOwner" />
+                app:layout_constraintTop_toBottomOf="@+id/checkboxOwner"
+                android:visibility="gone"/>
 
             <CheckBox
                 android:id="@+id/checkboxPhone"
@@ -171,7 +177,8 @@
                 android:text="@string/SettingsTerms_TermPhone"
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"
-                app:layout_constraintTop_toBottomOf="@+id/checkboxRecover" />
+                app:layout_constraintTop_toBottomOf="@+id/checkboxRecover"
+                android:visibility="gone"/>
 
             <CheckBox
                 android:id="@+id/checkboxRoot"
@@ -182,7 +189,8 @@
                 android:text="@string/SettingsTerms_TermRoot"
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"
-                app:layout_constraintTop_toBottomOf="@+id/checkboxPhone" />
+                app:layout_constraintTop_toBottomOf="@+id/checkboxPhone"
+                android:visibility="gone"/>
 
             <CheckBox
                 android:id="@+id/checkboxBugs"
@@ -193,7 +201,8 @@
                 android:text="@string/SettingsTerms_TermBugs"
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"
-                app:layout_constraintTop_toBottomOf="@+id/checkboxRoot" />
+                app:layout_constraintTop_toBottomOf="@+id/checkboxRoot"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/bottomThankYou"
@@ -226,6 +235,7 @@
                 android:layout_marginBottom="28dp"
                 android:text="@string/FooterText"
                 android:textColor="@color/grey"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"

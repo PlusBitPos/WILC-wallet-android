@@ -6,10 +6,11 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import io.horizontalsystems.bankwallet.entities.CoinType
 import io.horizontalsystems.views.R
+import java.util.*
 
 object AppLayoutHelper {
     fun getCoinDrawable(context: Context, coinCode: String, coinType: CoinType? = null): Drawable? {
-        val coinResourceName = "coin_${coinCode.replace("-", "_").toLowerCase()}"
+        val coinResourceName = "coin_${coinCode.replace("-", "_").toLowerCase(Locale.US)}"
         val imgRes = context.resources.getIdentifier(coinResourceName, "drawable", context.packageName)
 
         try {

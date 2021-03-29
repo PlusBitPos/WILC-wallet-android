@@ -35,19 +35,19 @@
     <!--Intro-->
     <string name="Intro_Wallet_Description">Almacene y comercie criptomonedas. Tenga control total sobre los activos. Permanezca anónimo.</string>
     <string name="Intro_Invest_Title">Invertir sabiamente</string>
-    <string name="Intro_Invest_Description">Unstoppable integra instrumentos de trading, monitoreo y analíticos sin igual.</string>
+    <string name="Intro_Invest_Description">WILC integra instrumentos de trading, monitoreo y analíticos sin igual.</string>
     <string name="Intro_Independence_Title">Sea indepentiente</string>
-    <string name="Intro_Independence_Description">Unstoppable se construye para asegurar que los usuarios puedan acceder a los fondos en cualquier momento desde cualquier lugar.</string>
+    <string name="Intro_Independence_Description">WILC se construye para asegurar que los usuarios puedan acceder a los fondos en cualquier momento desde cualquier lugar.</string>
     <string name="Intro_Privacy_Title">Permanezca en privado</string>
     <string name="Intro_Privacy_Description">Utilice esta cartera para permanecer incógnito y sea capaz de resgurdar su información privada.</string>
     <!--Welcome-->
-    <string name="Welcome_Title">Monedero\nUnstoppable</string>
+    <string name="Welcome_Title">Monedero\nWILC</string>
     <string name="Welcome_PrivacySettings">Ajustes de privacidad</string>
     <string name="Welcome_CreateWallet">Crear Monedero</string>
     <string name="Welcome_RestoreWallet">Restaurar Monedero</string>
     <!--Rate App-->
     <string name="RateApp_Title_Rate_This_App">Valorar app</string>
-    <string name="RateApp_Description_Rate_This_App">¿Disfrutas Unstoppable Wallet? Por favor, ten un momento para calificar la aplicación</string>
+    <string name="RateApp_Description_Rate_This_App">¿Disfrutas WILC Wallet? Por favor, ten un momento para calificar la aplicación</string>
     <string name="RateApp_Button_RateIt">Valóralo</string>
     <string name="RateApp_Button_NotNow">No ahora</string>
     <!--Restore-->
@@ -120,7 +120,7 @@
     <string name="Send_Error_MaximumAmount">Monto máximo %s</string>
     <string name="Send_Error_MinRequiredBalance">Min. requerido restante %s</string>
     <string name="Send_Error_WrongParameters">Parámetros incorrectos</string>
-    <string name="Send_Error_TransparentAddress">Unstoppable no soporta pagos a una dirección transparente</string>
+    <string name="Send_Error_TransparentAddress">WILC Wallet no soporta pagos a una dirección transparente</string>
     <string name="Send_Error_SendToSelf">Enviarte a vos mismo no está soportado</string>
     <string name="Send_DialogTitle">Confirmar</string>
     <string name="Send_DialogAvailableBalance">Saldo disponible</string>
@@ -338,7 +338,7 @@
     <string name="SettingsPrivacy_Info_BlockchainTx_Title">Blockchain Transactions</string>
     <string name="SettingsPrivacy_Info_BlockchainTx_Description">This setting controls the privacy level of user\'s transactions on Bitcoin, Bitcoin Cash and Litecoin blockchains.
         \n\nMost Bitcoin transactions generate two outputs. One output is the amount that goes to the receiver and the other is the change output that is returned to the sender. The way most wallets construct transactions makes it easy for a third party monitoring Bitcoin blockchain to understand which of the outputs went to the receiving party and which one was the change amount returned to the sender. The output returned to the sender can then be used in future transactions and further reveal the details to the monitoring party.
-        \n\nUnstoppable wallet implements measures to makes it significantly harder to figure out which output goes where. There are two options available to Unstoppable users:
+        \n\nWILC wallet implements measures to makes it significantly harder to figure out which output goes where. There are two options available to WILC users:
         \n\n1. Shuffle : The order of transaction outputs are randomized on every transaction. Sometimes change can be the first output, sometimes it can be the second. If a user trusts the developer of the app, than consider this a recommended option.
         \n\n2. Deterministic : There is a commonly agreed standard for ordering transaction outputs (known as BIP69). In open source wallets that standard ensures that wallet users do not need to trust how developers of the app implement the ordering of the outputs. As this standard is new, not many wallets have implemented it yet. As a result, it\'s somewhat possible to see on the blockchain whether transaction was sent from the wallet that uses that standard or not.</string>
     <string name="SettingsPrivacy_Info_BlockchainConnection_Title">Blockchain Sync</string>
@@ -346,7 +346,7 @@
         \n\nIn case of Ethereum, there is no alternative for mobile wallets to interact with blockchain other than via third party providers (i.e. Infura.io) or personal Ethereum nodes. Third party services can potentially record IP addresses and the requests made. That info can reveal location, balance, transactions etc. Moreover, the wallet has to trust that information returned is correct. There is a an alternative known as Incubed which in essence is a network of special Ethereum nodes. These nodes can also record IP addresses and requests made, but they are chosen randomly each time. While being slightly slower than Infura, the way Incubed works pretty much guarantees that the information returned is correct (not fake).
         \n\nWhen it comes to other blockchains like EOSIO and Binance Chain, at this point they only provide centralized means of connecting, without viable alternatives. Potentially they can be recording IP addresses and requests made.</string>
     <string name="SettingsPrivacy_Info_BlockchainRestore_Title">Blockchain Restore</string>
-    <string name="SettingsPrivacy_Info_BlockchainRestore_Description">This setting is only relevant when restoring an existing wallet. It is a process of getting transactions history for a given coin so that the wallet app is able to display past transactions and calculate user\'s balance. This needs to happen only once, when user restores previously created wallet. At this point there are two potential ways for a mobile wallet like Unstoppable to do this:
+    <string name="SettingsPrivacy_Info_BlockchainRestore_Description">This setting is only relevant when restoring an existing wallet. It is a process of getting transactions history for a given coin so that the wallet app is able to display past transactions and calculate user\'s balance. This needs to happen only once, when user restores previously created wallet. At this point there are two potential ways for a mobile wallet like WILC to do this:
         \n\n1. from API Server : There is a third-party predefined server which hosts the entire blockchain and has all the data processed and ready to provide it in a fast manner. This method is fast but can potentially keep track of the IP addresses and the data requested. This option is recommended due to its speed of getting data (5-10 minutes). The risks are minimal. If the user restoring from his own server then no privacy risks at all.
         \n\n2. from Blockchain : In this case the app tries to restore directly from a p2p network of the blockchain nodes. The app pings many of those nodes and requests data from them. Potentially these nodes can keep track of user\'s IP address and requests made however during restore the app can switch between nodes. There are close to 10,000 Bitcoin nodes on the network at any given time. This option is slow and can easily take 2-3 hours, app needs to be open while restore is happening...</string>
     <!--Settings-->
@@ -360,9 +360,9 @@
     <string name="SettingsSecurity_EditPin">Editar el código </string>
     <string name="SettingsSecurity_ManageKeys">Gestionar monederos</string>
     <string name="SettingsSecurity_BackupWallet">Backup del Monedero</string>
-    <string name="SettingsSecurity_AppRestartWarning">Esta acción reiniciará el monedero Unstoppable.</string>
+    <string name="SettingsSecurity_AppRestartWarning">Esta acción reiniciará el monedero WILC.</string>
     <string name="SettingsSecurity_TorConnectionDescription">Puede hacer que su tráfico de internet sea anónimo mientras usa esta aplicación. Puede tornarse lento.</string>
-    <string name="SettingsSecurity_NotificationsDisabledWarning">Las notificaciones de la aplicación Monedero Unstoppable están desactivadas. Debe activarlas para que Tor funcione.</string>
+    <string name="SettingsSecurity_NotificationsDisabledWarning">Las notificaciones de la aplicación Monedero WILC están desactivadas. Debe activarlas para que Tor funcione.</string>
     <string name="SettingsSecurity_SortingShuffle">Aleatoriamente</string>
     <string name="SettingsSecurity_SortingShuffleDescription">Indexación aleatoria</string>
     <string name="SettingsSecurity_SortingBip69">Bip69 determinista</string>
@@ -372,13 +372,10 @@
     <string name="SettingsSecurity_SyncModeBlockchain">Desde Blockchain</string>
     <string name="SettingsSecurity_SyncModeBlockchainDescription">Más Privado</string>
     <!--Setting_Terms-->
-    <string name="SettingsTerms_AppTitle">Unstoppable</string>
+    <string name="SettingsTerms_AppTitle">WILC Wallet</string>
     <string name="SettingsTerms_Github">GitHub</string>
     <string name="SettingsTerms_Site">Sitio</string>
-    <string name="SettingsTerms_Text">El monedero Unstoppable fue creado para aquellos que buscan invertir y almacenar criptomonedas de forma privada e independiente.
-\n\nEs un monedero peer-to-peer sin custodio, donde sólo el usuario tiene control sobre los fondos. No recopila ningún dato y mantiene al usuario independiente al no enlazar su cartera a un único monedero.
-\n\nEl monedero Unstoppable es completamente de código abierto y cualquiera puede verificar que la aplicación funciona exactamente como se afirma.
-\n\nDesarrollamos Unstoppable para nosotros mismos ya que las soluciones disponibles no estaban a la altura. Desde una perspectiva de ingenieria y practicidad, creemos que este monedero está significativamente por delante de los productos alternativos.</string>
+    <string name="SettingsTerms_Text">El monedero WILC Wallet fue creado para aquellos que buscan invertir y almacenar criptomonedas de forma privada e independiente.   Es un monedero peer-to-peer sin custodio, donde sólo el usuario tiene control sobre los fondos. No recopila ningún dato y mantiene al usuario independiente al no enlazar su cartera a un único monedero.   El monedero WILC Wallet es completamente de código abierto y cualquiera puede verificar que la aplicación funciona exactamente como se afirma.   Desarrollamos WILC Wallet para nosotros mismos ya que las soluciones disponibles no estaban a la altura. Desde una perspectiva de ingenieria y practicidad, creemos que este monedero está significativamente por delante de los productos alternativos.</string>
     <string name="SettingsTerms_TermAcademy">He pasado por la sección Academia de esta aplicación y me he familiarizado con los aspectos fundamentales del almacenamiento de criptomonedas.</string>
     <string name="SettingsTerms_TermBackup">He respaldado la(s) clave(s) privada(s) para mis monederos que se me mostraron en forma de 12-24 palabras. Entiendo que estas claves privadas se almacenan en mi smartphone y no en ningún otro lugar.</string>
     <string name="SettingsTerms_TermOwner">Entiendo que sólo el propietario de mi(s) clave(s) privada(s) puede acceder y gastar fondos en mi monedero y, por lo tanto, estas claves no deben ser compartidas con nadie.</string>
@@ -390,14 +387,14 @@ poner en peligro la seguridad de mis fondos.</string>
     <string name="SettingsTerms_BottomThankYou">¡Gracias \npor elegir \neste monedero!</string>
     <!--Setting_Tell Friends-->
     <string name="SettingsShare_Title">Compartir</string>
-    <string name="SettingsShare_Text">Monedero Unstoppable - un monedero de criptomonedas que yo recomiendo</string>
+    <string name="SettingsShare_Text">Monedero WILC - un monedero de criptomonedas que yo recomiendo</string>
     <!--Setting_Contact-->
     <string name="SettingsContact_Title">Contacto</string>
     <string name="SettingsContact_Email">E-mail</string>
     <string name="SettingsContact_Telegram">Telegram</string>
     <!--Setting_Notifications-->
     <string name="SettingsNotifications_Description">Establece alertas de variación de precio para las monedas que te gustaría ver\n\nSe te alertará cuando la variación de precio de las últimas 24 horas supere el umbral seleccionado.\n\n La Alerta de Tendencia de Precio advierte de un cambio de tendencia para el corto plazo de 1 semana, y para el largo plazo de 6 meses.</string>
-    <string name="SettingsNotifications_NotificationsDisabledWarning">Las notificaciones para la aplicación del Monedero Unstoppable están desactivadas. Necesita activarlas para poder recibir alertas de cambio de precios.</string>
+    <string name="SettingsNotifications_NotificationsDisabledWarning">Las notificaciones para la aplicación del Monedero WILC están desactivadas. Necesita activarlas para poder recibir alertas de cambio de precios.</string>
     <string name="SettingsNotifications_TurnOn">Activar en ajustes</string>
     <string name="SettingsNotifications_Off">Desactivado</string>
     <string name="SettingsNotifications_DeactivateAll">Restablecer todo</string>
@@ -436,14 +433,14 @@ poner en peligro la seguridad de mis fondos.</string>
     <string name="ManageCoins_Search">Buscar</string>
     <string name="ManageCoins_AddToken">Añadir Token</string>
     <string name="ManageCoins_Alert_CantCreateTitle">%s Monedero</string>
-    <string name="ManageCoins_Alert_CantCreateDescription">En este momento Unstoppable no es capaz de crear nuevas cuentas de monederos %s. Solo puede restaurar la existente.</string>
+    <string name="ManageCoins_Alert_CantCreateDescription">En este momento WILC no es capaz de crear nuevas cuentas de monederos %s. Solo puede restaurar la existente.</string>
     <!-- Experimental Feature -->
     <string name="ExperimentalFeatures_Title">Experimental</string>
     <string name="ExperimentalFeatures_Description">Las siguientes características son experimentales y deben utilizarse con precaución. Aunque hemos probado a fondo estas características usando nuestros propios fondos criptográficos, no podemos garantizar que funcionen como se espera en todos los casos posibles.</string>
     <string name="ExperimentalFeatures_BitcoinHodling">TimeLock</string>
     <!-- Bitcoin Hodling -->
     <string name="BitcoinHodling_Title">TimeLock</string>
-    <string name="BitcoinHodling_Description">Permite enviar bitcoins que no se pueden gastar hasta la fecha especificada.\n\nEl receptor de dicha transacción debe utilizar la versión 0.10 de la aplicación de cartera Unstoppable o más reciente con el formato de dirección BIP44 para el Bitcoin.\n\nSolo un monedero Unstoppable puede identificar correctamente dichas transacciones en la red de Bitcoin, así como habilitar el receptor para gastar esos Bitcoins después de que el período de bloqueo caduque.\n\nSi eres un HODLer, puedes usar esta función para obligarte a retener tus Bitcoins enviándote a ti mismo la transacción.\n\nSiendo una característica experimental, el monto máximo por transacción está limitado a 0.5 BTC.</string>
+    <string name="BitcoinHodling_Description">Permite enviar bitcoins que no se pueden gastar hasta la fecha especificada.\n\nEl receptor de dicha transacción debe utilizar la versión 0.10 de la aplicación de cartera WILC o más reciente con el formato de dirección BIP44 para el Bitcoin.\n\nSolo un monedero WILC puede identificar correctamente dichas transacciones en la red de Bitcoin, así como habilitar el receptor para gastar esos Bitcoins después de que el período de bloqueo caduque.\n\nSi eres un HODLer, puedes usar esta función para obligarte a retener tus Bitcoins enviándote a ti mismo la transacción.\n\nSiendo una característica experimental, el monto máximo por transacción está limitado a 0.5 BTC.</string>
     <!--Manage Keys-->
     <string name="ManageKeys_Title">Gestionar Monederos</string>
     <string name="ManageKeys_AddressFormat">Formato de dirección</string>
@@ -465,7 +462,7 @@ poner en peligro la seguridad de mis fondos.</string>
     <string name="AddCoin_Title">Añadir %s</string>
     <string name="AddCoin_Subtitle">%s Monedero</string>
     <string name="AddCoin_Description">Necesita configurar %1$s el monedero para poder enviar o recibir %2$s.\n\nUtiliza el botón de crear para configurar un nuevo %3$s monedero, o el botón Restaurar para importar el ya existente.\n\n Podrás usar este monedero para: %4$s.</string>
-    <string name="AddCoin_CreationNotSupportedDescription">Necesitas configurar el monedero %1$s para poder enviar o recibir %2$s.\n\nEn este momento Unstoppable no puede crear un nuevo monedero %3$s. Solo puedes restaurar uno ya existente.\n\nPodrás utilizar este monedero a partir del: %4$s.</string>
+    <string name="AddCoin_CreationNotSupportedDescription">Necesitas configurar el monedero %1$s para poder enviar o recibir %2$s.\n\nEn este momento WILC no puede crear un nuevo monedero %3$s. Solo puedes restaurar uno ya existente.\n\nPodrás utilizar este monedero a partir del: %4$s.</string>
     <string name="AddCoin_CreateKey">Crear</string>
     <string name="AddCoin_RestoreKey">Restaurar</string>
     <!-- Add Token Dialog-->

@@ -4,11 +4,21 @@ import java.math.BigDecimal
 
 class BalanceSorter : BalanceModule.IBalanceSorter {
 
+    private val wilcTokenCode = "WILC"
+
     override fun sort(items: List<BalanceModule.BalanceItem>, sortType: BalanceSortType): List<BalanceModule.BalanceItem> {
         return when (sortType) {
             BalanceSortType.Value -> sortByBalance(items)
             BalanceSortType.Name -> items.sortedBy { it.wallet.coin.title }
             BalanceSortType.PercentGrowth -> items.sortedByDescending { it.marketInfo?.diff }
+        }.sortedWith(defaultToTop)
+    }
+
+    private val defaultToTop = Comparator<BalanceModule.BalanceItem> { a, b ->
+        when {
+            a.wallet.coin.coinId == wilcTokenCode -> -1
+            b.wallet.coin.coinId == wilcTokenCode -> 1
+            else -> 0
         }
     }
 

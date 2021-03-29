@@ -27,7 +27,7 @@ class AppStatusManager(
 
             status["App Info"] = getAppInfo()
             status["App Log"] = AppLog.getLog()
-            status["Version History"] = getVersionHistory()
+//            status["Version History"] = getVersionHistory()
             status["Wallets Status"] = getWalletsStatus()
             status["Blockchain Status"] = getBlockchainStatus()
 
@@ -82,10 +82,10 @@ class AppStatusManager(
     private fun getBlockchainStatus(): Map<String, Any> {
         val blockchainStatus = LinkedHashMap<String, Any>()
 
-        blockchainStatus.putAll(getBitcoinForkStatuses())
+//        blockchainStatus.putAll(getBitcoinForkStatuses())
         ethereumKitManager.statusInfo?.let { blockchainStatus["Ethereum"] = it }
-        eosKitManager.statusInfo?.let { blockchainStatus["EOS"] = it }
-        binanceKitManager.statusInfo?.let { blockchainStatus["Binance DEX"] = it }
+//        eosKitManager.statusInfo?.let { blockchainStatus["EOS"] = it }
+//        binanceKitManager.statusInfo?.let { blockchainStatus["Binance DEX"] = it }
 
         return blockchainStatus
     }

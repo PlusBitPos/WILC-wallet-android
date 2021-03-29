@@ -4,7 +4,7 @@ This wallet was built to enable any freedom loving individual to invest and grow
 
 Exercise full unconditional control over your assets. Bitcoin, Ethereum, Dash and other crypto assets.
 
- Why Unstoppable Wallet
+ Why WILC Wallet
 
 It keeps crypto assets safe on your device
 It can only be controlled by yourself
@@ -20,7 +20,7 @@ It’s fast and beautiful  
 It's the most advanced wallet to date
 (1) UNRESTRICTED CONTROL
 
-  Transact freely and unconditionally regardless of where you live. No entity can stop you from sending/receiving crypto in Unstoppable wallet.   
+  Transact freely and unconditionally regardless of where you live. No entity can stop you from sending/receiving crypto in WILC wallet.   
 
 You’re the only person with control and access to your crypto finances. The Secret Key (that give you ownership over crypto assets) never leaves your device.
 
@@ -28,17 +28,17 @@ You’re the only person with control and access to your crypto finances. The Se
 
   Stay truly private without revealing any personal data. There are no accounts, emails, phone numbers, identity checks or 3rd party servers storing your data.  
 
-Unlike most wallets in the market the Unstoppable wallet connects users directly to decentralized blockchains without any restrictions or intermediaries.
+Unlike most wallets in the market the WILC wallet connects users directly to decentralized blockchains without any restrictions or intermediaries.
 
 (3) HIGHLY SECURE
 
   Keep your crypto assets safe on your phone using safe storage mechanisms provided by phone's operating system. Your secret keys never leaves your device the device.
 
-  In case of a device loss or replacement you may easily restore your wallet using Secret Key. Unstoppable makes it really easy to switch to another wallet or migrate funds from another wallet.
+  In case of a device loss or replacement you may easily restore your wallet using Secret Key. WILC makes it really easy to switch to another wallet or migrate funds from another wallet.
 
  (4) ALWAYS ONLINE
 
-Access your funds from anywhere at any time.   Unstoppable wallet was engineered to remain online and functional independent of any third party servers.   
+Access your funds from anywhere at any time.   WILC wallet was engineered to remain online and functional independent of any third party servers.   
 
 No single entity can take the wallet down and cause it's main features to malfunction. Not even the Horizontal Systems team able to interfere with it.
 
@@ -58,7 +58,7 @@ It’s fast, multi-lingual and highly customizable when it comes to the look and
 
 (7) OPEN & PUBLIC 
 
-The code powering Unstoppable wallet is fully public and open source enabling anyone to unconditionally copy and reuse its code.
+The code powering WILC wallet is fully public and open source enabling anyone to unconditionally copy and reuse its code.
 
 https://github.com/horizontalsystems/unstoppable-wallet-ios
 

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
 
 
 androidExtensions {
@@ -17,11 +17,11 @@ def computeVersionCode() {
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "io.horizontalsystems.bankwallet"
+        applicationId "io.wilc.wallet"
         minSdkVersion 26
         targetSdkVersion 29
         versionCode computeVersionCode()
-        versionName "0.17.1"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         kapt {
@@ -63,13 +63,6 @@ android {
             initWith debug
             applicationIdSuffix ".dev.testnet"
             buildConfigField "boolean", "testMode", "true"
-            matchingFallbacks = ['debug']
-        }
-
-        appcenter {
-            initWith debug
-            applicationIdSuffix ".dev.appcenter"
-            signingConfig signingConfigs.appCenter
             matchingFallbacks = ['debug']
         }
 
@@ -167,7 +160,7 @@ dependencies {
     // WorkManager RxJava2 support
     implementation "androidx.work:work-rxjava2:$work_version"
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 
     //permission
     implementation 'pub.devrel:easypermissions:3.0.0'
@@ -188,7 +181,6 @@ dependencies {
     def zcashDependencyMainNet = "cash.z.ecc.android:zcash-android-sdk-mainnet:$zcashVersion"
     def zcashDependencyTestNet = "cash.z.ecc.android:zcash-android-sdk-testnet:$zcashVersion"
     releaseImplementation zcashDependencyMainNet
-    appcenterImplementation zcashDependencyMainNet
     apptestnetImplementation zcashDependencyTestNet
     debugImplementation zcashDependencyTestNet
 

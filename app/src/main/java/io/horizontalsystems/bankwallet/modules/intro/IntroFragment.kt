@@ -85,7 +85,7 @@ class IntroFragment : BaseFragment() {
         (presenter.router as? IntroRouter)?.let { router ->
             router.navigateToWelcomeLiveEvent.observe(viewLifecycleOwner, Observer {
                 val extras = FragmentNavigatorExtras(imageSwitcher to "welcome_wallet_logo")
-                findNavController().navigate(R.id.introFragment_to_welcomeFragment, null, null, extras)
+//                findNavController().navigate(R.id.introFragment_to_welcomeFragment, null, null, extras)
             })
         }
     }

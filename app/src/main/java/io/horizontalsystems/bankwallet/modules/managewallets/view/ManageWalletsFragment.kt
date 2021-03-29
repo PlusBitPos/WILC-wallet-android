@@ -132,11 +132,14 @@ class ManageWalletsFragment : CoinListBaseFragment(), NoAccountDialog.Listener {
     private fun showAddTokenDialog() {
         hideKeyboard()
         activity?.let {
-            AddTokenDialog.show(it, object : AddTokenDialog.Listener {
-                override fun onClickAddErc20Token() {
-                    findNavController().navigate(R.id.manageWalletsFragment_to_addErc20Token, null, navOptions())
-                }
-            })
+            findNavController().navigate(R.id.manageWalletsFragment_to_addErc20Token, null, navOptions())
         }
+//        activity?.let {
+//            AddTokenDialog.show(it, object : AddTokenDialog.Listener {
+//                override fun onClickAddErc20Token() {
+//                    findNavController().navigate(R.id.manageWalletsFragment_to_addErc20Token, null, navOptions())
+//                }
+//            })
+//        }
     }
 }

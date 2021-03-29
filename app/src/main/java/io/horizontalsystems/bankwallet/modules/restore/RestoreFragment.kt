@@ -95,19 +95,19 @@ class RestoreFragment : BaseFragment() {
                 setAccountTypeListener()
 
                 when (screen.predefinedAccountType) {
-                    PredefinedAccountType.Standard,
-                    PredefinedAccountType.Binance,
-                    PredefinedAccountType.Zcash -> {
+                    PredefinedAccountType.Standard -> {
+//                    PredefinedAccountType.Binance,
+//                    PredefinedAccountType.Zcash -> {
                         val restoreAccountType = when (screen.predefinedAccountType) {
                             PredefinedAccountType.Standard -> RestoreAccountType.STANDARD
-                            PredefinedAccountType.Binance -> RestoreAccountType.BINANCE
-                            else -> RestoreAccountType.ZCASH
+//                            PredefinedAccountType.Binance -> RestoreAccountType.BINANCE
+//                            else -> RestoreAccountType.ZCASH
                         }
                         RestoreWordsFragment.instance(restoreAccountType, screen.predefinedAccountType.title)
                     }
-                    PredefinedAccountType.Eos -> {
-                        RestoreEosFragment()
-                    }
+//                    PredefinedAccountType.Eos -> {
+//                        RestoreEosFragment()
+//                    }
                 }
             }
             is RestoreViewModel.Screen.SelectCoins -> {

@@ -47,7 +47,7 @@
     <string name="Welcome_RestoreWallet">지갑 복원</string>
     <!--Rate App-->
     <string name="RateApp_Title_Rate_This_App">이 앱 평가하기</string>
-    <string name="RateApp_Description_Rate_This_App">Unstoppable Wallet 을 즐기고 계신가요? 잠시 시간을 내어 이 앱을 평가해주세요</string>
+    <string name="RateApp_Description_Rate_This_App">WILC Wallet 을 즐기고 계신가요? 잠시 시간을 내어 이 앱을 평가해주세요</string>
     <string name="RateApp_Button_RateIt">평가 하기</string>
     <string name="RateApp_Button_NotNow">다음에 확인</string>
     <!--Restore-->
@@ -120,7 +120,7 @@
     <string name="Send_Error_MaximumAmount">최대 %s 금액</string>
     <string name="Send_Error_MinRequiredBalance">최소 %s 만큼의 필요 잔여금</string>
     <string name="Send_Error_WrongParameters">잘못된 매개 변수</string>
-    <string name="Send_Error_TransparentAddress">Unstoppable은 투명 주소에 대한 지불을 지원하지 않습니다</string>
+    <string name="Send_Error_TransparentAddress">WILC Wallet은 투명 주소에 대한 지불을 지원하지 않습니다</string>
     <string name="Send_Error_SendToSelf">자체로 전송이 지원되지 않음</string>
     <string name="Send_DialogTitle">확인</string>
     <string name="Send_DialogAvailableBalance">사용 가능한 잔액</string>
@@ -338,7 +338,7 @@
     <string name="SettingsPrivacy_Info_BlockchainTx_Title">Blockchain Transactions</string>
     <string name="SettingsPrivacy_Info_BlockchainTx_Description">This setting controls the privacy level of user\'s transactions on Bitcoin, Bitcoin Cash and Litecoin blockchains.
         \n\nMost Bitcoin transactions generate two outputs. One output is the amount that goes to the receiver and the other is the change output that is returned to the sender. The way most wallets construct transactions makes it easy for a third party monitoring Bitcoin blockchain to understand which of the outputs went to the receiving party and which one was the change amount returned to the sender. The output returned to the sender can then be used in future transactions and further reveal the details to the monitoring party.
-        \n\nUnstoppable wallet implements measures to makes it significantly harder to figure out which output goes where. There are two options available to Unstoppable users:
+        \n\nWILC wallet implements measures to makes it significantly harder to figure out which output goes where. There are two options available to WILC users:
         \n\n1. Shuffle : The order of transaction outputs are randomized on every transaction. Sometimes change can be the first output, sometimes it can be the second. If a user trusts the developer of the app, than consider this a recommended option.
         \n\n2. Deterministic : There is a commonly agreed standard for ordering transaction outputs (known as BIP69). In open source wallets that standard ensures that wallet users do not need to trust how developers of the app implement the ordering of the outputs. As this standard is new, not many wallets have implemented it yet. As a result, it\'s somewhat possible to see on the blockchain whether transaction was sent from the wallet that uses that standard or not.</string>
     <string name="SettingsPrivacy_Info_BlockchainConnection_Title">Blockchain Sync</string>
@@ -346,7 +346,7 @@
         \n\nIn case of Ethereum, there is no alternative for mobile wallets to interact with blockchain other than via third party providers (i.e. Infura.io) or personal Ethereum nodes. Third party services can potentially record IP addresses and the requests made. That info can reveal location, balance, transactions etc. Moreover, the wallet has to trust that information returned is correct. There is a an alternative known as Incubed which in essence is a network of special Ethereum nodes. These nodes can also record IP addresses and requests made, but they are chosen randomly each time. While being slightly slower than Infura, the way Incubed works pretty much guarantees that the information returned is correct (not fake).
         \n\nWhen it comes to other blockchains like EOSIO and Binance Chain, at this point they only provide centralized means of connecting, without viable alternatives. Potentially they can be recording IP addresses and requests made.</string>
     <string name="SettingsPrivacy_Info_BlockchainRestore_Title">블록체인 복원</string>
-    <string name="SettingsPrivacy_Info_BlockchainRestore_Description">This setting is only relevant when restoring an existing wallet. It is a process of getting transactions history for a given coin so that the wallet app is able to display past transactions and calculate user\'s balance. This needs to happen only once, when user restores previously created wallet. At this point there are two potential ways for a mobile wallet like Unstoppable to do this:
+    <string name="SettingsPrivacy_Info_BlockchainRestore_Description">This setting is only relevant when restoring an existing wallet. It is a process of getting transactions history for a given coin so that the wallet app is able to display past transactions and calculate user\'s balance. This needs to happen only once, when user restores previously created wallet. At this point there are two potential ways for a mobile wallet like WILC to do this:
         \n\n1. from API Server : There is a third-party predefined server which hosts the entire blockchain and has all the data processed and ready to provide it in a fast manner. This method is fast but can potentially keep track of the IP addresses and the data requested. This option is recommended due to its speed of getting data (5-10 minutes). The risks are minimal. If the user restoring from his own server then no privacy risks at all.
         \n\n2. from Blockchain : In this case the app tries to restore directly from a p2p network of the blockchain nodes. The app pings many of those nodes and requests data from them. Potentially these nodes can keep track of user\'s IP address and requests made however during restore the app can switch between nodes. There are close to 10,000 Bitcoin nodes on the network at any given time. This option is slow and can easily take 2-3 hours, app needs to be open while restore is happening...</string>
     <!--Settings-->
@@ -360,9 +360,9 @@
     <string name="SettingsSecurity_EditPin">비밀번호 변경</string>
     <string name="SettingsSecurity_ManageKeys">지갑 관리하기</string>
     <string name="SettingsSecurity_BackupWallet">백업용 지갑</string>
-    <string name="SettingsSecurity_AppRestartWarning">이 작업을 수행하면 Unstoppable Wallet 이 다시 시작됩니다.</string>
+    <string name="SettingsSecurity_AppRestartWarning">이 작업을 수행하면 WILC Wallet 이 다시 시작됩니다.</string>
     <string name="SettingsSecurity_TorConnectionDescription">이 앱을 사용하는 동안 인터넷 거래를 전부 익명으로 처리하여 주세요. 느려질 수 있습니다.</string>
-    <string name="SettingsSecurity_NotificationsDisabledWarning">Unstoppable Wallet 앱에 대한 알림이 비활성화 되었습니다. 토르를 작동하려면 알림을 켜야합니다.</string>
+    <string name="SettingsSecurity_NotificationsDisabledWarning">WILC Wallet 앱에 대한 알림이 비활성화 되었습니다. 토르를 작동하려면 알림을 켜야합니다.</string>
     <string name="SettingsSecurity_SortingShuffle">셔플</string>
     <string name="SettingsSecurity_SortingShuffleDescription">랜덤 인덱싱</string>
     <string name="SettingsSecurity_SortingBip69">Deterministic Bip69</string>
@@ -372,13 +372,10 @@
     <string name="SettingsSecurity_SyncModeBlockchain">블록체인으로 부터</string>
     <string name="SettingsSecurity_SyncModeBlockchainDescription">더 개인</string>
     <!--Setting_Terms-->
-    <string name="SettingsTerms_AppTitle">Unstoppable</string>
+    <string name="SettingsTerms_AppTitle">WILC Wallet</string>
     <string name="SettingsTerms_Github">Github</string>
     <string name="SettingsTerms_Site">사이트</string>
-    <string name="SettingsTerms_Text">Unstoppable 지갑은 개인적이고 독립적인 방식으로 암호화폐를 투자하고 보관하려는 사람들을 위해 만들어졌습니다.
-\n\n이는 오직 사용자만이 자금을 통제할 수 있는 비관세적인 P2P 지갑입니다. 데이터를 수집하지 않고 특정 지갑 앱에 지갑을 잠그지 않아 사용자의 독립성을 유지합니다.
-\n\nUnstoppable 지갑은 완전한 오픈소스여서 누구나 앱이 요구하는 대로 정확히 작동하는지 확인할 수 있습니다.
-\n\n귀사는 이용 가능한 해결책이 기대에 미치지 못했기 때문에 스스로 Unstoppable 을 구축했습니다. 엔지니어링과 사용 편의성 측면에서 모두 귀사는 이 지갑이 대체 제품보다 상당히 앞서 있다고 믿고 있습니다.</string>
+    <string name="SettingsTerms_Text">WILC Wallet 지갑은 개인적이고 독립적인 방식으로 암호화폐를 투자하고 보관하려는 사람들을 위해 만들어졌습니다.   이는 오직 사용자만이 자금을 통제할 수 있는 비관세적인 P2P 지갑입니다. 데이터를 수집하지 않고 특정 지갑 앱에 지갑을 잠그지 않아 사용자의 독립성을 유지합니다.   WILC Wallet 지갑은 완전한 오픈소스여서 누구나 앱이 요구하는 대로 정확히 작동하는지 확인할 수 있습니다.   귀사는 이용 가능한 해결책이 기대에 미치지 못했기 때문에 스스로 WILC Wallet 을 구축했습니다. 엔지니어링과 사용 편의성 측면에서 모두 귀사는 이 지갑이 대체 제품보다 상당히 앞서 있다고 믿고 있습니다.</string>
     <string name="SettingsTerms_TermAcademy">나는 이 앱의 아카데미 부문을 거치면서 가상화폐 저장의 근본적인 측면에 대해 알게 되었다.</string>
     <string name="SettingsTerms_TermBackup">나는 12-24 단어 형식으로 보여 준 지갑의 개인 암호를 백업했습니다. 나는 이 개인 암호가 다른 곳이 아닌 내 스마트폰에 저장되어 있다는 것을 인지합니다.</string>
     <string name="SettingsTerms_TermOwner">나는 내 개인 암호의 소유자만이 내 지갑에 접근하여 자금을 쓸 수 있고 따라서 이 암호들은 절대 누구와도 공유되어서는 안 된다는 것을 이해합니다.</string>
@@ -389,14 +386,14 @@
     <string name="SettingsTerms_BottomThankYou">이 지갑을 선택해주셔서 감사합니다!</string>
     <!--Setting_Tell Friends-->
     <string name="SettingsShare_Title">공유</string>
-    <string name="SettingsShare_Text">Unstoppable 지갑 - 내가 추천하는 암호지갑</string>
+    <string name="SettingsShare_Text">WILC 지갑 - 내가 추천하는 암호지갑</string>
     <!--Setting_Contact-->
     <string name="SettingsContact_Title">연락처</string>
     <string name="SettingsContact_Email">E-mail</string>
     <string name="SettingsContact_Telegram">Telegram</string>
     <!--Setting_Notifications-->
     <string name="SettingsNotifications_Description">보고 싶은 코인에 대한 가격 변경 알림 설정\n\n최근 24시간 동안의 가격 변동이 선택된 임계값을 초과할 경우 알림 메시지가 표시됨\n\n가격 동향 알림은 짧은 1주일, 긴 6개월 동안의 동향 변화에 대해 알려줍니다.</string>
-    <string name="SettingsNotifications_NotificationsDisabledWarning">Unstoppable 지갑 앱을 위한 알림이 불가능합니다. 귀하께서는 가격 변동 알림을 받으시려면 앱을 켜놓는걸 필요로 합니다.</string>
+    <string name="SettingsNotifications_NotificationsDisabledWarning">WILC 지갑 앱을 위한 알림이 불가능합니다. 귀하께서는 가격 변동 알림을 받으시려면 앱을 켜놓는걸 필요로 합니다.</string>
     <string name="SettingsNotifications_TurnOn">설정에서 켜십시오</string>
     <string name="SettingsNotifications_Off">끄기</string>
     <string name="SettingsNotifications_DeactivateAll">전체 초기화</string>
@@ -508,7 +505,7 @@
     <string name="TorPage_Title">토르 연결</string>
     <string name="Tor_PrerequisitesAlert_Content">토르를 활성화하면 Infura의 이더리움 블록체인 연결이 초기화됩니다.</string>
     <!-- Account Types -->
-    <string name="AccountType_Unstoppable">Unstoppable</string>
+    <string name="AccountType_Unstoppable">WILC</string>
     <!--Coin Option-->
     <string name="CoinOption_Title">옵션 복구</string>
     <string name="CoinOption_Fast_Subtitle">0-2 시간 (권장)</string>

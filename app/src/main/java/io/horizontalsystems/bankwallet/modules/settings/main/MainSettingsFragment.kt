@@ -71,7 +71,7 @@ class MainSettingsFragment : BaseFragment() {
 
         shareApp.setOnSingleClickListener { presenter.didTapTellFriends() }
 
-        companyLogo.setOnSingleClickListener { presenter.didTapCompanyLogo() }
+//        companyLogo.setOnSingleClickListener { presenter.didTapCompanyLogo() }
     }
 
     private fun subscribeToViewEvents(presenterView: MainSettingsView) {
@@ -106,7 +106,7 @@ class MainSettingsFragment : BaseFragment() {
         })
 
         presenterView.termsAccepted.observe(viewLifecycleOwner, Observer { termsAccepted ->
-            terms.showAttention(!termsAccepted)
+//            terms.showAttention(!termsAccepted)
         })
 
         presenterView.walletConnectPeer.observe(viewLifecycleOwner, Observer {

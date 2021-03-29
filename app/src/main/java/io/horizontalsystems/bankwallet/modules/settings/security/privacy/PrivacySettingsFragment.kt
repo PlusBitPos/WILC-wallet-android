@@ -67,7 +67,7 @@ class PrivacySettingsFragment :
         concatRecyclerView.adapter = ConcatAdapter(
                 topDescriptionAdapter,
                 torControlAdapter,
-                transactionsStructureAdapter,
+//                transactionsStructureAdapter,
                 communicationSettingsAdapter,
                 walletRestoreSettingsAdapter
         )

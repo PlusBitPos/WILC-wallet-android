@@ -18,27 +18,27 @@ class PrivacySettingsPresenter(
 
     private val communicationSettingsViewItems: List<PrivacySettingsViewItem> = listOf(
             interactor.ether(),
-            interactor.eos(),
-            interactor.binance())
-            .mapNotNull { coin ->
+//            interactor.eos(),
+//            interactor.binance()
+            ).mapNotNull { coin ->
                 getCommunicationSettingsViewItem(coin)
             }
 
     private fun getCommunicationSettingsViewItem(coin: Coin): PrivacySettingsViewItem? {
         return when (coin.type) {
             is CoinType.Ethereum -> PrivacySettingsViewItem(coin, Communication(CommunicationMode.Infura), enabled = false)
-            is CoinType.Eos -> PrivacySettingsViewItem(coin, Communication(CommunicationMode.Greymass), enabled = false)
-            is CoinType.Binance -> PrivacySettingsViewItem(coin, Communication(CommunicationMode.BinanceDex), enabled = false)
+//            is CoinType.Eos -> PrivacySettingsViewItem(coin, Communication(CommunicationMode.Greymass), enabled = false)
+//            is CoinType.Binance -> PrivacySettingsViewItem(coin, Communication(CommunicationMode.BinanceDex), enabled = false)
             else -> null
         }
     }
 
-    private val walletRestoreSettingsViewItems: List<PrivacySettingsViewItem> = listOf(
-            interactor.bitcoin(),
-            interactor.litecoin(),
-            interactor.bitcoinCash(),
-            interactor.dash())
-            .map { coin ->
+    private val walletRestoreSettingsViewItems: List<PrivacySettingsViewItem> = listOf<Coin>(
+//            interactor.bitcoin(),
+//            interactor.litecoin(),
+//            interactor.bitcoinCash(),
+//            interactor.dash()
+            ).map { coin ->
                 val syncMode = interactor.syncModeSetting(coin.type)?.syncMode
                 val enabled = syncMode != null
 

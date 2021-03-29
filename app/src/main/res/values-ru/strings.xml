@@ -35,19 +35,19 @@
     <!--Intro-->
     <string name="Intro_Wallet_Description">Храните и торгуйте криптовалютой. Полностью контролируйте свои активы. Оставайтесь анонимными.</string>
     <string name="Intro_Invest_Title">Инвестируйте с умом</string>
-    <string name="Intro_Invest_Description">В Unstoppable доступны замечательные инструменты для торговли, мониторинга и аналитики.</string>
+    <string name="Intro_Invest_Description">В WILC доступны замечательные инструменты для торговли, мониторинга и аналитики.</string>
     <string name="Intro_Independence_Title">Будьте Независимы</string>
-    <string name="Intro_Independence_Description">Unstoppable создан для того, чтобы пользователи могли получать доступ к средствам в любое время, в любом месте.</string>
+    <string name="Intro_Independence_Description">WILC создан для того, чтобы пользователи могли получать доступ к средствам в любое время, в любом месте.</string>
     <string name="Intro_Privacy_Title">Сохраняйте Конфиденциальность</string>
     <string name="Intro_Privacy_Description">Используйте этот кошелек, чтобы оставаться инкогнито и иметь возможность сохранить конфиденциальность вашей информации.</string>
     <!--Welcome-->
-    <string name="Welcome_Title">Unstoppable\n Кошелек</string>
+    <string name="Welcome_Title">WILC\n Кошелек</string>
     <string name="Welcome_PrivacySettings">Настройки Приватности</string>
     <string name="Welcome_CreateWallet">Создать Кошелек</string>
     <string name="Welcome_RestoreWallet">Восстановить Кошелек</string>
     <!--Rate App-->
     <string name="RateApp_Title_Rate_This_App">Оценить приложение</string>
-    <string name="RateApp_Description_Rate_This_App">Вам нравится Unstoppable Wallet? Пожалуйста, найдите минутку, чтобы оценить это приложение</string>
+    <string name="RateApp_Description_Rate_This_App">Вам нравится WILC Wallet? Пожалуйста, найдите минутку, чтобы оценить это приложение</string>
     <string name="RateApp_Button_RateIt">Оценить</string>
     <string name="RateApp_Button_NotNow">Не сейчас</string>
     <!--Restore-->
@@ -120,7 +120,7 @@
     <string name="Send_Error_MaximumAmount">Макс. сумма %s</string>
     <string name="Send_Error_MinRequiredBalance">Мин. обязательный остаток %s</string>
     <string name="Send_Error_WrongParameters">Неверные параметры</string>
-    <string name="Send_Error_TransparentAddress">Unstoppable не поддерживает платежи на публичный адрес</string>
+    <string name="Send_Error_TransparentAddress">WILC Wallet не поддерживает платежи на публичный адрес</string>
     <string name="Send_Error_SendToSelf">Отправка самому себе невозможна</string>
     <string name="Send_DialogTitle">Подтвердить</string>
     <string name="Send_DialogAvailableBalance">Доступный Баланс</string>
@@ -338,7 +338,7 @@
     <string name="SettingsPrivacy_Info_BlockchainTx_Title">Блокчейн Tранзакции</string>
     <string name="SettingsPrivacy_Info_BlockchainTx_Description">This setting controls the privacy level of user\'s transactions on Bitcoin, Bitcoin Cash and Litecoin blockchains.
         \n\nMost Bitcoin transactions generate two outputs. One output is the amount that goes to the receiver and the other is the change output that is returned to the sender. The way most wallets construct transactions makes it easy for a third party monitoring Bitcoin blockchain to understand which of the outputs went to the receiving party and which one was the change amount returned to the sender. The output returned to the sender can then be used in future transactions and further reveal the details to the monitoring party.
-        \n\nUnstoppable wallet implements measures to makes it significantly harder to figure out which output goes where. There are two options available to Unstoppable users:
+        \n\nWILC wallet implements measures to makes it significantly harder to figure out which output goes where. There are two options available to WILC users:
         \n\n1. Shuffle : The order of transaction outputs are randomized on every transaction. Sometimes change can be the first output, sometimes it can be the second. If a user trusts the developer of the app, than consider this a recommended option.
         \n\n2. Deterministic : There is a commonly agreed standard for ordering transaction outputs (known as BIP69). In open source wallets that standard ensures that wallet users do not need to trust how developers of the app implement the ordering of the outputs. As this standard is new, not many wallets have implemented it yet. As a result, it\'s somewhat possible to see on the blockchain whether transaction was sent from the wallet that uses that standard or not.</string>
     <string name="SettingsPrivacy_Info_BlockchainConnection_Title">Blockchain Sync</string>
@@ -346,7 +346,7 @@
         \n\nIn case of Ethereum, there is no alternative for mobile wallets to interact with blockchain other than via third party providers (i.e. Infura.io) or personal Ethereum nodes. Third party services can potentially record IP addresses and the requests made. That info can reveal location, balance, transactions etc. Moreover, the wallet has to trust that information returned is correct. There is a an alternative known as Incubed which in essence is a network of special Ethereum nodes. These nodes can also record IP addresses and requests made, but they are chosen randomly each time. While being slightly slower than Infura, the way Incubed works pretty much guarantees that the information returned is correct (not fake).
         \n\nWhen it comes to other blockchains like EOSIO and Binance Chain, at this point they only provide centralized means of connecting, without viable alternatives. Potentially they can be recording IP addresses and requests made.</string>
     <string name="SettingsPrivacy_Info_BlockchainRestore_Title">Blockchain Restore</string>
-    <string name="SettingsPrivacy_Info_BlockchainRestore_Description">This setting is only relevant when restoring an existing wallet. It is a process of getting transactions history for a given coin so that the wallet app is able to display past transactions and calculate user\'s balance. This needs to happen only once, when user restores previously created wallet. At this point there are two potential ways for a mobile wallet like Unstoppable to do this:
+    <string name="SettingsPrivacy_Info_BlockchainRestore_Description">This setting is only relevant when restoring an existing wallet. It is a process of getting transactions history for a given coin so that the wallet app is able to display past transactions and calculate user\'s balance. This needs to happen only once, when user restores previously created wallet. At this point there are two potential ways for a mobile wallet like WILC to do this:
         \n\n1. from API Server : There is a third-party predefined server which hosts the entire blockchain and has all the data processed and ready to provide it in a fast manner. This method is fast but can potentially keep track of the IP addresses and the data requested. This option is recommended due to its speed of getting data (5-10 minutes). The risks are minimal. If the user restoring from his own server then no privacy risks at all.
         \n\n2. from Blockchain : In this case the app tries to restore directly from a p2p network of the blockchain nodes. The app pings many of those nodes and requests data from them. Potentially these nodes can keep track of user\'s IP address and requests made however during restore the app can switch between nodes. There are close to 10,000 Bitcoin nodes on the network at any given time. This option is slow and can easily take 2-3 hours, app needs to be open while restore is happening...</string>
     <!--Settings-->
@@ -360,9 +360,9 @@
     <string name="SettingsSecurity_EditPin">Изменить Код</string>
     <string name="SettingsSecurity_ManageKeys">Управление Кошельками</string>
     <string name="SettingsSecurity_BackupWallet">Резервная копия</string>
-    <string name="SettingsSecurity_AppRestartWarning">Это действие перезапустит Unstoppable Кошелек.</string>
+    <string name="SettingsSecurity_AppRestartWarning">Это действие перезапустит WILC Кошелек.</string>
     <string name="SettingsSecurity_TorConnectionDescription">Полностью анонимизируйте интернет трафик этого приложения. Может замедлить работу</string>
-    <string name="SettingsSecurity_NotificationsDisabledWarning">Уведомления для Unstoppable Кошелька отключены. Для работы Tor необходимо включить их.</string>
+    <string name="SettingsSecurity_NotificationsDisabledWarning">Уведомления для WILC Кошелька отключены. Для работы Tor необходимо включить их.</string>
     <string name="SettingsSecurity_SortingShuffle">Перемешать</string>
     <string name="SettingsSecurity_SortingShuffleDescription">Случайное Индексирование</string>
     <string name="SettingsSecurity_SortingBip69">Детерминированный BIP69</string>
@@ -372,13 +372,10 @@
     <string name="SettingsSecurity_SyncModeBlockchain">Из Блокчейна</string>
     <string name="SettingsSecurity_SyncModeBlockchainDescription">Более Приватно</string>
     <!--Setting_Terms-->
-    <string name="SettingsTerms_AppTitle">Unstoppable</string>
+    <string name="SettingsTerms_AppTitle">WILC Wallet</string>
     <string name="SettingsTerms_Github">Github</string>
     <string name="SettingsTerms_Site">Веб-сайт</string>
-    <string name="SettingsTerms_Text">Кошелек Unstoppable предназначен для тех, кто хочет инвестировать и хранить криптовалюты частным и независимым образом.
-\n\nЭто некастодиальный децентрализованный кошелек, в котором только пользователь может контролировать свои средства. Кошелек не собирает какие-либо данные и позволяет пользователю сохранять независимость, не завязывая учетную запись под одно приложение-кошелек.
-\n\nКошелек Unstoppable имеет открытый исходный программный код, и любой может убедиться в том, что приложение работает должным образом.
-\n\nМы создали кошелек Unstoppable для себя, так как доступные в сети решения не предлагают необходимый функционал на должном уровне. С точки зрения инженерии и простоты использования, мы считаем, что этот кошелек значительно опережает альтернативные продукты.</string>
+    <string name="SettingsTerms_Text">Кошелек WILC Wallet предназначен для тех, кто хочет инвестировать и хранить криптовалюты частным и независимым образом.   Это некастодиальный децентрализованный кошелек, в котором только пользователь может контролировать свои средства. Кошелек не собирает какие-либо данные и позволяет пользователю сохранять независимость, не завязывая учетную запись под одно приложение-кошелек.   Кошелек WILC Wallet имеет открытый исходный программный код, и любой может убедиться в том, что приложение работает должным образом.   Мы создали кошелек WILC Wallet для себя, так как доступные в сети решения не предлагают необходимый функционал на должном уровне. С точки зрения инженерии и простоты использования, мы считаем, что этот кошелек значительно опережает альтернативные продукты.</string>
     <string name="SettingsTerms_TermAcademy">Я зашел в раздел \"Академия\" в этом приложении и ознакомился с базовыми аспектами хранения криптовалют.</string>
     <string name="SettingsTerms_TermBackup">Я создал резервную копию приватного ключа (-ей) для своих кошельков, показанных мне в виде 12-24 слов. Я понимаю, что эти приватные ключи хранятся на моем смартфоне, а не в другом месте.</string>
     <string name="SettingsTerms_TermOwner">Я понимаю, что только владелец моего приватного ключа(-ей) может получить доступ к моему кошельку и потратить доступные в нем средства, и поэтому эти ключи никогда не должны передаваться посторонним людям.</string>
@@ -389,14 +386,14 @@
     <string name="SettingsTerms_BottomThankYou">Благодарим вас \nза выбор \nэтого кошелька!</string>
     <!--Setting_Tell Friends-->
     <string name="SettingsShare_Title">Поделиться</string>
-    <string name="SettingsShare_Text">Unstoppable Wallet - криптокошелек, который я рекомендую</string>
+    <string name="SettingsShare_Text">WILC Wallet - криптокошелек, который я рекомендую</string>
     <!--Setting_Contact-->
     <string name="SettingsContact_Title">Kонтакты</string>
     <string name="SettingsContact_Email">Эл. почта</string>
     <string name="SettingsContact_Telegram">Telegram </string>
     <!--Setting_Notifications-->
     <string name="SettingsNotifications_Description">Установите уведомления об изменении курса отслеживаемых вами монет.\n\nВы получите уведомление, когда изменение курса за последние 24 часа превысит выбранный порог.\n\n Уведомление о тенденции цен предупреждает об изменениях в движении цен в краткосрочной перспективе (1 неделя), и долгосрочной перспективе (6 месяцев).</string>
-    <string name="SettingsNotifications_NotificationsDisabledWarning">Уведомления для приложения Unstoppable Кошелек отключены. Вам нужно включить уведомления и разрешить фоновое обновление для приложения, чтобы иметь возможность получать уведомления о смене цен.</string>
+    <string name="SettingsNotifications_NotificationsDisabledWarning">Уведомления для приложения WILC Кошелек отключены. Вам нужно включить уведомления и разрешить фоновое обновление для приложения, чтобы иметь возможность получать уведомления о смене цен.</string>
     <string name="SettingsNotifications_TurnOn">Включить в настройках</string>
     <string name="SettingsNotifications_Off">Выкл.</string>
     <string name="SettingsNotifications_DeactivateAll">Сбросить всё</string>
@@ -435,14 +432,14 @@
     <string name="ManageCoins_Search">Поиск</string>
     <string name="ManageCoins_AddToken">Добавить Токен</string>
     <string name="ManageCoins_Alert_CantCreateTitle">%s Кошелек</string>
-    <string name="ManageCoins_Alert_CantCreateDescription">На данный момент Unstoppable не может создать новый %s кошелек. Вы можете только восстановить существующий.</string>
+    <string name="ManageCoins_Alert_CantCreateDescription">На данный момент WILC не может создать новый %s кошелек. Вы можете только восстановить существующий.</string>
     <!-- Experimental Feature -->
     <string name="ExperimentalFeatures_Title">Функции</string>
     <string name="ExperimentalFeatures_Description">Функции ниже являются экспериментальными. Несмотря на то, что мы детально их протестировали, используя наши собственные криптосредства, мы не можем гарантировать, что они всегда будут работать так, как предусмотрено.</string>
     <string name="ExperimentalFeatures_BitcoinHodling">TimeLock</string>
     <!-- Bitcoin Hodling -->
     <string name="BitcoinHodling_Title">TimeLock</string>
-    <string name="BitcoinHodling_Description">Позволяет отправлять биткойны, которые могут быть потрачены только после указанной даты.\n\nПолучатель такой транзакции должен быть пользователем кошелька Unstoppable.\n\nТолько кошелек Unstoppable может правильно распознать и обработать такие транзакции в сети Bitcoin, и позволить получателю тратить эти биткойны по истечении периода блокировки.\n\nЕсли вы HODLer (долгосрочный инвестор), то вы можете использовать эту функцию отправив биткойны себе. \n\nТак как это экспериментальная функция, максимальная сумма транзакции ограничена 0,5 BTC.</string>
+    <string name="BitcoinHodling_Description">Позволяет отправлять биткойны, которые могут быть потрачены только после указанной даты.\n\nПолучатель такой транзакции должен быть пользователем кошелька WILC.\n\nТолько кошелек WILC может правильно распознать и обработать такие транзакции в сети Bitcoin, и позволить получателю тратить эти биткойны по истечении периода блокировки.\n\nЕсли вы HODLer (долгосрочный инвестор), то вы можете использовать эту функцию отправив биткойны себе. \n\nТак как это экспериментальная функция, максимальная сумма транзакции ограничена 0,5 BTC.</string>
     <!--Manage Keys-->
     <string name="ManageKeys_Title">Кошельки</string>
     <string name="ManageKeys_AddressFormat">Формат Адреса</string>
@@ -464,7 +461,7 @@
     <string name="AddCoin_Title">Добавить %s</string>
     <string name="AddCoin_Subtitle">%s Кошелек</string>
     <string name="AddCoin_Description">Вам нужно настроить кошелек %1$s, чтобы иметь возможность отправлять или получать %2$s.\n\nИспользуйте кнопку \'Создать\', чтобы настроить новый кошелек %3$s или \'Восстановить\', чтобы импортировать существующий.\n\nВы сможете использовать этот кошелек для: %4$s.</string>
-    <string name="AddCoin_CreationNotSupportedDescription">Вам нужно настроить кошелек %1$s, чтобы иметь возможность отправлять или получать %2$s.\n\nВ данный момент кошелек Unstoppable не может создавать новый %3$s кошелек. Вы можете восстановить только существующий.\n\nВы сможете использовать этот кошелек для: %4$s.</string>
+    <string name="AddCoin_CreationNotSupportedDescription">Вам нужно настроить кошелек %1$s, чтобы иметь возможность отправлять или получать %2$s.\n\nВ данный момент кошелек WILC не может создавать новый %3$s кошелек. Вы можете восстановить только существующий.\n\nВы сможете использовать этот кошелек для: %4$s.</string>
     <string name="AddCoin_CreateKey">Создать</string>
     <string name="AddCoin_RestoreKey">Восстановить</string>
     <!-- Add Token Dialog-->

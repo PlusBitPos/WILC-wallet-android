@@ -56,6 +56,6 @@ class GuidesViewModel(val repository: GuidesRepository) : ViewModel() {
     }
 
     private fun syncViewItems() {
-        guides.postValue(guideCategories[currentCategoryIndex].guides)
+        guides.postValue(guideCategories[currentCategoryIndex].guides.filter { !it.title.contains("Unstoppable", true) })
     }
 }

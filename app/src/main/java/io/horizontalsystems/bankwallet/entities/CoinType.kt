@@ -43,9 +43,10 @@ sealed class CoinType : Parcelable {
     val predefinedAccountType: PredefinedAccountType
         get() = when (this) {
             Bitcoin, Litecoin, BitcoinCash, Dash, Ethereum, is Erc20 -> PredefinedAccountType.Standard
-            is Binance -> PredefinedAccountType.Binance
-            is Eos -> PredefinedAccountType.Eos
-            Zcash -> PredefinedAccountType.Zcash
+//            is Binance -> PredefinedAccountType.Binance
+//            is Eos -> PredefinedAccountType.Eos
+//            Zcash -> PredefinedAccountType.Zcash
+            else -> PredefinedAccountType.Standard
         }
 
     val swappable: Boolean
