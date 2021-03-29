@@ -5,21 +5,37 @@ import io.horizontalsystems.bankwallet.core.IWordsManager
 import io.horizontalsystems.bankwallet.core.managers.ZcashBirthdayProvider
 import io.horizontalsystems.bankwallet.entities.AccountType
 import io.horizontalsystems.bankwallet.modules.restore.words.RestoreWordsModule.RestoreAccountType
+import io.horizontalsystems.hdwalletkit.Mnemonic
 
 class RestoreWordsService(
         private val restoreAccountType: RestoreAccountType,
         private val wordsManager: IWordsManager,
-        private val zcashBirthdayProvider: ZcashBirthdayProvider
-) : RestoreWordsModule.IRestoreWordsService, Clearable {
+        private val zcashBirthdayProvider: ZcashBirthdayProvider)
+    : RestoreWordsModule.IRestoreWordsService, Clearable {
 
     override val wordCount: Int
         get() = restoreAccountType.wordsCount
 
-    override val hasAdditionalInfo: Boolean
+    override val birthdayHeightEnabled: Boolean
         get() = restoreAccountType == RestoreAccountType.ZCASH
 
     override fun accountType(words: List<String>, additionalInfo: String?): AccountType {
-        wordsManager.validate(words, wordCount)
+        words.forEach {
+            if (!isWordValid(it)) {
+                throw RestoreWordsException.InvalidWordException(it)
+            }
+        }
+
+        if (words.size != wordCount) {
+            throw RestoreWordsException.InvalidWordCountException(words.size, wordCount)
+        }
+
+        try {
+            wordsManager.validateChecksum(words)
+        } catch (e: Mnemonic.ChecksumException){
+            throw RestoreWordsException.ChecksumException()
+        }
+
         return when (restoreAccountType) {
             RestoreAccountType.STANDARD,
             RestoreAccountType.BINANCE -> AccountType.Mnemonic(words)
@@ -40,9 +56,20 @@ class RestoreWordsService(
         }
     }
 
+    override fun isWordValid(word: String): Boolean {
+        return wordsManager.isWordValid(word)
+    }
+
+    override fun isWordPartiallyValid(word: String): Boolean {
+        return wordsManager.isWordPartiallyValid(word)
+    }
+
     override fun clear() {}
 
     open class RestoreWordsException : Throwable() {
         class InvalidBirthdayHeightException : RestoreWordsException()
+        class ChecksumException : RestoreWordsException()
+        class InvalidWordException(val word: String) : RestoreWordsException()
+        class InvalidWordCountException(val count: Int, val requiredCount: Int) : RestoreWordsException()
     }
 }

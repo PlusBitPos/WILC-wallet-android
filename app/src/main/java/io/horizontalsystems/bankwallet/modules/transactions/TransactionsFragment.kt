@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -18,9 +18,11 @@ import io.horizontalsystems.bankwallet.core.App
 import io.horizontalsystems.bankwallet.core.setOnSingleClickListener
 import io.horizontalsystems.bankwallet.entities.TransactionType
 import io.horizontalsystems.bankwallet.entities.Wallet
-import io.horizontalsystems.bankwallet.modules.transactions.transactionInfo.TransactionInfoModule
+import io.horizontalsystems.bankwallet.modules.transactions.transactionInfo.TransactionLockState
 import io.horizontalsystems.bankwallet.ui.extensions.NpaLinearLayoutManager
+import io.horizontalsystems.core.findNavController
 import io.horizontalsystems.core.helpers.DateHelper
+import io.horizontalsystems.core.navGraphViewModels
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.fragment_transactions.*
 import kotlinx.android.synthetic.main.view_holder_filter.*
@@ -28,7 +30,7 @@ import kotlinx.android.synthetic.main.view_holder_transaction.*
 
 class TransactionsFragment : Fragment(), TransactionsAdapter.Listener, FilterAdapter.Listener {
 
-    private val viewModel by viewModels<TransactionsViewModel> { TransactionsModule.Factory() }
+    private val viewModel by navGraphViewModels<TransactionsViewModel>(R.id.mainFragment) { TransactionsModule.Factory() }
     private val transactionsAdapter = TransactionsAdapter(this)
     private val filterAdapter = FilterAdapter(this)
 
@@ -74,12 +76,6 @@ class TransactionsFragment : Fragment(), TransactionsAdapter.Listener, FilterAda
             filterAdapter.setFilters(filters)
         })
 
-        viewModel.transactionViewItemLiveEvent.observe(viewLifecycleOwner, Observer { transactionViewItem ->
-            activity?.let {
-                TransactionInfoModule.start(it, transactionViewItem.record, transactionViewItem.wallet)
-            }
-        })
-
         viewModel.items.observe(viewLifecycleOwner, Observer {
             transactionsAdapter.submitList(it)
         })
@@ -102,13 +98,13 @@ class TransactionsFragment : Fragment(), TransactionsAdapter.Listener, FilterAda
     }
 
     override fun onItemClick(item: TransactionViewItem) {
-        viewModel.delegate.onTransactionItemClick(item)
+        findNavController().navigate(R.id.mainFragment_to_transactionInfoDialog)
     }
 
     override fun onFilterItemClick(item: FilterAdapter.FilterItem?, itemPosition: Int, itemWidth: Int) {
         recyclerTransactions.layoutManager?.scrollToPosition(0)
         viewModel.delegate.onFilterSelect(item as? Wallet)
-        
+
         val leftOffset = recyclerTags.width / 2 - itemWidth / 2
         (recyclerTags.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(itemPosition, leftOffset)
     }
@@ -159,7 +155,9 @@ class TransactionsAdapter(private var listener: Listener) : ListAdapter<Transact
     }
 
     override fun onClick(position: Int) {
-        listener.onItemClick(getItem(position))
+        val item = getItem(position)
+        viewModel.delegate.showDetails(item)
+        listener.onItemClick(item)
     }
 }
 
@@ -170,7 +168,7 @@ class ViewHolderTransaction(override val containerView: View, private val l: Cli
     }
 
     init {
-        containerView.setOnSingleClickListener { l.onClick(adapterPosition) }
+        containerView.setOnSingleClickListener { l.onClick(bindingAdapterPosition) }
     }
 
     fun bind(transactionRecord: TransactionViewItem, showBottomShade: Boolean) {
@@ -178,15 +176,18 @@ class ViewHolderTransaction(override val containerView: View, private val l: Cli
             App.numberFormatter.formatFiat(it.value, it.currency.symbol, 0, 2)
         }
         txValueInFiat.setTextColor(TransactionViewHelper.getAmountColor(transactionRecord.type, itemView.context))
-        txValueInFiat.setCompoundDrawablesWithIntrinsicBounds(0, 0, TransactionViewHelper.getLockIcon(transactionRecord.lockState), 0)
-        txValueInCoin.text = App.numberFormatter.formatCoin(transactionRecord.coinValue.value, transactionRecord.coinValue.coin.code, 0, 8)
+        val significantDecimal = App.numberFormatter.getSignificantDecimalCoin(transactionRecord.coinValue.value)
+        txValueInCoin.text = App.numberFormatter.formatCoin(transactionRecord.coinValue.value, transactionRecord.coinValue.coin.code, 0, significantDecimal)
         txTypeIcon.setImageResource(TransactionViewHelper.getTransactionTypeIcon(transactionRecord.type))
         txDate.text = transactionRecord.date?.let { DateHelper.shortDate(it) }
         val time = transactionRecord.date?.let { DateHelper.getOnlyTime(it) }
         txStatusWithTimeView.bind(transactionRecord.status, transactionRecord.type, time)
         bottomShade.isVisible = showBottomShade
+
         sentToSelfIcon.isVisible = transactionRecord.type == TransactionType.SentToSelf
         doubleSpendIcon.isVisible = transactionRecord.doubleSpend
+        setLockIcon(transactionRecord.lockState)
+        setBottomIcon(transactionRecord.status, transactionRecord.type, transactionRecord.doubleSpend)
     }
 
     fun bindUpdate(current: TransactionViewItem, prev: TransactionViewItem) {
@@ -198,22 +199,53 @@ class ViewHolderTransaction(override val containerView: View, private val l: Cli
         }
 
         if (current.lockState != prev.lockState) {
-            txValueInFiat.setCompoundDrawablesWithIntrinsicBounds(0, 0, TransactionViewHelper.getLockIcon(current.lockState), 0)
+            setLockIcon(current.lockState)
         }
 
         if (current.coinValue != prev.coinValue) {
-            txValueInCoin.text = App.numberFormatter.formatCoin(current.coinValue.value, current.coinValue.coin.code, 0, 8)
+            val significantDecimal = App.numberFormatter.getSignificantDecimalCoin(current.coinValue.value)
+            txValueInCoin.text = App.numberFormatter.formatCoin(current.coinValue.value, current.coinValue.coin.code, 0, significantDecimal)
         }
 
         if (current.status != prev.status || current.date != prev.date) {
             txDate.text = current.date?.let { DateHelper.shortDate(it) }
             val time = current.date?.let { DateHelper.getOnlyTime(it) }
             txStatusWithTimeView.bind(current.status, current.type, time)
+            setBottomIcon(current.status, current.type, current.doubleSpend)
         }
 
         if (current.doubleSpend != prev.doubleSpend) {
             doubleSpendIcon.isVisible = current.doubleSpend
         }
+    }
+
+    private fun setBottomIcon(status: TransactionStatus, type: TransactionType, doubleSpend: Boolean) {
+        when (status) {
+            is TransactionStatus.Processing -> {
+                bottomIcon.isVisible = false
+                transactionProgressView.isVisible = true
+                transactionProgressView.bind(status.progress, type)
+                return
+            }
+            is TransactionStatus.Pending -> {
+                bottomIcon.isVisible = false
+                transactionProgressView.isVisible = true
+                transactionProgressView.bind(type = type)
+                return
+            }
+            else -> {
+                bottomIcon.isVisible = true
+                transactionProgressView.isVisible = false
+                val image = TransactionViewHelper.getBottomIconImage(status)
+                bottomIcon.setImageDrawable(image?.let { ContextCompat.getDrawable(containerView.context, it) })
+            }
+        }
+    }
+
+    private fun setLockIcon(lockState: TransactionLockState?) {
+        val imgRes = TransactionViewHelper.getLockIcon(lockState)
+        lockIcon.isVisible = imgRes > 0
+        lockIcon.setImageResource(imgRes)
     }
 
 }
@@ -233,9 +265,9 @@ class FilterAdapter(private var listener: Listener) : Adapter<ViewHolder>(), Vie
     private var selectedFilterItem: FilterItem? = null
     private var filters: List<FilterItem?> = listOf()
 
-    fun setFilters(filters: List<FilterItem?>) {
+    fun setFilters(filters: List<FilterItem?>, selectedFieldItem: FilterItem? = null) {
         this.filters = filters
-        selectedFilterItem = filters.firstOrNull()
+        this.selectedFilterItem = selectedFieldItem ?: filters.firstOrNull()
         notifyDataSetChanged()
     }
 
@@ -247,7 +279,7 @@ class FilterAdapter(private var listener: Listener) : Adapter<ViewHolder>(), Vie
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
             is ViewHolderFilter -> {
-                holder.bind(filters[position]?.filterId, selectedFilterItem == filters[position])
+                holder.bind(filters[position]?.filterId, selectedFilterItem?.filterId == filters[position]?.filterId)
             }
         }
     }

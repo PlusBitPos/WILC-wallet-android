@@ -5,23 +5,21 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import io.horizontalsystems.core.findNavController
 import io.horizontalsystems.bankwallet.R
 import io.horizontalsystems.bankwallet.core.BaseFragment
 import io.horizontalsystems.bankwallet.entities.AccountType
 import io.horizontalsystems.bankwallet.entities.Coin
 import io.horizontalsystems.bankwallet.entities.PredefinedAccountType
 import io.horizontalsystems.bankwallet.modules.main.MainModule
-import io.horizontalsystems.bankwallet.modules.restore.eos.RestoreEosFragment
 import io.horizontalsystems.bankwallet.modules.restore.restoreselectcoins.RestoreSelectCoinsFragment
 import io.horizontalsystems.bankwallet.modules.restore.restoreselectpredefinedaccounttype.RestoreSelectPredefinedAccountTypeFragment
 import io.horizontalsystems.bankwallet.modules.restore.words.RestoreWordsFragment
 import io.horizontalsystems.bankwallet.modules.restore.words.RestoreWordsModule.RestoreAccountType
+import io.horizontalsystems.core.findNavController
 import kotlinx.android.synthetic.main.fragment_manage_keys.*
 
 class RestoreFragment : BaseFragment() {
@@ -36,18 +34,12 @@ class RestoreFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setHasOptionsMenu(true)
-
-        (activity as? AppCompatActivity)?.let {
-            it.setSupportActionBar(toolbar)
-            it.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
-
         val selectCoins = arguments?.getBoolean(SELECT_COINS_KEY)!!
+        val coinToEnable = arguments?.getParcelable<Coin>(COIN_TO_ENABLE)
         val predefinedAccountType = arguments?.getParcelable<PredefinedAccountType>(PREDEFINED_ACCOUNT_TYPE_KEY)
         inApp = arguments?.getBoolean(IN_APP_KEY) ?: true
 
-        viewModel = ViewModelProvider(this, RestoreModule.Factory(selectCoins, predefinedAccountType))
+        viewModel = ViewModelProvider(this, RestoreModule.Factory(selectCoins, predefinedAccountType, coinToEnable))
                 .get(RestoreViewModel::class.java)
 
         Handler().postDelayed({
@@ -105,15 +97,12 @@ class RestoreFragment : BaseFragment() {
                         }
                         RestoreWordsFragment.instance(restoreAccountType, screen.predefinedAccountType.title)
                     }
-//                    PredefinedAccountType.Eos -> {
-//                        RestoreEosFragment()
-//                    }
                 }
             }
             is RestoreViewModel.Screen.SelectCoins -> {
                 setSelectCoinsListener()
 
-                RestoreSelectCoinsFragment.instance(screen.predefinedAccountType)
+                RestoreSelectCoinsFragment.instance(screen.predefinedAccountType, screen.accountType)
             }
         }
     }
@@ -159,6 +148,7 @@ class RestoreFragment : BaseFragment() {
 
         const val PREDEFINED_ACCOUNT_TYPE_KEY = "predefined_account_type_key"
         const val SELECT_COINS_KEY = "select_coins_key"
+        const val COIN_TO_ENABLE = "coin_to_enable"
         const val IN_APP_KEY = "in_app_key"
     }
 }

@@ -24,16 +24,16 @@ class AppStatusFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setNavigationToolbar(toolbar, findNavController())
-
-        toolbar.inflateMenu(R.menu.app_status_menu)
-        toolbar.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == R.id.menuCopy){
-                presenter.didTapCopy(textAppStatus.text.toString())
-                true
-            } else {
-                super.onOptionsItemSelected(menuItem)
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menuCopy -> {
+                    presenter.didTapCopy(textAppStatus.text.toString())
+                    true
+                }
+                else -> false
             }
         }
 

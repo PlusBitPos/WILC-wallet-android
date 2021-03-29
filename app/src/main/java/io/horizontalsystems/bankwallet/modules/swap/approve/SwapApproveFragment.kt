@@ -3,9 +3,10 @@ package io.horizontalsystems.bankwallet.modules.swap.approve
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -14,12 +15,11 @@ import io.horizontalsystems.bankwallet.R
 import io.horizontalsystems.bankwallet.core.BaseFragment
 import io.horizontalsystems.bankwallet.core.ethereum.EthereumFeeViewModel
 import io.horizontalsystems.bankwallet.core.setOnSingleClickListener
-import io.horizontalsystems.bankwallet.modules.swap.SwapModule
+import io.horizontalsystems.bankwallet.modules.swap.allowance.SwapAllowanceService
 import io.horizontalsystems.core.findNavController
 import io.horizontalsystems.core.helpers.HudHelper
 import io.horizontalsystems.core.setNavigationResult
 import kotlinx.android.synthetic.main.fragment_swap_approve.*
-import kotlinx.android.synthetic.main.fragment_swap_approve.toolbar
 
 class SwapApproveFragment : BaseFragment() {
 
@@ -29,10 +29,17 @@ class SwapApproveFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
-        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menuClose -> {
+                    findNavController().popBackStack()
+                    true
+                }
+                else -> false
+            }
+        }
 
-        val approveData = requireArguments().getParcelable<SwapModule.ApproveData>(dataKey)!!
+        val approveData = requireArguments().getParcelable<SwapAllowanceService.ApproveData>(dataKey)!!
 
         val vmFactory = SwapApproveModule.Factory(approveData)
         val viewModel by viewModels<SwapApproveViewModel> { vmFactory }
@@ -88,22 +95,7 @@ class SwapApproveFragment : BaseFragment() {
             error.text = it
         })
 
-        feeSelectorView.setDurationVisible(false)
         feeSelectorView.setFeeSelectorViewInteractions(feeViewModel, feeViewModel, viewLifecycleOwner, parentFragmentManager)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.swap_approve_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menuClose -> {
-                findNavController().popBackStack()
-                true
-            }
-            else -> false
-        }
     }
 
     companion object {

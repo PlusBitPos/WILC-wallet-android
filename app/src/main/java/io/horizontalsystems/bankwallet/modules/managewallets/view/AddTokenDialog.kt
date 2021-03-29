@@ -12,6 +12,7 @@ class AddTokenDialog(private val listener: Listener)
 
     interface Listener {
         fun onClickAddErc20Token()
+        fun onClickAddBep2Token()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -20,7 +21,7 @@ class AddTokenDialog(private val listener: Listener)
 
         setTitle(activity?.getString(R.string.AddTokenDialog_Title))
         setSubtitle(getString(R.string.AddTokenDialog_Subtitle))
-        setHeaderIcon(R.drawable.ic_plus)
+        setHeaderIcon(R.drawable.ic_plus_circled)
 
         bindActions()
     }
@@ -28,6 +29,10 @@ class AddTokenDialog(private val listener: Listener)
     private fun bindActions() {
         erc20TokensBtn.setOnClickListener {
             listener.onClickAddErc20Token()
+            dismiss()
+        }
+        bep2TokensBtn.setOnClickListener {
+            listener.onClickAddBep2Token()
             dismiss()
         }
     }

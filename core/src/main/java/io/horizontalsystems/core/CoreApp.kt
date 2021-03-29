@@ -10,7 +10,7 @@ abstract class CoreApp : Application() {
 
     companion object : ICoreApp {
         override lateinit var preferences: SharedPreferences
-        override lateinit var appConfigTestMode: IAppConfigTestMode
+        override lateinit var buildConfigProvider: IBuildConfigProvider
         override lateinit var languageConfigProvider: ILanguageConfigProvider
         override lateinit var backgroundManager: BackgroundManager
         override lateinit var encryptionManager: IEncryptionManager
@@ -22,6 +22,7 @@ abstract class CoreApp : Application() {
         override lateinit var pinComponent: IPinComponent
         override lateinit var pinStorage: IPinStorage
         override lateinit var themeStorage: IThemeStorage
+        override lateinit var thirdKeyboardStorage: IThirdKeyboard
 
         override lateinit var instance: CoreApp
     }

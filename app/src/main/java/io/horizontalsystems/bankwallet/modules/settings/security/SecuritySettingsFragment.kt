@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -15,8 +14,8 @@ import io.horizontalsystems.core.findNavController
 import io.horizontalsystems.core.getNavigationLiveData
 import io.horizontalsystems.pin.PinInteractionType
 import io.horizontalsystems.pin.PinModule
+import io.horizontalsystems.views.ListPosition
 import kotlinx.android.synthetic.main.fragment_settings_security.*
-import kotlinx.android.synthetic.main.fragment_settings_security.toolbar
 
 class SecuritySettingsFragment : BaseFragment() {
 
@@ -28,10 +27,8 @@ class SecuritySettingsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        (activity as? AppCompatActivity)?.let {
-            it.setSupportActionBar(toolbar)
-            it.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
         }
 
         viewModel.init()
@@ -69,7 +66,10 @@ class SecuritySettingsFragment : BaseFragment() {
 
         viewModel.editPinVisibleLiveData.observe(viewLifecycleOwner, Observer { pinEnabled ->
             changePin.isVisible = pinEnabled
-            enablePin.showBottomBorder(!pinEnabled)
+            enablePin.setListPosition(if (pinEnabled) ListPosition.First else ListPosition.Single)
+            if (pinEnabled) {
+                changePin.setListPosition(ListPosition.Last)
+            }
         })
 
         viewModel.biometricSettingsVisibleLiveData.observe(viewLifecycleOwner, Observer { enabled ->

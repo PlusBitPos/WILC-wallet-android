@@ -25,20 +25,25 @@ object MainSettingsModule {
         fun didTapBaseCurrency()
         fun didTapLanguage()
         fun didSwitchLightMode(lightMode: Boolean)
-        fun didTapAbout()
+        fun didTapAboutApp()
         fun didTapCompanyLogo()
-        fun didTapReportProblem()
-        fun didTapTellFriends()
         fun didTapNotifications()
         fun didTapExperimentalFeatures()
         fun didTapManageKeys()
-        fun didTapAppStatus()
         fun didTapWalletConnect()
+        fun didTapFaq()
+        fun didTapAcademy()
+        fun didTapTwitter()
+        fun didTapTelegram()
+        fun didTapReddit()
     }
 
     interface IMainSettingsInteractor {
         val companyWebPageLink: String
         val appWebPageLink: String
+        val companyTwitterLink: String
+        val companyTelegramLink: String
+        val companyRedditLink: String
         val allBackedUp: Boolean
         val walletConnectPeerMeta: WCPeerMeta?
         val currentLanguageDisplayName: String
@@ -63,16 +68,15 @@ object MainSettingsModule {
         fun showSecuritySettings()
         fun showBaseCurrencySettings()
         fun showLanguageSettings()
-        fun showAbout()
+        fun showAboutApp()
         fun openLink(url: String)
         fun reloadAppInterface()
-        fun showReportProblem()
-        fun showShareApp(appWebPageLink: String)
         fun showNotifications()
         fun showExperimentalFeatures()
         fun showManageKeys()
-        fun openAppStatus()
         fun openWalletConnect()
+        fun openFaq()
+        fun openAcademy()
     }
 
     class Factory : ViewModelProvider.Factory {

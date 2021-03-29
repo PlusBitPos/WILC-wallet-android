@@ -9,9 +9,6 @@ sealed class PredefinedAccountType : Parcelable {
     object Standard : PredefinedAccountType()
 
 //    @Parcelize
-//    object Eos : PredefinedAccountType()
-//
-//    @Parcelize
 //    object Binance : PredefinedAccountType()
 //
 //    @Parcelize
@@ -20,7 +17,6 @@ sealed class PredefinedAccountType : Parcelable {
     val title: Int
         get() = when (this) {
             Standard -> R.string.AccountType_Unstoppable
-//            Eos -> R.string.AccountType_Eos
 //            Binance -> R.string.AccountType_Binance
 //            Zcash -> R.string.AccountType_Zcash
         }
@@ -37,9 +33,6 @@ sealed class PredefinedAccountType : Parcelable {
         Standard -> {
             accountType is AccountType.Mnemonic && accountType.words.size == 12
         }
-//        Eos -> {
-//            accountType is AccountType.Eos
-//        }
 //        Binance -> {
 //            accountType is AccountType.Mnemonic && accountType.words.size == 24
 //        }
@@ -48,15 +41,9 @@ sealed class PredefinedAccountType : Parcelable {
 //        }
     }
 
-    fun isCreationSupported(): Boolean = when (this) {
-//        Eos -> false
-        else -> true
-    }
-
     override fun toString(): String {
         return when (this) {
             Standard -> STANDARD
-//            Eos -> EOS
 //            Binance -> BINANCE
 //            Zcash -> ZCASH
         }
@@ -64,7 +51,6 @@ sealed class PredefinedAccountType : Parcelable {
 
     companion object {
         const val STANDARD = "standard"
-        const val EOS = "eos"
         const val BINANCE = "binance"
         const val ZCASH = "zcash"
     }

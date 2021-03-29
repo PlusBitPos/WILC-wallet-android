@@ -10,6 +10,7 @@ import io.horizontalsystems.bankwallet.core.App
 import io.horizontalsystems.bankwallet.core.setOnSingleClickListener
 import io.horizontalsystems.bankwallet.entities.CoinValue
 import io.horizontalsystems.bankwallet.entities.CurrencyValue
+import io.horizontalsystems.bankwallet.modules.transactions.TransactionStatus
 import io.horizontalsystems.core.helpers.DateHelper
 import io.horizontalsystems.views.helpers.LayoutHelper
 import io.horizontalsystems.views.inflate
@@ -29,7 +30,7 @@ class TransactionDetailsAdapter(private val viewModel: TransactionInfoViewModel)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
 
-        return DetailViewHolder(inflate(parent, R.layout.view_transaction_info_item), viewModel)
+        return DetailViewHolder(inflate(parent, R.layout.view_holder_transaction_info), viewModel)
     }
 
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
@@ -46,6 +47,7 @@ class TransactionDetailsAdapter(private val viewModel: TransactionInfoViewModel)
             decoratedText.isVisible = false
             btnAction.isVisible = false
             valueText.isVisible = false
+            statusInfoIcon.isVisible = false
             valueText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             transactionStatusView.isVisible = false
 
@@ -53,13 +55,14 @@ class TransactionDetailsAdapter(private val viewModel: TransactionInfoViewModel)
                 is TransactionDetailViewItem.Rate -> bindRate(detail)
                 is TransactionDetailViewItem.Fee -> bindFee(detail)
                 is TransactionDetailViewItem.From -> bindFrom(detail)
+                is TransactionDetailViewItem.Memo -> bindMemo(detail)
                 is TransactionDetailViewItem.To -> bindTo(detail)
                 is TransactionDetailViewItem.Recipient -> bindRecipient(detail)
                 is TransactionDetailViewItem.Id -> bindId(detail)
                 is TransactionDetailViewItem.Status -> bindStatus(detail)
                 is TransactionDetailViewItem.DoubleSpend -> bindDoubleSpend()
                 is TransactionDetailViewItem.SentToSelf -> {
-                    bindHint(context.getString(R.string.TransactionInfo_SentToSelfNote), iconStart = R.drawable.ic_incoming_16)
+                    bindHint(context.getString(R.string.TransactionInfo_SentToSelfNote), iconStart = R.drawable.ic_incoming_20)
                 }
                 is TransactionDetailViewItem.RawTransaction -> bindRaw()
                 is TransactionDetailViewItem.LockInfo -> bindLockInfo(detail)
@@ -74,17 +77,17 @@ class TransactionDetailsAdapter(private val viewModel: TransactionInfoViewModel)
 
         private fun bindLockInfo(detail: TransactionDetailViewItem.LockInfo) {
             if (detail.lockState.locked) {
-                bindHint(context.getString(R.string.TransactionInfo_LockedUntil, DateHelper.getFullDate(detail.lockState.date)), R.drawable.ic_lock, R.drawable.ic_info)
+                bindHint(context.getString(R.string.TransactionInfo_LockedUntil, DateHelper.getFullDate(detail.lockState.date)), R.drawable.ic_lock_20, R.drawable.ic_info_20)
                 itemView.setOnSingleClickListener {
                     viewModel.delegate.onClickLockInfo()
                 }
             } else {
-                bindHint(context.getString(R.string.TransactionInfo_UnlockedAt, DateHelper.getFullDate(detail.lockState.date)), iconStart = R.drawable.ic_unlock)
+                bindHint(context.getString(R.string.TransactionInfo_UnlockedAt, DateHelper.getFullDate(detail.lockState.date)), iconStart = R.drawable.ic_unlock_20)
             }
         }
 
         private fun bindDoubleSpend() {
-            bindHint(context.getString(R.string.TransactionInfo_DoubleSpendNote), R.drawable.ic_doublespend, R.drawable.ic_info)
+            bindHint(context.getString(R.string.TransactionInfo_DoubleSpendNote), R.drawable.ic_double_spend_20, R.drawable.ic_info_20)
             itemView.setOnSingleClickListener {
                 viewModel.delegate.onClickDoubleSpendInfo()
             }
@@ -102,7 +105,7 @@ class TransactionDetailsAdapter(private val viewModel: TransactionInfoViewModel)
 
         private fun bindRaw() {
             txtTitle.text = itemView.context.getString(R.string.TransactionInfo_RawTransaction)
-            btnAction.setImageResource(R.drawable.ic_copy)
+            btnAction.setImageResource(R.drawable.ic_copy_20)
             btnAction.isVisible = true
             btnAction.setOnSingleClickListener {
                 viewModel.delegate.onRawTransaction()
@@ -121,6 +124,10 @@ class TransactionDetailsAdapter(private val viewModel: TransactionInfoViewModel)
             }
         }
 
+        private fun bindMemo(detail: TransactionDetailViewItem.Memo) {
+            bind(itemView.context.getString(R.string.TransactionInfo_Memo), detail.memo)
+        }
+
         private fun bindFee(detail: TransactionDetailViewItem.Fee) {
             getFeeText(detail.coinValue, detail.currencyValue)?.let { feeText ->
                 bind(itemView.context.getString(R.string.TransactionInfo_Fee), feeText)
@@ -137,6 +144,12 @@ class TransactionDetailsAdapter(private val viewModel: TransactionInfoViewModel)
             txtTitle.setText(R.string.TransactionInfo_Status)
             transactionStatusView.bind(detail.status, detail.incoming)
             transactionStatusView.isVisible = true
+            if (detail.status != TransactionStatus.Completed){
+                statusInfoIcon.isVisible = true
+                itemView.setOnSingleClickListener {
+                    viewModel.delegate.onClickStatusInfo()
+                }
+            }
         }
 
         private fun getFeeText(coinValue: CoinValue, currencyValue: CurrencyValue?): String? {

@@ -10,20 +10,18 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import io.horizontalsystems.bankwallet.core.App
-import io.horizontalsystems.bankwallet.core.managers.CommunicationSettingsManager
-import io.horizontalsystems.bankwallet.core.managers.DerivationSettingsManager
-import io.horizontalsystems.bankwallet.core.managers.SyncModeSettingsManager
 import io.horizontalsystems.bankwallet.entities.*
 
-@Database(version = 23, exportSchema = false, entities = [
+@Database(version = 26, exportSchema = false, entities = [
     EnabledWallet::class,
     PriceAlert::class,
     AccountRecord::class,
     BlockchainSetting::class,
     CoinRecord::class,
     SubscriptionJob::class,
-    LogEntry::class]
-)
+    LogEntry::class,
+    FavoriteCoin::class,
+])
 
 @TypeConverters(DatabaseConverters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -35,6 +33,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun coinRecordDao(): CoinRecordDao
     abstract fun subscriptionJobDao(): SubscriptionJobDao
     abstract fun logsDao(): LogsDao
+    abstract fun marketFavoritesDao(): MarketFavoritesDao
 
     companion object {
 
@@ -66,7 +65,10 @@ abstract class AppDatabase : RoomDatabase() {
                             addNotificationTables,
                             addLogsTable,
                             updateEthereumCommunicationMode,
-                            addBirthdayHeightToAccount
+                            addBirthdayHeightToAccount,
+                            addBep2SymbolToRecord,
+                            MIGRATION_24_25,
+                            MIGRATION_25_26
                     )
                     .build()
         }
@@ -273,7 +275,8 @@ abstract class AppDatabase : RoomDatabase() {
                         when (coinId) {
                             "BTC" -> {
                                 coinTypeStr = dbConverter.fromCoinType(CoinType.Bitcoin)
-                                derivationStr = (App.localStorage.bitcoinDerivation ?: AccountType.Derivation.bip49).value
+                                derivationStr = (App.localStorage.bitcoinDerivation
+                                        ?: AccountType.Derivation.bip49).value
 
                             }
                             "BCH" -> {
@@ -297,15 +300,15 @@ abstract class AppDatabase : RoomDatabase() {
 
             private fun saveSettings(database: SupportSQLiteDatabase, coinType: String, derivation: String?, syncMode: String?, communication: String?) {
                 derivation?.let {
-                    insertIntoBlockchainSetting(database, coinType, DerivationSettingsManager.derivationSettingKey, it)
+                    insertIntoBlockchainSetting(database, coinType, BlockchainSettingsStorage.derivationSettingKey, it)
                 }
 
                 syncMode?.let {
-                    insertIntoBlockchainSetting(database, coinType, SyncModeSettingsManager.syncModeSettingKey, it)
+                    insertIntoBlockchainSetting(database, coinType, BlockchainSettingsStorage.syncModeSettingKey, it)
                 }
 
                 communication?.let {
-                    insertIntoBlockchainSetting(database, coinType, CommunicationSettingsManager.communicationSettingKey, it)
+                    insertIntoBlockchainSetting(database, coinType, BlockchainSettingsStorage.ethereumRpcModeSettingKey, it)
                 }
 
             }
@@ -423,6 +426,57 @@ abstract class AppDatabase : RoomDatabase() {
         private val addBirthdayHeightToAccount: Migration = object : Migration(22, 23) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE AccountRecord ADD COLUMN `birthdayHeight` INTEGER")
+            }
+        }
+
+        private val addBep2SymbolToRecord: Migration = object : Migration(23, 24) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE CoinRecord ADD COLUMN `bep2Symbol` TEXT")
+            }
+        }
+
+        private val MIGRATION_24_25: Migration = object : Migration(24, 25) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // addFavoriteCoinsTable 24, 25
+                database.execSQL("CREATE TABLE IF NOT EXISTS `FavoriteCoin` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `code` TEXT NOT NULL)")
+
+                // addCoinTypeBlockchainSettingForBitcoinCash 25, 26
+                val walletsCursor = database.query("SELECT * FROM EnabledWallet WHERE coinId = 'BCH'")
+                while (walletsCursor.count > 0) {
+                    database.execSQL("""
+                                        INSERT INTO BlockchainSetting (`coinType`,`key`,`value`) 
+                                        VALUES ('bitcoincash', 'network_coin_type', 'type0')
+                                        """.trimIndent())
+                    return
+                }
+            }
+        }
+
+        private val MIGRATION_25_26: Migration = object : Migration(25, 26) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // deleteEosColumnFromAccountRecord
+                database.execSQL("ALTER TABLE AccountRecord RENAME TO TempAccountRecord")
+                database.execSQL("""
+                CREATE TABLE AccountRecord (
+                    `deleted` INTEGER NOT NULL, 
+                    `id` TEXT NOT NULL, 
+                    `name` TEXT NOT NULL, 
+                    `type` TEXT NOT NULL, 
+                    `origin` TEXT NOT NULL DEFAULT '',
+                    `isBackedUp` INTEGER NOT NULL,
+                    `words` TEXT, 
+                    `salt` TEXT, 
+                    `key` TEXT, 
+                    `birthdayHeight` INTEGER, 
+                    PRIMARY KEY(`id`)
+                    )
+                """.trimIndent())
+                database.execSQL("""
+                    INSERT INTO AccountRecord (`deleted`,`id`,`name`,`type`,`origin`,`isBackedUp`,`words`,`salt`,`key`,`birthdayHeight`)
+                    SELECT `deleted`,`id`,`name`,`type`,`origin`,`isBackedUp`,`words`,`salt`,`key`,`birthdayHeight` FROM TempAccountRecord
+                    WHERE `type` != 'eos'
+                """.trimIndent())
+                database.execSQL("DROP TABLE TempAccountRecord")
             }
         }
     }

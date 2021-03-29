@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menuInfo"
-        android:icon="@drawable/ic_info"
+        android:icon="@drawable/ic_info_24"
         android:iconTint="?ColorJacob"
         android:title=""
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menuCancel"
-        android:icon="@drawable/close"
+        android:icon="@drawable/ic_close"
         android:iconTint="?ColorJacob"
         android:title="@string/Button_Cancel"
         app:showAsAction="always" />

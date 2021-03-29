@@ -1,9 +1,13 @@
 package io.horizontalsystems.bankwallet.modules.ratechart
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -21,7 +25,6 @@ import io.horizontalsystems.core.helpers.DateHelper
 import io.horizontalsystems.xrateskit.entities.ChartType
 import kotlinx.android.synthetic.main.fragment_rate_chart.*
 import java.math.BigDecimal
-import java.math.RoundingMode
 import java.util.*
 
 class RateChartFragment : BaseFragment(), Chart.Listener {
@@ -30,6 +33,7 @@ class RateChartFragment : BaseFragment(), Chart.Listener {
 
     private val formatter = App.numberFormatter
     private var actions = mapOf<ChartType, View>()
+    private var notificationMenuItem: MenuItem? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_rate_chart, container, false)
@@ -50,8 +54,29 @@ class RateChartFragment : BaseFragment(), Chart.Listener {
         presenter = ViewModelProvider(this, RateChartModule.Factory(coinTitle, coinCode, coinId)).get(RateChartPresenter::class.java)
         presenterView = presenter.view as RateChartView
 
-        setNavigationToolbar(toolbar, findNavController())
-        setToolbarMenu()
+        toolbar.title = coinTitle
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menuFavorite -> {
+                    presenter.onFavoriteClick()
+                    true
+                }
+                R.id.menuUnfavorite -> {
+                    presenter.onUnfavoriteClick()
+                    true
+                }
+                R.id.menuNotification -> {
+                    presenter.onNotificationClick()
+                    true
+                }
+                else -> false
+            }
+        }
+        notificationMenuItem = toolbar.menu.findItem(R.id.menuNotification)
+        updateNotificationMenuItem()
 
         chart.setListener(this)
         chart.rateFormatter = presenter.rateFormatter
@@ -66,26 +91,13 @@ class RateChartFragment : BaseFragment(), Chart.Listener {
         presenter.viewDidLoad()
     }
 
-    private fun setToolbarMenu() {
-        toolbar.inflateMenu(R.menu.rate_chart_menu)
-
-        toolbar.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == R.id.menuNotification) {
-                presenter.onNotificationClick()
-                true
-            } else {
-                super.onOptionsItemSelected(menuItem)
-            }
-        }
-
-        updateNotificationIcon()
-    }
-
-    private fun updateNotificationIcon() {
-        toolbar?.menu?.findItem(R.id.menuNotification)?.apply {
+    private fun updateNotificationMenuItem() {
+        notificationMenuItem?.apply {
             isVisible = presenter.notificationIconVisible
-            val iconRes = if (presenter.notificationIconActive) R.drawable.ic_notification_24 else R.drawable.ic_notification_inactive_24
-            icon = context?.let { ContextCompat.getDrawable(it, iconRes) }
+            icon = context?.let {
+                val iconRes = if (presenter.notificationIconActive) R.drawable.ic_notification_24 else R.drawable.ic_notification_disabled
+                ContextCompat.getDrawable(it, iconRes)
+            }
         }
     }
 
@@ -245,17 +257,22 @@ class RateChartFragment : BaseFragment(), Chart.Listener {
         })
 
         presenterView.alertNotificationUpdated.observe(viewLifecycleOwner, Observer { visible ->
-            updateNotificationIcon()
+            updateNotificationMenuItem()
         })
 
         presenterView.showNotificationMenu.observe(viewLifecycleOwner, Observer { (coinId, coinName) ->
             BottomNotificationMenu.show(childFragmentManager, NotificationMenuMode.All, coinName, coinId)
         })
 
+        presenterView.isFavorite.observe(viewLifecycleOwner, Observer {
+            toolbar.menu.findItem(R.id.menuFavorite).isVisible = !it
+            toolbar.menu.findItem(R.id.menuUnfavorite).isVisible = it
+        })
+
     }
 
     private fun formatFiatShortened(value: BigDecimal, symbol: String): String {
-        val shortCapValue = shortenValue(value)
+        val shortCapValue = App.numberFormatter.shortenValue(value)
         return formatter.formatFiat(shortCapValue.first, symbol, 0, 2) + " " + shortCapValue.second
     }
 
@@ -321,39 +338,17 @@ class RateChartFragment : BaseFragment(), Chart.Listener {
         views.forEach { it.isInvisible = !isVisible }
     }
 
-    // Need to move this to helpers
-
-    private fun shortenValue(number: Number): Pair<BigDecimal, String> {
-        val suffix = arrayOf(
-                " ",
-                getString(R.string.Charts_MarketCap_Thousand),
-                getString(R.string.Charts_MarketCap_Million),
-                getString(R.string.Charts_MarketCap_Billion),
-                getString(R.string.Charts_MarketCap_Trillion)) // "P", "E"
-
-        val valueLong = number.toLong()
-        val value = Math.floor(Math.log10(valueLong.toDouble())).toInt()
-        val base = value / 3
-
-        var returnSuffix = ""
-        var valueDecimal = valueLong.toBigDecimal()
-        if (value >= 3 && base < suffix.size) {
-            valueDecimal = (valueLong / Math.pow(10.0, (base * 3).toDouble())).toBigDecimal()
-            returnSuffix = suffix[base]
-        }
-
-        val roundedDecimalValue = if (valueDecimal < BigDecimal.TEN) {
-            valueDecimal.setScale(2, RoundingMode.HALF_EVEN)
-        } else {
-            valueDecimal.setScale(1, RoundingMode.HALF_EVEN)
-        }
-
-        return Pair(roundedDecimalValue, returnSuffix)
-    }
-
     companion object {
-        const val COIN_CODE_KEY = "coin_code_key"
-        const val COIN_TITLE_KEY = "coin_title_key"
-        const val COIN_ID_KEY = "coin_id_key"
+        private const val COIN_CODE_KEY = "coin_code_key"
+        private const val COIN_TITLE_KEY = "coin_title_key"
+        private const val COIN_ID_KEY = "coin_id_key"
+
+        fun prepareParams(coinCode: String, coinTitle: String, coinId: String?) : Bundle {
+            return bundleOf(
+                    COIN_CODE_KEY to coinCode,
+                    COIN_TITLE_KEY to coinTitle,
+                    COIN_ID_KEY to coinId
+            )
+        }
     }
 }

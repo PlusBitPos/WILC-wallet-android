@@ -10,7 +10,10 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
+        android:layout_height="?attr/actionBarSize"
+        app:menu="@menu/app_status_menu"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="@string/Settings_AppStatus" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

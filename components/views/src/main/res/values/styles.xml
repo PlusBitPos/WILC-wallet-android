@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+
     <style name="ToolbarStyle">
         <item name="colorControlNormal">?ColorJacob</item>
     </style>
@@ -12,7 +13,19 @@
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
         <item name="android:windowSoftInputMode">adjustResize|stateHidden</item>
-        <item name="android:windowAnimationStyle">@style/BottomDialogAnimations</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/BottomDialogMediumAnimations</item>
+    </style>
+
+    <style name="BottomDialogFullScreen" parent="Theme.AppCompat.Dialog">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">?ColorWindowBackground</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:windowSwipeToDismiss">false</item>
     </style>
 
     <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog">
@@ -25,9 +38,19 @@
         <item name="android:windowSoftInputMode">adjustResize|stateHidden</item>
     </style>
 
-    <style name="BottomDialogAnimations" parent="@android:style/Animation.Activity">
-        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
-        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    <style name="BottomDialogMediumAnimations">
+        <item name="android:windowEnterAnimation">@anim/slide_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_to_bottom</item>
+    </style>
+
+    <style name="BottomDialogLargeAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_from_bottom_long</item>
+        <item name="android:windowExitAnimation">@anim/slide_to_bottom_long</item>
+    </style>
+
+    <style name="RightDialogAnimations">
+        <item name="android:windowEnterAnimation">@anim/slide_from_right</item>
+        <item name="android:windowExitAnimation">@anim/slide_to_right</item>
     </style>
 
     <style name="SwitchTheme" parent="ThemeOverlay.AppCompat.Dark">
@@ -46,23 +69,56 @@
         <item name="android:paddingBottom">14dp</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="ButtonSecondary">
         <item name="android:background">@drawable/button_secondary_background</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>
-        <item name="android:paddingTop">4.5dp</item>
-        <item name="android:paddingBottom">4.5dp</item>
+        <item name="android:paddingTop">5.5dp</item>
+        <item name="android:paddingBottom">5.5dp</item>
         <item name="android:textColor">@color/button_secondary_text_color_selector</item>
         <item name="android:textSize">14sp</item>
         <item name="android:ellipsize">middle</item>
-        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="ButtonSecondaryTransparent" parent="Subhead1">
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textColor">@color/button_secondary_transparent</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <style name="ButtonSecondaryTransparentEndIcon" parent="ButtonSecondaryTransparent">
+        <item name="android:drawableTint">@color/button_secondary_transparent</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="ButtonThird" parent="CaptionSB">
+        <item name="android:background">@drawable/rounded_14</item>
+        <item name="android:backgroundTint">@color/button_third_bg</item>
+        <item name="android:textColor">@color/button_third_text</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
+    <style name="RadioButtonThird" parent="ButtonThird">
+        <item name="android:button">@color/transparent</item>
     </style>
 
     <style name="ButtonTransparent" parent="ButtonSecondary">
@@ -86,7 +142,7 @@
     <style name="ButtonPrivacySettings">
         <item name="android:background">@drawable/button_privacy_settings_background</item>
         <item name="android:textColor">@color/button_transparent_text_color</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
@@ -98,10 +154,10 @@
     </style>
 
     <style name="ImageButtonSecondary" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:paddingTop">6dp</item>
-        <item name="android:paddingBottom">6dp</item>
-        <item name="android:paddingEnd">6dp</item>
-        <item name="android:paddingStart">6dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:paddingStart">4dp</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:scaleType">fitCenter</item>
@@ -126,7 +182,7 @@
     </style>
 
     <style name="ImportantText">
-        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">14sp</item>
         <item name="android:background">@drawable/background_important_text</item>
         <item name="android:textColor">?ColorOz</item>
@@ -139,7 +195,7 @@
     </style>
 
     <style name="TextFlatButton">
-        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">center</item>
         <item name="android:includeFontPadding">false</item>
@@ -149,7 +205,7 @@
     </style>
 
     <style name="Checkbox">
-        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">top</item>
         <item name="android:buttonTint">@color/stateful_checkbox_color</item>

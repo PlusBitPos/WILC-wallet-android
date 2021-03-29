@@ -27,8 +27,8 @@ class RatesInteractor(
     override val coins: List<Coin>
         get() = rateListSorter.smartSort(walletStorage.enabledCoins(), appConfigProvider.featuredCoins)
 
-    override fun setupXRateManager(coinCodes: List<String>) {
-        xRateManager.set(coinCodes)
+    override fun setupXRateManager(coins: List<Coin>) {
+        xRateManager.set(coins)
     }
 
     override fun getMarketInfo(coinCode: String, currencyCode: String): MarketInfo? {
@@ -45,13 +45,16 @@ class RatesInteractor(
     }
 
     override fun getTopList() {
-        xRateManager.getTopMarketList(currency.code)
+        xRateManager.getTopMarketList(currency.code, 100)
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    delegate?.didFetchedTopMarketList(it)
+                    val topMarketItems = it.mapIndexed { index, coinMarket ->
+                        TopMarketRanked(coinMarket.coin.code, coinMarket.coin.title, coinMarket.marketInfo, index + 1)
+                    }
+                    delegate?.didFetchedTopMarketList(topMarketItems)
                 }, {
                     delegate?.didFailToFetchTopList()
-                } )
+                })
                 .let { disposables.add(it) }
     }
 

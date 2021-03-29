@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.biometric.BiometricConstants
 import androidx.biometric.BiometricPrompt
 import androidx.core.os.bundleOf
@@ -17,8 +18,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -26,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView
 import io.horizontalsystems.core.findNavController
 import io.horizontalsystems.core.helpers.DateHelper
 import io.horizontalsystems.core.helpers.HudHelper
-import io.horizontalsystems.core.navigation.NavDestinationChangeListener
 import io.horizontalsystems.core.setNavigationResult
 import io.horizontalsystems.pin.core.NumPadItem
 import io.horizontalsystems.pin.core.NumPadItemType
@@ -46,7 +44,11 @@ import java.util.concurrent.Executor
 
 class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Listener {
 
-    var attachedToLockScreen = false
+    companion object{
+        const val ATTACHED_TO_LOCKSCREEN = "attached_to_lock_screen"
+    }
+
+    private var attachedToLockScreen = false
 
     private val interactionType: PinInteractionType by lazy {
         arguments?.getParcelable(PinModule.keyInteractionType) ?: PinInteractionType.UNLOCK
@@ -69,6 +71,8 @@ class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Lis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        attachedToLockScreen = arguments?.getBoolean(ATTACHED_TO_LOCKSCREEN, false) ?: false
 
         pinPagesAdapter = PinPagesAdapter(this)
 
@@ -118,6 +122,10 @@ class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Lis
         numPadItemsRecyclerView.layoutManager = GridLayoutManager(context, 3)
 
         observeData()
+
+        activity?.onBackPressedDispatcher?.addCallback(this) {
+            onCancelClick()
+        }
     }
 
     override fun onCancelClick() {
@@ -132,7 +140,7 @@ class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Lis
         }
 
         setNavigationResult(PinModule.requestKey, bundle)
-        activity?.onBackPressed()
+        findNavController().popBackStack()
     }
 
     override fun onItemClick(item: NumPadItem) {
@@ -155,7 +163,7 @@ class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Lis
         }
 
         setNavigationResult(PinModule.requestKey, bundle)
-        activity?.onBackPressed()
+        findNavController().popBackStack()
     }
 
     private fun observeData() {
@@ -226,12 +234,9 @@ class PinFragment : Fragment(), NumPadItemsAdapter.Listener, PinPagesAdapter.Lis
         toolbar.isVisible = true
         toolbar.title = getString(titleRes)
 
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-
-        val navDestinationChangeListener = NavDestinationChangeListener(toolbar, appBarConfiguration, true)
-        navController.addOnDestinationChangedListener(navDestinationChangeListener)
-        toolbar.setNavigationOnClickListener { NavigationUI.navigateUp(navController, appBarConfiguration) }
+        toolbar.setNavigationOnClickListener {
+            onCancelClick()
+        }
     }
 
     private fun showBiometricAuthDialog(cryptoObject: BiometricPrompt.CryptoObject) {

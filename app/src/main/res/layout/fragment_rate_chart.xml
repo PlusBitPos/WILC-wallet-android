@@ -11,7 +11,9 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
+        android:layout_height="?attr/actionBarSize"
+        app:menu="@menu/rate_chart_menu"
+        app:navigationIcon="@drawable/ic_back" />
 
     <io.horizontalsystems.bankwallet.ui.extensions.LockableNestedScrollView
         android:id="@+id/scroller"
@@ -64,7 +66,7 @@
 
             <HorizontalScrollView
                 android:id="@+id/chartActionsWrap"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
@@ -149,7 +151,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/chartPointsInfo"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="7dp"
@@ -243,7 +245,7 @@
 
             <io.horizontalsystems.chartview.Chart
                 android:id="@+id/chart"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="232dp"
                 android:layout_marginTop="4dp"
                 app:cursorColor="?ColorOz"
@@ -270,7 +272,7 @@
 
             <io.horizontalsystems.chartview.extensions.ChartIndicatorView
                 android:id="@+id/emaChartIndicator"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -279,7 +281,7 @@
 
             <io.horizontalsystems.chartview.extensions.ChartIndicatorView
                 android:id="@+id/macdChartIndicator"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -288,7 +290,7 @@
 
             <io.horizontalsystems.chartview.extensions.ChartIndicatorView
                 android:id="@+id/rsiChartIndicator"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -297,7 +299,6 @@
 
             <TextView
                 android:id="@+id/volumeTitle"
-                style="@font/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -311,7 +312,6 @@
                 android:id="@+id/volumeValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
                 android:textAlignment="textEnd"
                 android:textColor="@color/stateful_chart_value_text_color"
                 android:textSize="14sp"
@@ -322,7 +322,6 @@
 
             <TextView
                 android:id="@+id/coinMarketCapTitle"
-                style="@font/roboto_regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -336,7 +335,6 @@
                 android:id="@+id/coinMarketCap"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
                 android:textAlignment="textEnd"
                 android:textColor="@color/stateful_chart_value_text_color"
                 android:textSize="14sp"
@@ -347,7 +345,6 @@
 
             <TextView
                 android:id="@+id/circulationTitle"
-                style="@font/roboto_regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -361,7 +358,6 @@
                 android:id="@+id/circulationValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
                 android:textAlignment="textEnd"
                 android:textColor="@color/stateful_chart_value_text_color"
                 android:textSize="14sp"
@@ -372,7 +368,6 @@
 
             <TextView
                 android:id="@+id/totalSupplyTitle"
-                style="@font/roboto_regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -389,7 +384,6 @@
                 android:id="@+id/totalSupplyValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
                 android:textAlignment="textEnd"
                 android:textColor="@color/stateful_chart_value_text_color"
                 android:textSize="14sp"
@@ -400,7 +394,6 @@
 
             <TextView
                 android:id="@+id/startDateTitle"
-                style="@font/roboto_regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -417,7 +410,6 @@
                 android:id="@+id/startDateValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
                 android:textAlignment="textEnd"
                 android:textColor="@color/stateful_chart_value_text_color"
                 android:textSize="14sp"
@@ -428,7 +420,6 @@
 
             <TextView
                 android:id="@+id/websiteTitle"
-                style="@font/roboto_regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -446,7 +437,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:fontFamily="@font/roboto_regular"
                 android:textAlignment="textEnd"
                 android:textColor="@color/stateful_chart_value_text_color"
                 android:textSize="14sp"

@@ -6,20 +6,24 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.horizontalsystems.bankwallet.core.IChartTypeStorage
 import io.horizontalsystems.bankwallet.core.ILocalStorage
+import io.horizontalsystems.bankwallet.core.IMarketStorage
 import io.horizontalsystems.bankwallet.entities.AccountType
 import io.horizontalsystems.bankwallet.entities.SyncMode
 import io.horizontalsystems.bankwallet.entities.TransactionDataSortingType
 import io.horizontalsystems.bankwallet.modules.balance.BalanceSortType
+import io.horizontalsystems.bankwallet.modules.market.MarketModule
 import io.horizontalsystems.bankwallet.modules.send.SendModule
 import io.horizontalsystems.core.IPinStorage
 import io.horizontalsystems.core.IThemeStorage
+import io.horizontalsystems.core.IThirdKeyboard
 import io.horizontalsystems.core.entities.AppVersion
 import io.horizontalsystems.xrateskit.entities.ChartType
 
-class LocalStorageManager(private val preferences: SharedPreferences) 
-    : ILocalStorage, IThemeStorage, IPinStorage, IChartTypeStorage {
+class LocalStorageManager(private val preferences: SharedPreferences)
+    : ILocalStorage, IThemeStorage, IPinStorage, IChartTypeStorage, IThirdKeyboard, IMarketStorage {
 
     private val LIGHT_MODE_ENABLED = "light_mode_enabled"
+    private val THIRD_KEYBOARD_WARNING_MSG = "third_keyboard_warning_msg"
     private val SEND_INPUT_TYPE = "send_input_type"
     private val BASE_CURRENCY_CODE = "base_currency_code"
     private val FAILED_ATTEMPTS = "failed_attempts"
@@ -29,7 +33,6 @@ class LocalStorageManager(private val preferences: SharedPreferences)
     private val BASE_ETHEREUM_PROVIDER = "base_ethereum_provider"
     private val BASE_DASH_PROVIDER = "base_dash_provider"
     private val BASE_BINANCE_PROVIDER = "base_binance_provider"
-    private val BASE_EOS_PROVIDER = "base_eos_provider"
     private val BASE_ZCASH_PROVIDER = "base_zcash_provider"
     private val SYNC_MODE = "sync_mode"
     private val SORT_TYPE = "balance_sort_type"
@@ -45,6 +48,7 @@ class LocalStorageManager(private val preferences: SharedPreferences)
     private val TRANSACTION_DATA_SORTING_TYPE = "transaction_data_sorting_type"
     private val BALANCE_HIDDEN = "balance_hidden"
     private val CHECKED_TERMS = "checked_terms"
+    private val MARKET_CURRENT_CATEGORY = "market_current_category"
     private val APP_LAST_VISIT_TIME = "app_last_visit_time"
     private val BIOMETRIC_ENABLED = "biometric_auth_enabled"
     private val PIN = "lock_pin"
@@ -103,12 +107,6 @@ class LocalStorageManager(private val preferences: SharedPreferences)
             preferences.edit().putString(BASE_BINANCE_PROVIDER, value).apply()
         }
 
-    override var baseEosProvider: String?
-        get() = preferences.getString(BASE_EOS_PROVIDER, null)
-        set(value) {
-            preferences.edit().putString(BASE_EOS_PROVIDER, value).apply()
-        }
-
     override var baseZcashProvider: String?
         get() = preferences.getString(BASE_ZCASH_PROVIDER, null)
         set(value) {
@@ -164,6 +162,14 @@ class LocalStorageManager(private val preferences: SharedPreferences)
         get() = preferences.getBoolean(LIGHT_MODE_ENABLED, false)
         set(enabled) {
             preferences.edit().putBoolean(LIGHT_MODE_ENABLED, enabled).apply()
+        }
+
+    //  IKeyboardStorage
+
+    override var isThirdPartyKeyboardAllowed: Boolean
+        get() = preferences.getBoolean(THIRD_KEYBOARD_WARNING_MSG, false)
+        set(enabled) {
+            preferences.edit().putBoolean(THIRD_KEYBOARD_WARNING_MSG, enabled).apply()
         }
 
     //  IPinStorage
@@ -295,5 +301,13 @@ class LocalStorageManager(private val preferences: SharedPreferences)
         set(value) {
             val termsString = gson.toJson(value)
             preferences.edit().putString(CHECKED_TERMS, termsString).apply()
+        }
+
+    override var currentTab: MarketModule.Tab?
+        get() = preferences.getString(MARKET_CURRENT_CATEGORY, null)?.let {
+            MarketModule.Tab.fromString(it)
+        }
+        set(value) {
+            preferences.edit().putString(MARKET_CURRENT_CATEGORY, value?.name).apply()
         }
 }

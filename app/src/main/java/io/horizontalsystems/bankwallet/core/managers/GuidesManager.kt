@@ -16,7 +16,7 @@ object GuidesManager {
     private val guidesUrl = App.appConfigProvider.guidesUrl
 
     private val gson = GsonBuilder()
-            .setDateFormat("dd-MM-yyyy")
+            .setDateFormat("yyyy-MM-dd")
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .registerTypeAdapter(Guide::class.java, GuideDeserializer(guidesUrl))
             .create()
@@ -33,13 +33,6 @@ object GuidesManager {
 
             categories
         }
-    }
-
-    fun getGuideContent(fileUrl: String): Single<String> {
-        val url = URL(fileUrl)
-        val host = "${url.protocol}://${url.host}"
-
-        return App.networkManager.getGuide(host, fileUrl)
     }
 
     class GuideDeserializer(guidesUrl: String) : JsonDeserializer<Guide> {

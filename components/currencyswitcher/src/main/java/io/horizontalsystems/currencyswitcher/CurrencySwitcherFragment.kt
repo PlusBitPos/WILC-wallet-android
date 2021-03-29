@@ -10,14 +10,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.horizontalsystems.core.findNavController
-import io.horizontalsystems.core.navigation.NavDestinationChangeListener
 import io.horizontalsystems.core.setOnSingleClickListener
+import io.horizontalsystems.views.ListPosition
 import io.horizontalsystems.views.ViewHolderProgressbar
 import io.horizontalsystems.views.helpers.LayoutHelper
 import io.horizontalsystems.views.inflate
@@ -38,13 +36,9 @@ class CurrencySwitcherFragment : Fragment(), CurrencySwitcherAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-
-        val navDestinationChangeListener = NavDestinationChangeListener(toolbar, appBarConfiguration, true)
-        navController.addOnDestinationChangedListener(navDestinationChangeListener)
-        toolbar.setNavigationOnClickListener { NavigationUI.navigateUp(navController, appBarConfiguration) }
-
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
 
         presenter = ViewModelProvider(this, CurrencySwitcherModule.Factory()).get(CurrencySwitcherPresenter::class.java)
         presenterView = presenter.view as CurrencySwitcherView
@@ -111,12 +105,15 @@ class ViewHolderCurrency(override val containerView: View) : RecyclerView.ViewHo
         val title = containerView.findViewById<TextView>(R.id.title)
         val subtitle = containerView.findViewById<TextView>(R.id.subtitle)
         val checkmarkIcon = containerView.findViewById<ImageView>(R.id.checkmarkIcon)
+        val bottomBorder = containerView.findViewById<View>(R.id.bottomBorder)
 
         containerView.setOnSingleClickListener { onClick.invoke() }
         image.setImageResource(LayoutHelper.getCurrencyDrawableResource(containerView.context, item.code.toLowerCase()))
         title.text = item.code
         subtitle.text = item.symbol
         checkmarkIcon.isVisible = item.selected
+        bottomBorder.isVisible = item.listPosition == ListPosition.First || item.listPosition == ListPosition.Middle
+        containerView.setBackgroundResource(item.listPosition.getBackground())
     }
 
     companion object {

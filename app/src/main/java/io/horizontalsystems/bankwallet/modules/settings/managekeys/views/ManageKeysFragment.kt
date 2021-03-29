@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -15,7 +14,6 @@ import io.horizontalsystems.bankwallet.modules.restore.RestoreFragment
 import io.horizontalsystems.bankwallet.modules.settings.managekeys.*
 import io.horizontalsystems.core.findNavController
 import kotlinx.android.synthetic.main.fragment_manage_keys.*
-import kotlinx.android.synthetic.main.fragment_manage_keys.toolbar
 
 class ManageKeysFragment : BaseFragment(), ManageKeysDialog.Listener, ManageKeysAdapter.Listener {
 
@@ -28,10 +26,8 @@ class ManageKeysFragment : BaseFragment(), ManageKeysDialog.Listener, ManageKeys
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        (activity as? AppCompatActivity)?.let {
-            it.setSupportActionBar(toolbar)
-            it.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
         }
 
         adapter = ManageKeysAdapter(this)
@@ -112,12 +108,8 @@ class ManageKeysFragment : BaseFragment(), ManageKeysDialog.Listener, ManageKeys
             findNavController().navigate(R.id.manageKeysFragment_to_backupFragment, arguments, navOptions())
         })
 
-        router.showBlockchainSettings.observe(this, Observer { enabledCoinTypes ->
-            val arguments = Bundle(1).apply {
-                putParcelableArrayList(ModuleField.COIN_TYPES, ArrayList(enabledCoinTypes))
-            }
-
-            findNavController().navigate(R.id.manageKeysFragment_to_addressFormatSettingsFragment, arguments, navOptions())
+        router.showAddressFormat.observe(this, Observer {
+            findNavController().navigate(R.id.manageKeysFragment_to_addressFormatFragment, null, navOptions())
         })
 
         router.closeEvent.observe(this, Observer {
@@ -127,8 +119,8 @@ class ManageKeysFragment : BaseFragment(), ManageKeysDialog.Listener, ManageKeys
 
     //  ManageKeysAdapter Listener
 
-    override fun onClickAdvancedSettings(item: ManageAccountItem) {
-        presenter.onClickAdvancedSettings(item)
+    override fun onClickAddressFormat(item: ManageAccountItem) {
+        presenter.onClickAddressFormat(item)
     }
 
     override fun onClickCreate(item: ManageAccountItem) {

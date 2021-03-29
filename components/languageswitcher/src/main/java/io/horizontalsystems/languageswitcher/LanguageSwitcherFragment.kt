@@ -12,14 +12,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.horizontalsystems.core.findNavController
-import io.horizontalsystems.core.navigation.NavDestinationChangeListener
 import io.horizontalsystems.core.setNavigationResult
 import io.horizontalsystems.core.setOnSingleClickListener
+import io.horizontalsystems.views.ListPosition
 import io.horizontalsystems.views.ViewHolderProgressbar
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.fragment_language_settings.*
@@ -35,12 +33,9 @@ class LanguageSettingsFragment : Fragment(), LanguageSwitcherAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-
-        val navDestinationChangeListener = NavDestinationChangeListener(toolbar, appBarConfiguration, true)
-        navController.addOnDestinationChangedListener(navDestinationChangeListener)
-        toolbar.setNavigationOnClickListener { NavigationUI.navigateUp(navController, appBarConfiguration) }
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
 
         presenter = ViewModelProvider(this, LanguageSwitcherModule.Factory()).get(LanguageSwitcherPresenter::class.java)
 
@@ -60,7 +55,7 @@ class LanguageSettingsFragment : Fragment(), LanguageSwitcherAdapter.Listener {
         presenterRouter.reloadAppLiveEvent.observe(viewLifecycleOwner, Observer {
             setNavigationResult(LANGUAGE_CHANGE, bundleOf())
 
-            activity?.onBackPressed()
+            findNavController().popBackStack()
         })
 
         presenterRouter.closeLiveEvent.observe(viewLifecycleOwner, Observer {
@@ -120,6 +115,7 @@ class ViewHolderLanguageItem(override val containerView: View) : RecyclerView.Vi
         val title = containerView.findViewById<TextView>(R.id.title)
         val subtitle = containerView.findViewById<TextView>(R.id.subtitle)
         val checkmarkIcon = containerView.findViewById<ImageView>(R.id.checkmarkIcon)
+        val bottomBorder = containerView.findViewById<View>(R.id.bottomBorder)
 
         containerView.setOnSingleClickListener { onClick.invoke() }
         image.setImageResource(getLangDrawableResource(containerView.context, item.language))
@@ -127,6 +123,8 @@ class ViewHolderLanguageItem(override val containerView: View) : RecyclerView.Vi
         title.text = item.name
         subtitle.text = item.nativeName
         checkmarkIcon.isVisible = item.current
+        bottomBorder.isVisible = item.listPosition == ListPosition.First || item.listPosition == ListPosition.Middle
+        containerView.setBackgroundResource(item.listPosition.getBackground())
     }
 
     private fun getLangDrawableResource(context: Context, langCode: String): Int {

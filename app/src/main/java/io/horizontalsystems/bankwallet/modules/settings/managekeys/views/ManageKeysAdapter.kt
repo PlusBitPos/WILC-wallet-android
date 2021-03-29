@@ -3,7 +3,6 @@ package io.horizontalsystems.bankwallet.modules.settings.managekeys.views
 import android.content.res.ColorStateList
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import io.horizontalsystems.bankwallet.R
@@ -18,7 +17,7 @@ import kotlinx.android.synthetic.main.view_holder_account.*
 class ManageKeysAdapter(private val listener: Listener) : RecyclerView.Adapter<ManageKeysAdapter.KeysViewHolder>() {
 
     interface Listener {
-        fun onClickAdvancedSettings(item: ManageAccountItem)
+        fun onClickAddressFormat(item: ManageAccountItem)
         fun onClickCreate(item: ManageAccountItem)
         fun onClickRestore(item: ManageAccountItem)
         fun onClickBackup(item: ManageAccountItem)
@@ -61,8 +60,8 @@ class ManageKeysAdapter(private val listener: Listener) : RecyclerView.Adapter<M
                 listener.onClickUnlink(item)
             }
 
-            advancedSettingsButton.setOnSingleClickListener {
-                listener.onClickAdvancedSettings(item)
+            addressFormatButton.setOnSingleClickListener {
+                listener.onClickAddressFormat(item)
             }
         }
 
@@ -79,17 +78,23 @@ class ManageKeysAdapter(private val listener: Listener) : RecyclerView.Adapter<M
 
             containerView.isActivated = hasAccount
 
-            advancedSettingsButton.isVisible = hasAccount && predefinedAccount == PredefinedAccountType.Standard && item.hasDerivationSetting
+            addressFormatButton.isVisible = hasAccount && predefinedAccount == PredefinedAccountType.Standard && item.hasDerivationSetting
             backupButton.isVisible = hasAccount && !isBackedUp
             showKeyButton.isVisible = hasAccount && isBackedUp
             unlinkButton.isVisible = hasAccount
-            createButton.isVisible = !hasAccount && predefinedAccount.isCreationSupported()
+            createButton.isVisible = !hasAccount
             restoreButton.isVisible = !hasAccount
 
 
             val padding = if (hasAccount) LayoutHelper.dp(1f, containerView.context) else 0
             containerView.setPadding(padding, 0, padding, padding)
-            headerIcon.imageTintList = if (hasAccount) null else ColorStateList.valueOf(ContextCompat.getColor(containerView.context, R.color.grey))
+
+            val tintColor = if (hasAccount) {
+                LayoutHelper.getAttr(R.attr.ColorJacob, containerView.context.theme, containerView.context.getColor(R.color.yellow_d))
+            } else {
+                containerView.context.getColor(R.color.grey)
+            }
+            headerIcon.imageTintList = ColorStateList.valueOf(tintColor)
         }
     }
 

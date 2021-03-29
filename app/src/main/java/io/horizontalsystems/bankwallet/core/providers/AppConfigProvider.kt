@@ -1,38 +1,42 @@
 package io.horizontalsystems.bankwallet.core.providers
 
-import io.horizontalsystems.bankwallet.core.App
 import io.horizontalsystems.bankwallet.BuildConfig
 import io.horizontalsystems.bankwallet.R
+import io.horizontalsystems.bankwallet.core.App
 import io.horizontalsystems.bankwallet.core.IAppConfigProvider
 import io.horizontalsystems.bankwallet.entities.*
-import io.horizontalsystems.core.IAppConfigTestMode
+import io.horizontalsystems.core.IBuildConfigProvider
 import io.horizontalsystems.core.ILanguageConfigProvider
 import io.horizontalsystems.core.entities.Currency
 import java.math.BigDecimal
 
-class AppConfigProvider : IAppConfigProvider, ILanguageConfigProvider, IAppConfigTestMode {
+class AppConfigProvider : IAppConfigProvider, ILanguageConfigProvider, IBuildConfigProvider {
 
     override val companyWebPageLink: String = "https://horizontalsystems.io"
     override val appWebPageLink: String = "https://unstoppable.money"
     override val appGithubLink: String = "https://github.com/horizontalsystems/unstoppable-wallet-android"
+    override val companyTwitterLink: String = "https://twitter.com/UnstoppableByHS"
+    override val companyTelegramLink: String = "https://t.me/unstoppable_announcements"
+    override val companyRedditLink: String = "https://reddit.com/r/UNSTOPPABLEWallet/"
+    override val btcCoreRpcUrl: String = "https://btc.horizontalsystems.xyz/rpc"
     override val reportEmail = "info@plusbit.tech"
     override val walletHelpTelegramGroup = "PlusBitWallet"
-    override val ipfsId = "QmXTJZBMMRmBbPun6HFt3tmb3tfYF2usLPxFoacL7G5uMX"
-    override val ipfsMainGateway = "ipfs-ext.horizontalsystems.xyz"
-    override val ipfsFallbackGateway = "ipfs.io"
 
+    override val cryptoCompareApiKey = App.instance.getString(R.string.cryptoCompareApiKey)
     override val infuraProjectId = App.instance.getString(R.string.infuraProjectId)
     override val infuraProjectSecret = App.instance.getString(R.string.infuraSecretKey)
     override val etherscanApiKey = App.instance.getString(R.string.etherscanKey)
     override val guidesUrl = App.instance.getString(R.string.guidesUrl)
+    override val faqUrl = App.instance.getString(R.string.faqUrl)
     override val fiatDecimal: Int = 2
     override val maxDecimal: Int = 8
+    override val feeRateAdjustForCurrencies: List<String> = listOf("USD","EUR")
 
     override val currencies: List<Currency> = listOf(
-            Currency(code = "USD", symbol = "\u0024"),
-            Currency(code = "EUR", symbol = "\u20AC"),
-            Currency(code = "GBP", symbol = "\u00A3"),
-            Currency(code = "JPY", symbol = "\u00A5")
+            Currency(code = "USD", symbol = "\u0024", decimal = 2),
+            Currency(code = "EUR", symbol = "\u20AC", decimal = 2),
+            Currency(code = "GBP", symbol = "\u00A3", decimal = 2),
+            Currency(code = "JPY", symbol = "\u00A5", decimal = 2)
     )
 
     override val featuredCoins: List<Coin>
@@ -61,22 +65,6 @@ class AppConfigProvider : IAppConfigProvider, ILanguageConfigProvider, IAppConfi
         )
     }
 
-    override val derivationSettings: List<DerivationSetting>
-        get() = listOf(
-                DerivationSetting(CoinType.Bitcoin, AccountType.Derivation.bip49),
-                DerivationSetting(CoinType.Litecoin, AccountType.Derivation.bip49)
-        )
-
-    override val syncModeSettings: List<SyncModeSetting>
-        get() = listOf(
-//                SyncModeSetting(CoinType.Bitcoin, SyncMode.Fast),
-//                SyncModeSetting(CoinType.BitcoinCash, SyncMode.Fast),
-//                SyncModeSetting(CoinType.Litecoin, SyncMode.Fast),
-//                SyncModeSetting(CoinType.Dash, SyncMode.Fast)
-        )
-
-    override val communicationSettings: List<CommunicationSetting>
-        get() = listOf(CommunicationSetting(CoinType.Ethereum, CommunicationMode.Infura))
 
     //  ILanguageConfigProvider
 
@@ -86,8 +74,10 @@ class AppConfigProvider : IAppConfigProvider, ILanguageConfigProvider, IAppConfi
             return coinsString.split(",")
         }
 
-    //  IAppConfigTestMode
+    //  IBuildConfigProvider
 
     override val testMode: Boolean = BuildConfig.testMode
+
+    override val skipRootCheck: Boolean = BuildConfig.skipRootCheck
 
 }

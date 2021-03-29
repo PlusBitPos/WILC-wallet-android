@@ -1,5 +1,8 @@
 package io.horizontalsystems.bankwallet.modules.balance
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -13,7 +16,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import io.horizontalsystems.core.findNavController
 import androidx.recyclerview.widget.SimpleItemAnimator
 import io.horizontalsystems.bankwallet.R
 import io.horizontalsystems.bankwallet.core.BaseFragment
@@ -23,10 +25,12 @@ import io.horizontalsystems.bankwallet.modules.main.MainActivity
 import io.horizontalsystems.bankwallet.modules.ratechart.RateChartFragment
 import io.horizontalsystems.bankwallet.modules.receive.ReceiveFragment
 import io.horizontalsystems.bankwallet.modules.settings.managekeys.views.ManageKeysDialog
-import io.horizontalsystems.bankwallet.modules.swap.view.SwapFragment
+import io.horizontalsystems.bankwallet.modules.swap.SwapFragment
 import io.horizontalsystems.bankwallet.ui.extensions.NpaLinearLayoutManager
 import io.horizontalsystems.bankwallet.ui.extensions.SelectorDialog
 import io.horizontalsystems.bankwallet.ui.extensions.SelectorItem
+import io.horizontalsystems.bankwallet.ui.helpers.TextHelper
+import io.horizontalsystems.core.findNavController
 import io.horizontalsystems.core.getValueAnimator
 import io.horizontalsystems.core.helpers.HudHelper
 import io.horizontalsystems.core.measureHeight
@@ -40,6 +44,7 @@ class BalanceFragment : BaseFragment(), BalanceItemsAdapter.Listener, ReceiveFra
     private var totalBalanceTabHeight: Int = 0
     private val animationPlaybackSpeed: Double = 1.3
     private val expandDuration: Long get() = (300L / animationPlaybackSpeed).toLong()
+    private var showBalanceMenuItem: MenuItem? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_balance, container, false)
@@ -47,6 +52,16 @@ class BalanceFragment : BaseFragment(), BalanceItemsAdapter.Listener, ReceiveFra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menuShowBalance -> {
+                    viewModel.delegate.onShowBalanceClick()
+                    true
+                }
+                else -> false
+            }
+        }
+        showBalanceMenuItem = toolbar.menu.findItem(R.id.menuShowBalance)
 
         totalBalanceTabHeight = balanceTabWrapper.measureHeight()
 
@@ -66,22 +81,6 @@ class BalanceFragment : BaseFragment(), BalanceItemsAdapter.Listener, ReceiveFra
 
         observeLiveData()
         setSwipeBackground()
-    }
-
-    private fun setOptionsMenuVisible(visible: Boolean) {
-        if (visible) {
-            toolbar.menu.clear()
-            toolbar.inflateMenu(R.menu.balance_menu)
-            toolbar.setOnMenuItemClickListener { item: MenuItem? ->
-                if (item?.itemId == R.id.menuShowBalance) {
-                    viewModel.delegate.onShowBalanceClick()
-                    return@setOnMenuItemClickListener true
-                }
-                return@setOnMenuItemClickListener false
-            }
-        } else {
-            toolbar.menu.clear()
-        }
     }
 
     override fun onDestroyView() {
@@ -239,21 +238,17 @@ class BalanceFragment : BaseFragment(), BalanceItemsAdapter.Listener, ReceiveFra
         })
 
         viewModel.openChartModule.observe(viewLifecycleOwner, Observer { coin ->
-            val arguments = Bundle(3).apply {
-                putString(RateChartFragment.COIN_CODE_KEY, coin.code)
-                putString(RateChartFragment.COIN_TITLE_KEY, coin.title)
-                putString(RateChartFragment.COIN_ID_KEY, coin.coinId)
-            }
+            val arguments = RateChartFragment.prepareParams(coin.code, coin.title, coin.coinId)
 
             findNavController().navigate(R.id.mainFragment_to_rateChartFragment, arguments, navOptions())
         })
 
-        viewModel.openContactPage.observe(viewLifecycleOwner, Observer {
-            findNavController().navigate(R.id.mainFragment_to_contactFragment, null, navOptions())
+        viewModel.openEmail.observe(viewLifecycleOwner, Observer { (email, report) ->
+            sendEmail(email, report)
         })
 
         viewModel.setBalanceHidden.observe(viewLifecycleOwner, Observer { (hideBalance, animate) ->
-            setOptionsMenuVisible(hideBalance)
+            showBalanceMenuItem?.isVisible = hideBalance
 
             if (animate) {
                 val animator = getValueAnimator(!hideBalance, expandDuration, AccelerateDecelerateInterpolator()) { progress ->
@@ -287,9 +282,21 @@ class BalanceFragment : BaseFragment(), BalanceItemsAdapter.Listener, ReceiveFra
             HudHelper.showErrorMessage(this.requireView(), R.string.Hud_Text_NoInternet)
         })
 
-        viewModel.showErrorMessageCopied.observe(viewLifecycleOwner, Observer {
-            HudHelper.showSuccessMessage(this.requireView(), R.string.Hud_Text_Copied)
-        })
+    }
+
+    private fun sendEmail(email: String, report: String) {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+            putExtra(Intent.EXTRA_TEXT, report)
+        }
+
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            TextHelper.copyText(email)
+            HudHelper.showSuccessMessage(this.requireView(), R.string.Hud_Text_EmailAddressCopied)
+        }
     }
 
     private fun setExpandProgress(view: View, smallHeight: Int, bigHeight: Int, progress: Float) {

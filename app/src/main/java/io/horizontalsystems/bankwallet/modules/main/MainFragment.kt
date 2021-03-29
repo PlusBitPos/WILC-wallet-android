@@ -1,8 +1,6 @@
 package io.horizontalsystems.bankwallet.modules.main
 
 import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +15,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import io.horizontalsystems.bankwallet.R
+import io.horizontalsystems.bankwallet.core.managers.RateAppManager
 import io.horizontalsystems.bankwallet.modules.balance.BalanceFragment
-import io.horizontalsystems.bankwallet.modules.guides.GuidesFragment
 import io.horizontalsystems.bankwallet.modules.main.MainActivity.Companion.ACTIVE_TAB_KEY
+import io.horizontalsystems.bankwallet.modules.market.MarketFragment
 import io.horizontalsystems.bankwallet.modules.rateapp.RateAppDialogFragment
 import io.horizontalsystems.bankwallet.modules.settings.main.MainSettingsFragment
 import io.horizontalsystems.bankwallet.modules.transactions.TransactionsFragment
@@ -37,12 +36,13 @@ class MainFragment : Fragment(), RateAppDialogFragment.Listener {
 
         view.viewPager.offscreenPageLimit = 1
         view.viewPager.adapter = MainViewPagerAdapter(listOf(
+                MarketFragment(),
                 BalanceFragment(),
                 TransactionsFragment(),
-                GuidesFragment(),
                 MainSettingsFragment()
         ), childFragmentManager, viewLifecycleOwner.lifecycle)
 
+        view.viewPager.isUserInputEnabled = false
         view.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -52,9 +52,9 @@ class MainFragment : Fragment(), RateAppDialogFragment.Listener {
 
         view.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navigation_balance -> view.viewPager.setCurrentItem(0, false)
-                R.id.navigation_transactions -> view.viewPager.setCurrentItem(1, false)
-                R.id.navigation_guides -> view.viewPager.setCurrentItem(2, false)
+                R.id.navigation_market -> view.viewPager.setCurrentItem(0, false)
+                R.id.navigation_balance -> view.viewPager.setCurrentItem(1, false)
+                R.id.navigation_transactions -> view.viewPager.setCurrentItem(2, false)
                 R.id.navigation_settings -> view.viewPager.setCurrentItem(3, false)
             }
             true
@@ -76,6 +76,10 @@ class MainFragment : Fragment(), RateAppDialogFragment.Listener {
             activity?.let {
                 RateAppDialogFragment.show(it, this)
             }
+        })
+
+        viewModel.openPlayMarketLiveEvent.observe(viewLifecycleOwner, Observer {
+            openAppInPlayMarket()
         })
 
         viewModel.hideContentLiveData.observe(viewLifecycleOwner, Observer { hide ->
@@ -119,17 +123,15 @@ class MainFragment : Fragment(), RateAppDialogFragment.Listener {
     //  RateAppDialogFragment.Listener
 
     override fun onClickRateApp() {
+        openAppInPlayMarket()
+    }
+
+    private fun openAppInPlayMarket() {
         context?.let { context ->
-            val uri = Uri.parse("market://details?id=io.horizontalsystems.bankwallet")  //context.packageName
-            val goToMarketIntent = Intent(Intent.ACTION_VIEW, uri)
-
-            goToMarketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_MULTIPLE_TASK or Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-
             try {
-                ContextCompat.startActivity(context, goToMarketIntent, null)
+                ContextCompat.startActivity(context, RateAppManager.getPlayMarketAppIntent(), null)
             } catch (e: ActivityNotFoundException) {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=io.horizontalsystems.bankwallet"))
-                ContextCompat.startActivity(context, intent, null)
+                ContextCompat.startActivity(context, RateAppManager.getPlayMarketSiteIntent(), null)
             }
         }
     }

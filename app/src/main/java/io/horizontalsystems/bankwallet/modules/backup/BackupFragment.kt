@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,8 +12,6 @@ import io.horizontalsystems.bankwallet.core.BaseFragment
 import io.horizontalsystems.bankwallet.core.setOnSingleClickListener
 import io.horizontalsystems.bankwallet.core.utils.ModuleField
 import io.horizontalsystems.bankwallet.entities.Account
-import io.horizontalsystems.bankwallet.modules.backup.eos.BackupEosFragment
-import io.horizontalsystems.bankwallet.modules.backup.eos.BackupEosModule
 import io.horizontalsystems.bankwallet.modules.backup.words.BackupWordsFragment
 import io.horizontalsystems.bankwallet.modules.backup.words.BackupWordsModule
 import io.horizontalsystems.core.findNavController
@@ -42,12 +39,10 @@ class BackupFragment : BaseFragment() {
             return
         }
 
-        (activity as? AppCompatActivity)?.let {
-            it.setSupportActionBar(toolbar)
-            it.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
-
         toolbar.title = getString(if (account.isBackedUp) R.string.Backup_Intro_TitleShow else R.string.Backup_Intro_Title)
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
 
         viewModel.init(account)
         viewModel.startPinModule.observe(viewLifecycleOwner, Observer {
@@ -62,15 +57,6 @@ class BackupFragment : BaseFragment() {
                     BackupWordsFragment.ACCOUNT_ADDITIONAL_INFO to additionalInfo
             )
             findNavController().navigate(R.id.backupFragment_to_backupWordsFragment, arguments, navOptions())
-        })
-
-        viewModel.startBackupEosModule.observe(viewLifecycleOwner, Observer { (account, activePrivateKey) ->
-            val arguments = Bundle(2).apply {
-                putString(BackupEosFragment.ACCOUNT, account)
-                putString(BackupEosFragment.ACTIVE_PRIVATE_KEY, activePrivateKey)
-            }
-
-            findNavController().navigate(R.id.backupFragment_to_backupEosFragment, arguments, navOptions())
         })
 
         viewModel.closeLiveEvent.observe(viewLifecycleOwner, Observer {
@@ -116,14 +102,5 @@ class BackupFragment : BaseFragment() {
             }
         })
 
-        getNavigationLiveData(BackupEosModule.requestKey)?.observe(viewLifecycleOwner, Observer {
-            when (it.getInt(BackupEosModule.requestResult)) {
-                BackupEosModule.RESULT_SHOW -> {
-                    findNavController().popBackStack()
-                }
-                else -> {
-                }
-            }
-        })
     }
 }

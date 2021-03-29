@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation_market"
+        android:icon="@drawable/ic_market_24"
+        android:title="@string/Market_Title" />
+
+    <item
         android:id="@+id/navigation_balance"
-        android:icon="@drawable/ic_balance"
+        android:icon="@drawable/ic_wallet_24"
         android:title="@string/Balance_Title" />
 
     <item
         android:id="@+id/navigation_transactions"
         android:icon="@drawable/ic_transactions"
         android:title="@string/Transactions_Title" />
-
-    <item
-        android:id="@+id/navigation_guides"
-        android:icon="@drawable/ic_guide"
-        android:title="@string/Guides_Title" />
 
     <item
         android:id="@+id/navigation_settings"

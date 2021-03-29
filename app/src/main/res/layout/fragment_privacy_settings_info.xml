@@ -10,7 +10,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:title="@string/Welcome_PrivacySettings"/>
+        app:menu="@menu/settings_privacy_info_menu"
+        app:title="@string/Welcome_PrivacySettings" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
@@ -25,7 +26,7 @@
 
             <View
                 android:id="@+id/divider_1"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="23dp"
@@ -37,7 +38,7 @@
             <TextView
                 android:id="@+id/txtPrivacySettingsInfoDetails"
                 style="@style/Subhead2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="23dp"
@@ -50,7 +51,7 @@
             <TextView
                 android:id="@+id/txtBlockchainTxTitle"
                 style="@style/Headline2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:layout_marginEnd="13dp"
@@ -63,7 +64,7 @@
             <TextView
                 android:id="@+id/txtBlockchainTxDescription"
                 style="@style/Subhead2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="23dp"
@@ -76,7 +77,7 @@
             <TextView
                 android:id="@+id/txtBlockchainConnTitle"
                 style="@style/Headline2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:layout_marginEnd="13dp"
@@ -89,7 +90,7 @@
             <TextView
                 android:id="@+id/txtBlockchainConnDescription"
                 style="@style/Subhead2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="23dp"
@@ -102,7 +103,7 @@
             <TextView
                 android:id="@+id/txtBlockchainRestoreTitle"
                 style="@style/Headline2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:layout_marginEnd="13dp"
@@ -115,7 +116,7 @@
             <TextView
                 android:id="@+id/txtBlockchainRestoreDescription"
                 style="@style/Subhead2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="23dp"

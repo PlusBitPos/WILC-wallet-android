@@ -9,7 +9,9 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="@string/Settings_Terms" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -76,7 +78,7 @@
                 style="@style/Body"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="24dp"
                 android:text="@string/SettingsTerms_Text"
                 android:textColor="?ColorBran"
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
@@ -114,11 +116,11 @@
                 android:id="@+id/divider"
                 android:layout_width="0dp"
                 android:layout_height="0.5dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="36dp"
                 android:background="@color/steel_20"
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"
-                app:layout_constraintTop_toBottomOf="@+id/githubLink" />
+                app:layout_constraintTop_toBottomOf="@+id/termsText" />
 
             <CheckBox
                 android:id="@+id/checkboxAcademy"
@@ -204,6 +206,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/checkboxRoot"
                 android:visibility="gone"/>
 
+            <CheckBox
+                android:id="@+id/checkboxPin"
+                style="@style/TermsCheckbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:text="@string/Settings_TermsPin"
+                app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+                app:layout_constraintStart_toStartOf="@+id/guideStart"
+                app:layout_constraintTop_toBottomOf="@+id/checkboxBugs" />
+
             <TextView
                 android:id="@+id/bottomThankYou"
                 style="@style/Title3"
@@ -215,7 +228,7 @@
                 android:textColor="?ColorJacob"
                 app:layout_constraintEnd_toEndOf="@+id/guideEnd"
                 app:layout_constraintStart_toStartOf="@+id/guideStart"
-                app:layout_constraintTop_toBottomOf="@+id/checkboxBugs" />
+                app:layout_constraintTop_toBottomOf="@+id/checkboxPin" />
 
             <View
                 android:id="@+id/dividerBottom"
