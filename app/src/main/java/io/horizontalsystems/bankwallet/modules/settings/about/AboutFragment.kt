@@ -70,12 +70,6 @@ class AboutFragment : BaseFragment() {
                 appStatusItem,
                 termsItem,
                 null,
-                githubItem,
-                websiteItem,
-                null,
-                rateUsItem,
-                shareAppItem,
-                null,
                 contactItem,
         ))
 

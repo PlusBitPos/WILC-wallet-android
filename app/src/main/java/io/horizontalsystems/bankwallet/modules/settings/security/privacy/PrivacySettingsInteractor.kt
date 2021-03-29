@@ -98,8 +98,6 @@ class PrivacySettingsInteractor(
 
     override val ether = coinManager.featuredCoins.first { it.code == "ETH" }
 
-    override val binance = coinManager.featuredCoins.first { it.code == "BNB" }
-
     override fun clear() {
         disposables.clear()
     }

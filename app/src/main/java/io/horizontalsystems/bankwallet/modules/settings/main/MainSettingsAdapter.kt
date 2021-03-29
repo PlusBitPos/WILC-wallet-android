@@ -74,9 +74,6 @@ class MainSettingsAdapter(private val items: List<SettingsViewItem?>)
 
         fun bind(item: SettingsMenuBottom) {
             appName.text  = item.appName
-            companyLogo.setOnClickListener {
-                item.onClick()
-            }
         }
     }
 

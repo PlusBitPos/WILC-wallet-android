@@ -47,13 +47,13 @@ class MainSettingsFragment : BaseFragment() {
         val notifications = SettingsMenuItem(R.string.Settings_Notifications, R.drawable.ic_notification_20, listPosition = ListPosition.First) {
             presenter.didTapNotifications()
         }
-        val baseCurrency = SettingsMenuItem(R.string.Settings_BaseCurrency, R.drawable.ic_currency, listPosition = ListPosition.Middle) {
+        val baseCurrency = SettingsMenuItem(R.string.Settings_BaseCurrency, R.drawable.ic_currency, listPosition = ListPosition.First) {
             presenter.didTapBaseCurrency()
         }
         val language = SettingsMenuItem(R.string.Settings_Language, R.drawable.ic_language, listPosition = ListPosition.Middle) {
             presenter.didTapLanguage()
         }
-        val lightMode = SettingsMenuSwitch(R.string.Settings_LightMode, R.drawable.ic_light_mode, listPosition = ListPosition.Middle) {
+        val lightMode = SettingsMenuSwitch(R.string.Settings_LightMode, R.drawable.ic_light_mode, listPosition = ListPosition.Last) {
             presenter.didSwitchLightMode(it)
         }
         val experimentalFeatures = SettingsMenuItem(R.string.Settings_ExperimentalFeatures, R.drawable.ic_experimental, listPosition = ListPosition.Last) {
@@ -62,13 +62,13 @@ class MainSettingsFragment : BaseFragment() {
         val faq = SettingsMenuItem(R.string.Settings_Faq, R.drawable.ic_faq_20, listPosition = ListPosition.First) {
             presenter.didTapFaq()
         }
-        val academy = SettingsMenuItem(R.string.Guides_Title, R.drawable.ic_academy_20, listPosition = ListPosition.Last) {
+        val academy = SettingsMenuItem(R.string.Guides_Title, R.drawable.ic_academy_20, listPosition = ListPosition.Single) {
             presenter.didTapAcademy()
         }
         val twitter = SettingsMenuItem(R.string.Settings_Twitter, R.drawable.ic_twitter, listPosition = ListPosition.First) {
             presenter.didTapTwitter()
         }
-        val telegram = SettingsMenuItem(R.string.Settings_Telegram, R.drawable.ic_telegram, listPosition = ListPosition.Middle) {
+        val telegram = SettingsMenuItem(R.string.Settings_Telegram, R.drawable.ic_telegram, listPosition = ListPosition.Single) {
             presenter.didTapTelegram()
         }
         val reddit = SettingsMenuItem(R.string.Settings_Reddit, R.drawable.ic_reddit, listPosition = ListPosition.Last) {
@@ -88,18 +88,13 @@ class MainSettingsFragment : BaseFragment() {
                 null,
                 walletConnect,
                 null,
-                notifications,
                 baseCurrency,
                 language,
                 lightMode,
-                experimentalFeatures,
                 null,
-                faq,
                 academy,
                 null,
-                twitter,
                 telegram,
-                reddit,
                 null,
                 aboutApp,
                 settingsBottom

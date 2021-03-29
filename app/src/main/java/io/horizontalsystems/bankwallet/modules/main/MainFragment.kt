@@ -36,7 +36,7 @@ class MainFragment : Fragment(), RateAppDialogFragment.Listener {
 
         view.viewPager.offscreenPageLimit = 1
         view.viewPager.adapter = MainViewPagerAdapter(listOf(
-                MarketFragment(),
+//                MarketFragment(),
                 BalanceFragment(),
                 TransactionsFragment(),
                 MainSettingsFragment()
@@ -52,10 +52,10 @@ class MainFragment : Fragment(), RateAppDialogFragment.Listener {
 
         view.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navigation_market -> view.viewPager.setCurrentItem(0, false)
-                R.id.navigation_balance -> view.viewPager.setCurrentItem(1, false)
-                R.id.navigation_transactions -> view.viewPager.setCurrentItem(2, false)
-                R.id.navigation_settings -> view.viewPager.setCurrentItem(3, false)
+//                R.id.navigation_market -> view.viewPager.setCurrentItem(0, false)
+                R.id.navigation_balance -> view.viewPager.setCurrentItem(0, false)
+                R.id.navigation_transactions -> view.viewPager.setCurrentItem(1, false)
+                R.id.navigation_settings -> view.viewPager.setCurrentItem(2, false)
             }
             true
         }
@@ -73,9 +73,9 @@ class MainFragment : Fragment(), RateAppDialogFragment.Listener {
 
         viewModel.init()
         viewModel.showRateAppLiveEvent.observe(viewLifecycleOwner, Observer {
-            activity?.let {
-                RateAppDialogFragment.show(it, this)
-            }
+//            activity?.let {
+//                RateAppDialogFragment.show(it, this)
+//            }
         })
 
         viewModel.openPlayMarketLiveEvent.observe(viewLifecycleOwner, Observer {
@@ -88,7 +88,7 @@ class MainFragment : Fragment(), RateAppDialogFragment.Listener {
 
         viewModel.setBadgeVisibleLiveData.observe(viewLifecycleOwner, Observer { visible ->
             val bottomMenu = bottomNavigation.getChildAt(0) as? BottomNavigationMenuView
-            val settingsNavigationViewItem = bottomMenu?.getChildAt(3) as? BottomNavigationItemView
+            val settingsNavigationViewItem = bottomMenu?.getChildAt(2) as? BottomNavigationItemView
 
             if (visible) {
                 if (bottomBadgeView?.parent == null) {

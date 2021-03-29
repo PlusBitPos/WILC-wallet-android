@@ -43,15 +43,16 @@
 
     <ImageView
         android:id="@+id/companyLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="20dp"
         android:background="?android:selectableItemBackground"
         android:padding="6dp"
         android:src="@drawable/ic_company_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/decentralizedAppBy" />
+          app:layout_constraintTop_toBottomOf="@+id/decentralizedAppBy"
+          app:tint="@color/light_grey" />
 
     <TextView
         android:id="@+id/companyName"
@@ -59,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:visibility="gone"
         android:layout_marginBottom="32dp"
         android:text="@string/Settings_CompanyName"
         android:textColor="@color/grey"

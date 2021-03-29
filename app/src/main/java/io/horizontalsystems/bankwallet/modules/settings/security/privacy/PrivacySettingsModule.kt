@@ -55,7 +55,6 @@ object PrivacySettingsModule {
         fun saveEthereumRpcModeSetting(rpcModeSetting: EthereumRpcMode)
         fun saveSyncModeSetting(syncModeSetting: InitialSyncSetting)
         val ether: Coin
-        val binance: Coin
 
         fun clear()
     }
