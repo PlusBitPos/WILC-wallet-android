@@ -1,22 +1,21 @@
-# WILC Wallet
+# WILC Wallet & Decentralized App
 
-We dream of a world… A world where private property is untouchable and market access is unconditional.
-
-That obsession led us to engineer a crypto wallet that is equally open to all, lives online forever and unconditionally protects your assets.
+WILC Wallet is equally open to all, lives online forever and unconditionally protects your assets.
 
 It is fully peer-to-peer and works without any centrally managed servers. It can't be stopped, blocked or taken down.
 
 Such approach enables the wallet to operate anywhere and remain censoship-resitant. Only the user is in control of the money.
 
-More at [https://unstoppable.money](https://unstoppable.money)
 
 ## Download
+Android: https://play.google.com/store/apps/details?id=io.wilc.wallet
 
-[https://play.google.com/store/apps/details?id=io.horizontalsystems.bankwallet](https://play.google.com/store/apps/details?id=io.horizontalsystems.bankwallet)
+iOS: https://apps.apple.com/us/app/wilc/id1548267152
+
 
 ## Source Code
 
-[https://github.com/horizontalsystems/unstoppable-wallet-android](https://github.com/horizontalsystems/unstoppable-wallet-android)
+[https://github.com/PlusBitPos/WILC-wallet-android](https://github.com/PlusBitPos/WILC-wallet-android)
 
 ## License
 
